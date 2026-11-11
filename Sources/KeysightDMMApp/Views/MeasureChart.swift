@@ -11,7 +11,7 @@ enum ChartMode: String, CaseIterable, Identifiable {
 /// to a background task.
 struct ChartInput: Sendable {
     enum Source: Sendable {
-        case samples([Sample])
+        case samples([Sample], breaks: [Int])
         case recording(Recording)
     }
 
@@ -21,25 +21,28 @@ struct ChartInput: Sendable {
         var first: Int
         var last: Int
         var unit: MeasurementUnit
+        var breaks = 0
     }
 
     var source: Source
     var unit: MeasurementUnit
 
-    static let empty = ChartInput(source: .samples([]), unit: .none)
+    static let empty = ChartInput(source: .samples([], breaks: []), unit: .none)
 
     init(source: Source, unit: MeasurementUnit) {
         self.source = source
         self.unit = unit
     }
 
-    init(samples: [Sample], unit: MeasurementUnit) { self.init(source: .samples(samples), unit: unit) }
+    init(samples: [Sample], breaks: [Int] = [], unit: MeasurementUnit) {
+        self.init(source: .samples(samples, breaks: breaks), unit: unit)
+    }
     init(recording: Recording) { self.init(source: .recording(recording), unit: recording.unit) }
 
     var key: Key {
         switch source {
-        case .samples(let samples):
-            Key(recording: nil, count: samples.count, first: samples.first?.index ?? -1, last: samples.last?.index ?? -1, unit: unit)
+        case .samples(let samples, let breaks):
+            Key(recording: nil, count: samples.count, first: samples.first?.index ?? -1, last: samples.last?.index ?? -1, unit: unit, breaks: breaks.count)
         case .recording(let recording):
             Key(recording: recording.id, count: recording.count, first: 0, last: 0, unit: unit)
         }
@@ -47,7 +50,7 @@ struct ChartInput: Sendable {
 
     var series: ChartMath.Series {
         switch source {
-        case .samples(let samples): ChartMath.Series(samples: samples)
+        case .samples(let samples, let breaks): ChartMath.Series(samples: samples, breaks: breaks)
         case .recording(let recording): ChartMath.Series(recording: recording)
         }
     }
@@ -67,6 +70,8 @@ struct ChartSnapshot: Sendable, Equatable {
     var xMax = 1.0
     var xTicks = ChartMath.Ticks()
     var validCount = 0
+    /// Points that are alone in their run; a line needs two, so these get a dot.
+    var isolated: Set<Int> = []
     var unitText = ""
     /// Limits in axis units.
     var lower: Double?
@@ -79,6 +84,10 @@ struct ChartSnapshot: Sendable, Equatable {
         var snapshot = ChartSnapshot()
         snapshot.points = points
         snapshot.validCount = points.count
+        let perRun = Dictionary(grouping: points, by: \.run)
+        if perRun.count > 1 {
+            snapshot.isolated = Set(perRun.values.filter { $0.count == 1 }.map { $0[0].id })
+        }
         guard var low = points.map(\.value).min(), var high = points.map(\.value).max() else { return snapshot }
         snapshot.bins = ChartMath.histogram(values: series.values)
         if let l = limits.lower { low = min(low, l) }
@@ -115,10 +124,14 @@ struct TrendPlot: View {
     var body: some View {
         Chart {
             ForEach(snapshot.points) { p in
-                LineMark(x: .value("Time", p.seconds / snapshot.timeDivisor), y: .value(snapshot.axisTitle, snapshot.scale.scaled(p.value)))
+                // One line per run: a pause in the readings shows as a gap, not a bridge.
+                LineMark(
+                    x: .value("Time", p.seconds / snapshot.timeDivisor),
+                    y: .value(snapshot.axisTitle, snapshot.scale.scaled(p.value)),
+                    series: .value("Run", p.run))
                     .lineStyle(StrokeStyle(lineWidth: 1.5, lineJoin: .round))
                     .foregroundStyle(.tint)
-                if snapshot.points.count < 40 {
+                if snapshot.points.count < 40 || snapshot.isolated.contains(p.id) {
                     PointMark(x: .value("Time", p.seconds / snapshot.timeDivisor), y: .value(snapshot.axisTitle, snapshot.scale.scaled(p.value)))
                         .symbolSize(18)
                         .foregroundStyle(.tint)
@@ -170,12 +183,16 @@ struct HistogramPlot: View {
 
     var body: some View {
         Chart(snapshot.bins) { bin in
-            BarMark(
+            // A rectangle from zero up to the count. (BarMark with an x interval and a
+            // single y draws a thin stroke at that height, not a filled bar.)
+            RectangleMark(
                 xStart: .value("From", snapshot.scale.scaled(bin.lower)),
                 xEnd: .value("To", snapshot.scale.scaled(bin.upper)),
-                y: .value("Readings", bin.count)
+                yStart: .value("Readings", 0),
+                yEnd: .value("Readings", bin.count)
             )
             .foregroundStyle(.tint.opacity(0.8))
+            .clipShape(Rectangle().inset(by: 0.5))
         }
         .chartXScale(domain: snapshot.histogramRange)
         .chartYAxisLabel(position: .top, alignment: .leading) { Text("Readings").foregroundStyle(.secondary) }
@@ -232,7 +249,8 @@ struct SeriesChart: View {
 /// than on every reading.
 struct MeasureChart: View {
     let controller: MeterController
-    @State private var mode: ChartMode = .trend
+    // `--chart=histogram` opens on the histogram, for testing.
+    @State private var mode: ChartMode = CommandLine.arguments.contains("--chart=histogram") ? .histogram : .trend
     @State private var input = ChartInput.empty
 
     var body: some View {
@@ -254,7 +272,7 @@ struct MeasureChart: View {
     private func refreshLoop() async {
         var lastKey: ChartInput.Key?
         while !Task.isCancelled {
-            let next = ChartInput(samples: controller.samples, unit: controller.unit)
+            let next = ChartInput(samples: controller.samples, breaks: controller.sampleBreaks, unit: controller.unit)
             if next.key != lastKey {
                 lastKey = next.key
                 input = next

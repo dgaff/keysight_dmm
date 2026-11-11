@@ -10,6 +10,9 @@ enum ChartMath {
         let seconds: Double
         /// Value in SI base units.
         let value: Double
+        /// Which uninterrupted run of readings the point belongs to. Lines are drawn
+        /// within a run, never across the gap between two.
+        var run = 0
     }
 
     struct Bin: Identifiable, Sendable, Equatable {
@@ -35,6 +38,8 @@ enum ChartMath {
         /// Seconds since the first sample.
         var times: [Double] = []
         var values: [Double] = []
+        /// Run number of each value (see `Point.run`); empty means one single run.
+        var runs: [Int] = []
         var count: Int { values.count }
 
         init() {}
@@ -43,10 +48,23 @@ enum ChartMath {
             self.values = values
         }
 
-        init(samples: [Sample]) {
+        /// `breaks` are the `Sample.index` values at which a new run began (readings
+        /// were stopped and started again, or paused for a data log), in ascending order.
+        init(samples: [Sample], breaks: [Int] = []) {
             guard let origin = samples.first?.time else { return }
             times = samples.map { $0.time.timeIntervalSince(origin) }
             values = samples.map { $0.reading.value }
+            guard !breaks.isEmpty else { return }
+            var run = 0
+            var next = breaks.startIndex
+            runs.reserveCapacity(samples.count)
+            for sample in samples {
+                while next < breaks.endIndex, breaks[next] <= sample.index {
+                    run += 1
+                    next += 1
+                }
+                runs.append(run)
+            }
         }
 
         init(recording: Recording) {
@@ -69,7 +87,9 @@ enum ChartMath {
         for i in 0..<series.count where series.values[i].isFinite && i < series.times.count && series.times[i].isFinite {
             valid.append(i)
         }
-        func point(_ i: Int) -> Point { Point(id: i, seconds: series.times[i], value: series.values[i]) }
+        func point(_ i: Int) -> Point {
+            Point(id: i, seconds: series.times[i], value: series.values[i], run: i < series.runs.count ? series.runs[i] : 0)
+        }
         guard valid.count > maxPoints, maxPoints >= 4 else { return valid.map(point) }
 
         let buckets = maxPoints / 2

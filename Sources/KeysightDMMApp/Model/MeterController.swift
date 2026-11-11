@@ -58,6 +58,9 @@ final class MeterController {
     private(set) var latest: Sample?
     private(set) var secondary: Reading?
     private(set) var samples: [Sample] = []
+    /// `Sample.index` of the first reading after each pause (Stop/Run, or a data log),
+    /// so charts can leave a gap instead of joining across it.
+    private(set) var sampleBreaks: [Int] = []
     private(set) var statistics = RunningStatistics()
     /// Readings per second over the last few samples.
     private(set) var readingRate: Double?
@@ -84,6 +87,7 @@ final class MeterController {
     @ObservationIgnored private var liveTask: Task<Void, Never>?
     @ObservationIgnored private var trafficTask: Task<Void, Never>?
     @ObservationIgnored private var nextIndex = 0
+    @ObservationIgnored private var resumedAfterPause = false
     @ObservationIgnored private var logTask: Task<Void, Never>?
     @ObservationIgnored private var logRun: AcquisitionRun?
 
@@ -201,6 +205,7 @@ final class MeterController {
     func startLive() {
         guard liveTask == nil, link == .connected, !isLogging else { return }
         isLive = true
+        resumedAfterPause = true
         liveTask = Task { [weak self] in
             await self?.runLive()
         }
@@ -250,11 +255,16 @@ final class MeterController {
 
     private func append(_ reading: Reading, at time: Date) {
         let sample = Sample(index: nextIndex, time: time, reading: reading)
+        if resumedAfterPause {
+            resumedAfterPause = false
+            if !samples.isEmpty { sampleBreaks.append(sample.index) }
+        }
         nextIndex += 1
         latest = sample
         samples.append(sample)
         if samples.count > Self.historyLimit {
             samples.removeFirst(Self.historyLimit / 10)
+            if let oldest = samples.first?.index { sampleBreaks.removeAll { $0 <= oldest } }
         }
         statistics.add(reading)
         liveCapture?.append(reading, at: time)
@@ -262,6 +272,7 @@ final class MeterController {
 
     func clearHistory() {
         samples.removeAll()
+        sampleBreaks.removeAll()
         statistics = RunningStatistics()
         latest = nil
         secondary = nil

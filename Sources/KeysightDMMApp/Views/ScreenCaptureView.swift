@@ -115,13 +115,15 @@ struct ScreenCaptureView: View {
         }
     }
 
-    /// Whole-number enlargement with no smoothing keeps the meter's pixels crisp; if the
-    /// window is too small for 1x, a smooth reduction is used instead.
+    /// The capture at its original size. It does not grow with the window; if the window
+    /// is too small for it, it is reduced smoothly.
     private func picture(_ capture: CaptureStore.Capture, in available: CGSize) -> some View {
         let pixels = Self.pixelSize(of: capture.image)
+        // Shown at the meter's own size (480 × 289), never enlarged with the window; only
+        // shrunk if the window is too small to fit it.
         let fit = min(available.width / pixels.width, available.height / pixels.height)
         let integral = fit >= 1
-        let factor = integral ? fit.rounded(.down) : fit
+        let factor = min(fit, 1)
         return Image(nsImage: capture.image)
             .resizable()
             .interpolation(integral ? .none : .high)
