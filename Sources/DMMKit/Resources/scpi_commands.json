@@ -1,0 +1,7559 @@
+[
+ {
+  "command": "*CAL?",
+  "subsystem": "IEEE488",
+  "set_syntax": null,
+  "query_syntax": "*CAL?",
+  "summary": "Runs autocalibration and returns 0 (ok) or 1 (error).",
+  "parameters": [],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 262
+ },
+ {
+  "command": "*CLS",
+  "subsystem": "IEEE488",
+  "set_syntax": "*CLS",
+  "query_syntax": null,
+  "summary": "Clears the event registers and the error queue.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 262
+ },
+ {
+  "command": "*ESE",
+  "subsystem": "IEEE488",
+  "set_syntax": "*ESE <enable_value>",
+  "query_syntax": "*ESE?",
+  "summary": "Sets the Standard Event Status enable register mask.",
+  "parameters": [
+   {
+    "name": "enable_value",
+    "type": "numeric",
+    "values": "0 to 255 (bit mask)",
+    "default": "0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 263
+ },
+ {
+  "command": "*ESR?",
+  "subsystem": "IEEE488",
+  "set_syntax": null,
+  "query_syntax": "*ESR?",
+  "summary": "Reads and clears the Standard Event Status register.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 264
+ },
+ {
+  "command": "*IDN?",
+  "subsystem": "IEEE488",
+  "set_syntax": null,
+  "query_syntax": "*IDN?",
+  "summary": "Returns the instrument identification string (manufacturer, model, serial, firmware).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 265
+ },
+ {
+  "command": "*LRN?",
+  "subsystem": "IEEE488",
+  "set_syntax": null,
+  "query_syntax": "*LRN?",
+  "summary": "Returns a string of commands that would restore the current instrument state.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 267
+ },
+ {
+  "command": "*OPC",
+  "subsystem": "IEEE488",
+  "set_syntax": "*OPC",
+  "query_syntax": "*OPC?",
+  "summary": "Sets the Operation Complete bit when pending operations finish; *OPC? returns 1 instead.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 267
+ },
+ {
+  "command": "*OPT?",
+  "subsystem": "IEEE488",
+  "set_syntax": null,
+  "query_syntax": "*OPT?",
+  "summary": "Returns the installed options (e.g. GPB, SEC, DIG, MEM).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 268
+ },
+ {
+  "command": "*PSC",
+  "subsystem": "IEEE488",
+  "set_syntax": "*PSC {0|1}",
+  "query_syntax": "*PSC?",
+  "summary": "Enables or disables clearing of status enable registers at power-on.",
+  "parameters": [
+   {
+    "name": "flag",
+    "type": "discrete",
+    "values": "0|1",
+    "default": "1",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 269
+ },
+ {
+  "command": "*RCL",
+  "subsystem": "IEEE488",
+  "set_syntax": "*RCL {0|1|2|3|4}",
+  "query_syntax": null,
+  "summary": "Recalls instrument state from internal state file STATE_<n>.sta.",
+  "parameters": [
+   {
+    "name": "n",
+    "type": "discrete",
+    "values": "0|1|2|3|4",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 269
+ },
+ {
+  "command": "*RST",
+  "subsystem": "IEEE488",
+  "set_syntax": "*RST",
+  "query_syntax": null,
+  "summary": "Resets the instrument to its factory default state for SCPI operation.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 270
+ },
+ {
+  "command": "*SAV",
+  "subsystem": "IEEE488",
+  "set_syntax": "*SAV {0|1|2|3|4}",
+  "query_syntax": null,
+  "summary": "Saves the instrument state to internal state file STATE_<n>.sta.",
+  "parameters": [
+   {
+    "name": "n",
+    "type": "discrete",
+    "values": "0|1|2|3|4",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "State 0 is overwritten with the power-down state at power cycle.",
+  "page": 269
+ },
+ {
+  "command": "*SRE",
+  "subsystem": "IEEE488",
+  "set_syntax": "*SRE <enable_value>",
+  "query_syntax": "*SRE?",
+  "summary": "Sets the Status Byte service-request enable mask.",
+  "parameters": [
+   {
+    "name": "enable_value",
+    "type": "numeric",
+    "values": "0 to 255 (bit mask)",
+    "default": "0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 270
+ },
+ {
+  "command": "*STB?",
+  "subsystem": "IEEE488",
+  "set_syntax": null,
+  "query_syntax": "*STB?",
+  "summary": "Reads the Status Byte register (does not clear the Master Summary bit).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 271
+ },
+ {
+  "command": "*TRG",
+  "subsystem": "IEEE488",
+  "set_syntax": "*TRG",
+  "query_syntax": null,
+  "summary": "Sends a software trigger when TRIGger:SOURce is BUS and the instrument is waiting for trigger.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 271
+ },
+ {
+  "command": "*TST?",
+  "subsystem": "IEEE488",
+  "set_syntax": null,
+  "query_syntax": "*TST?",
+  "summary": "Runs a basic self-test and returns 0 (pass) or 1 (fail).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 272
+ },
+ {
+  "command": "*WAI",
+  "subsystem": "IEEE488",
+  "set_syntax": "*WAI",
+  "query_syntax": null,
+  "summary": "Holds off further commands until all pending operations complete.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 272
+ },
+ {
+  "command": "ABORt",
+  "subsystem": "Root",
+  "set_syntax": "ABORt",
+  "query_syntax": null,
+  "summary": "Aborts a measurement in progress and returns the trigger system to idle.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 197
+ },
+ {
+  "command": "CALCulate:AVERage:ALL?",
+  "subsystem": "CALCulate",
+  "set_syntax": null,
+  "query_syntax": "CALCulate:AVERage:ALL?",
+  "summary": "Returns mean, standard deviation, minimum and maximum of the accumulated statistics.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 226
+ },
+ {
+  "command": "CALCulate:AVERage:AVERage?",
+  "subsystem": "CALCulate",
+  "set_syntax": null,
+  "query_syntax": "CALCulate:AVERage:AVERage?",
+  "summary": "Returns the mean of the accumulated readings.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 226
+ },
+ {
+  "command": "CALCulate:AVERage:CLEar[:IMMediate]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:AVERage:CLEar[:IMMediate]",
+  "query_syntax": null,
+  "summary": "Clears all computed statistics.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 228
+ },
+ {
+  "command": "CALCulate:AVERage:COUNt?",
+  "subsystem": "CALCulate",
+  "set_syntax": null,
+  "query_syntax": "CALCulate:AVERage:COUNt?",
+  "summary": "Returns the number of readings in the statistics.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 226
+ },
+ {
+  "command": "CALCulate:AVERage:MAXimum?",
+  "subsystem": "CALCulate",
+  "set_syntax": null,
+  "query_syntax": "CALCulate:AVERage:MAXimum?",
+  "summary": "Returns the maximum reading in the statistics.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 226
+ },
+ {
+  "command": "CALCulate:AVERage:MINimum?",
+  "subsystem": "CALCulate",
+  "set_syntax": null,
+  "query_syntax": "CALCulate:AVERage:MINimum?",
+  "summary": "Returns the minimum reading in the statistics.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 226
+ },
+ {
+  "command": "CALCulate:AVERage:PTPeak?",
+  "subsystem": "CALCulate",
+  "set_syntax": null,
+  "query_syntax": "CALCulate:AVERage:PTPeak?",
+  "summary": "Returns the peak-to-peak (max minus min) value of the statistics.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 226
+ },
+ {
+  "command": "CALCulate:AVERage:SDEViation?",
+  "subsystem": "CALCulate",
+  "set_syntax": null,
+  "query_syntax": "CALCulate:AVERage:SDEViation?",
+  "summary": "Returns the standard deviation of the accumulated readings.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 226
+ },
+ {
+  "command": "CALCulate:AVERage[:STATe]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:AVERage[:STATe] {OFF|ON}",
+  "query_syntax": "CALCulate:AVERage[:STATe]?",
+  "summary": "Enables or disables statistics computation.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 228
+ },
+ {
+  "command": "CALCulate:CLEar[:IMMediate]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:CLEar[:IMMediate]",
+  "query_syntax": null,
+  "summary": "Clears limits, histogram data, statistics and readings.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 208
+ },
+ {
+  "command": "CALCulate:LIMit:CLEar[:IMMediate]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:LIMit:CLEar[:IMMediate]",
+  "query_syntax": null,
+  "summary": "Clears the limit-exceeded indications and status bits 11 and 12.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 210
+ },
+ {
+  "command": "CALCulate:LIMit:LOWer[:DATA]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:LIMit:LOWer[:DATA] {<value>|MIN|MAX|DEF}",
+  "query_syntax": "CALCulate:LIMit:LOWer[:DATA]? [{MIN|MAX|DEF}]",
+  "summary": "Sets the lower limit used for limit testing.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-1e15 to +1e15; MIN|MAX|DEF",
+    "default": "0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Unit follows the measurement function (reading units). CONFigure resets both limits to 0.",
+  "page": 211
+ },
+ {
+  "command": "CALCulate:LIMit:UPPer[:DATA]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:LIMit:UPPer[:DATA] {<value>|MIN|MAX|DEF}",
+  "query_syntax": "CALCulate:LIMit:UPPer[:DATA]? [{MIN|MAX|DEF}]",
+  "summary": "Sets the upper limit used for limit testing.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-1e15 to +1e15; MIN|MAX|DEF",
+    "default": "0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Unit follows the measurement function (reading units). CONFigure resets both limits to 0.",
+  "page": 211
+ },
+ {
+  "command": "CALCulate:LIMit[:STATe]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:LIMit[:STATe] {OFF|ON}",
+  "query_syntax": "CALCulate:LIMit[:STATe]?",
+  "summary": "Enables or disables limit testing.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 212
+ },
+ {
+  "command": "CALCulate:SCALe:DB:REFerence",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SCALe:DB:REFerence {<reference>|MIN|MAX|DEF}",
+  "query_syntax": "CALCulate:SCALe:DB:REFerence? [{MIN|MAX|DEF}]",
+  "summary": "Stores the dB relative reference value (in dBm) used by the DB scaling function.",
+  "parameters": [
+   {
+    "name": "reference",
+    "type": "numeric",
+    "values": "-200 to +200 (dBm); MIN|MAX|DEF",
+    "default": "0",
+    "unit": "dBm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 218
+ },
+ {
+  "command": "CALCulate:SCALe:DBM:REFerence",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SCALe:DBM:REFerence {<reference>|MIN|MAX|DEF}",
+  "query_syntax": "CALCulate:SCALe:DBM:REFerence? [{MIN|MAX|DEF}]",
+  "summary": "Selects the reference resistance used for dBm and dB conversions.",
+  "parameters": [
+   {
+    "name": "reference",
+    "type": "discrete",
+    "values": "50, 75, 93, 110, 124, 125, 135, 150, 250, 300, 500, 600, 800, 900, 1000, 1200, 8000 (Ohm); MIN|MAX|DEF",
+    "default": "600",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 219
+ },
+ {
+  "command": "CALCulate:SCALe:FUNCtion",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SCALe:FUNCtion {DB|DBM|PCT|SCALe}",
+  "query_syntax": "CALCulate:SCALe:FUNCtion?",
+  "summary": "Selects the scaling operation: relative dB, dBm, percent, or Mx-B.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "discrete",
+    "values": "DB|DBM|PCT|SCALe",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "PCT and SCALe exist only on 34465A/34470A.",
+  "page": 219
+ },
+ {
+  "command": "CALCulate:SCALe:GAIN",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SCALe:GAIN {<gain>|MIN|MAX|DEF}",
+  "query_syntax": "CALCulate:SCALe:GAIN? [{MIN|MAX|DEF}]",
+  "summary": "Sets the gain M for Mx-B scaling.",
+  "parameters": [
+   {
+    "name": "gain",
+    "type": "numeric",
+    "values": "-1e15 to +1e15; MIN|MAX|DEF",
+    "default": "1.0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 220
+ },
+ {
+  "command": "CALCulate:SCALe:OFFSet",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SCALe:OFFSet {<offset>|MIN|MAX|DEF}",
+  "query_syntax": "CALCulate:SCALe:OFFSet? [{MIN|MAX|DEF}]",
+  "summary": "Sets the offset B for Mx-B scaling.",
+  "parameters": [
+   {
+    "name": "offset",
+    "type": "numeric",
+    "values": "-1e15 to +1e15; MIN|MAX|DEF",
+    "default": "0.0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 221
+ },
+ {
+  "command": "CALCulate:SCALe:REFerence",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SCALe:REFerence {<reference>|MIN|MAX|DEF}",
+  "query_syntax": "CALCulate:SCALe:REFerence? [{MIN|MAX|DEF}]",
+  "summary": "Sets the reference value for percent (PCT) scaling.",
+  "parameters": [
+   {
+    "name": "reference",
+    "type": "numeric",
+    "values": "-1e15 to +1e15; MIN|MAX|DEF",
+    "default": "0.0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 221
+ },
+ {
+  "command": "CALCulate:SCALe:REFerence:AUTO",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SCALe:REFerence:AUTO {OFF|ON}",
+  "query_syntax": "CALCulate:SCALe:REFerence:AUTO?",
+  "summary": "Enables automatic reference selection (first reading) for dB scaling.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 222
+ },
+ {
+  "command": "CALCulate:SCALe:UNIT",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SCALe:UNIT <quoted_string>",
+  "query_syntax": "CALCulate:SCALe:UNIT?",
+  "summary": "Sets a custom label of up to four characters shown with scaled readings.",
+  "parameters": [
+   {
+    "name": "label",
+    "type": "string",
+    "values": "quoted string, up to 4 characters",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 223
+ },
+ {
+  "command": "CALCulate:SCALe:UNIT:STATe",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SCALe:UNIT:STATe {OFF|ON}",
+  "query_syntax": "CALCulate:SCALe:UNIT:STATe?",
+  "summary": "Shows or hides the custom unit label on the front panel when scaling is on.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 224
+ },
+ {
+  "command": "CALCulate:SCALe[:STATe]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SCALe[:STATe] {OFF|ON}",
+  "query_syntax": "CALCulate:SCALe[:STATe]?",
+  "summary": "Enables or disables the scaling function.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 223
+ },
+ {
+  "command": "CALCulate:SMOothing:RESPonse",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SMOothing:RESPonse {SLOW|MEDium|FAST}",
+  "query_syntax": "CALCulate:SMOothing:RESPonse?",
+  "summary": "Selects the moving-average filter length (SLOW=100, MEDium=50, FAST=10 readings).",
+  "parameters": [
+   {
+    "name": "response",
+    "type": "discrete",
+    "values": "SLOW|MEDium|FAST",
+    "default": "FAST",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 230
+ },
+ {
+  "command": "CALCulate:SMOothing[:STATe]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:SMOothing[:STATe] {OFF|ON}",
+  "query_syntax": "CALCulate:SMOothing[:STATe]?",
+  "summary": "Enables or disables the moving-average smoothing filter.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 231
+ },
+ {
+  "command": "CALCulate:TCHart[:STATe]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:TCHart[:STATe] {OFF|ON}",
+  "query_syntax": "CALCulate:TCHart[:STATe]?",
+  "summary": "Enables or disables trend-chart data collection when running remotely (set before INIT/READ?).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 232
+ },
+ {
+  "command": "CALCulate:TRANsform:HISTogram:ALL?",
+  "subsystem": "CALCulate",
+  "set_syntax": null,
+  "query_syntax": "CALCulate:TRANsform:HISTogram:ALL?",
+  "summary": "Returns histogram range limits, count and bin data collected since the histogram was cleared.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 214
+ },
+ {
+  "command": "CALCulate:TRANsform:HISTogram:CLEar[:IMMediate]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:TRANsform:HISTogram:CLEar[:IMMediate]",
+  "query_syntax": null,
+  "summary": "Clears histogram data and restarts histogram ranging.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 215
+ },
+ {
+  "command": "CALCulate:TRANsform:HISTogram:COUNt?",
+  "subsystem": "CALCulate",
+  "set_syntax": null,
+  "query_syntax": "CALCulate:TRANsform:HISTogram:COUNt?",
+  "summary": "Returns how many readings have been collected into the histogram.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 215
+ },
+ {
+  "command": "CALCulate:TRANsform:HISTogram:DATA?",
+  "subsystem": "CALCulate",
+  "set_syntax": null,
+  "query_syntax": "CALCulate:TRANsform:HISTogram:DATA?",
+  "summary": "Returns only the histogram bin counts (underflow, bins, overflow).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 214
+ },
+ {
+  "command": "CALCulate:TRANsform:HISTogram:POINts",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:TRANsform:HISTogram:POINts {<value>|MIN|MAX|DEF}",
+  "query_syntax": "CALCulate:TRANsform:HISTogram:POINts? [{MIN|MAX|DEF}]",
+  "summary": "Sets the number of histogram bins between the lower and upper range values.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "discrete",
+    "values": "10, 20, 40, 100, 200, 400; MIN|MAX|DEF",
+    "default": "100",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 215
+ },
+ {
+  "command": "CALCulate:TRANsform:HISTogram:RANGe:AUTO",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:TRANsform:HISTogram:RANGe:AUTO {OFF|ON}",
+  "query_syntax": "CALCulate:TRANsform:HISTogram:RANGe:AUTO?",
+  "summary": "Enables automatic selection of histogram lower and upper range from the first 1000 readings.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 216
+ },
+ {
+  "command": "CALCulate:TRANsform:HISTogram:RANGe:LOWer",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:TRANsform:HISTogram:RANGe:LOWer {<value>|MIN|MAX|DEF}",
+  "query_syntax": "CALCulate:TRANsform:HISTogram:RANGe:LOWer? [{MIN|MAX|DEF}]",
+  "summary": "Sets the histogram lower range value (turns histogram auto-range off).",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-1e15 to +1e15; MIN|MAX|DEF",
+    "default": "0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Unit follows the measurement function. Query returns the computed value while auto-range is on (9.91E37 if no data).",
+  "page": 216
+ },
+ {
+  "command": "CALCulate:TRANsform:HISTogram:RANGe:UPPer",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:TRANsform:HISTogram:RANGe:UPPer {<value>|MIN|MAX|DEF}",
+  "query_syntax": "CALCulate:TRANsform:HISTogram:RANGe:UPPer? [{MIN|MAX|DEF}]",
+  "summary": "Sets the histogram upper range value (turns histogram auto-range off).",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-1e15 to +1e15; MIN|MAX|DEF",
+    "default": "0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Unit follows the measurement function. Query returns the computed value while auto-range is on (9.91E37 if no data).",
+  "page": 216
+ },
+ {
+  "command": "CALCulate:TRANsform:HISTogram[:STATe]",
+  "subsystem": "CALCulate",
+  "set_syntax": "CALCulate:TRANsform:HISTogram[:STATe] {OFF|ON}",
+  "query_syntax": "CALCulate:TRANsform:HISTogram[:STATe]?",
+  "summary": "Enables or disables histogram computation.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 217
+ },
+ {
+  "command": "CALibration:ADC?",
+  "subsystem": "CALibration",
+  "set_syntax": null,
+  "query_syntax": "CALibration:ADC?",
+  "summary": "Calibrates the ADC circuitry (first step of a recalibration); requires unsecured instrument.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 233
+ },
+ {
+  "command": "CALibration:COUNt?",
+  "subsystem": "CALibration",
+  "set_syntax": null,
+  "query_syntax": "CALibration:COUNt?",
+  "summary": "Returns how many times the calibration constants have been stored.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 234
+ },
+ {
+  "command": "CALibration:DATE?",
+  "subsystem": "CALibration",
+  "set_syntax": null,
+  "query_syntax": "CALibration:DATE?",
+  "summary": "Returns the last calibration date as yyyy,mm,dd.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 235
+ },
+ {
+  "command": "CALibration:SECure:CODE",
+  "subsystem": "CALibration",
+  "set_syntax": "CALibration:SECure:CODE <new_code>",
+  "query_syntax": null,
+  "summary": "Sets a new calibration security code.",
+  "parameters": [
+   {
+    "name": "new_code",
+    "type": "string",
+    "values": "unquoted, up to 12 chars, starts with a letter, letters/digits/underscore",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Factory code is AT3446XA.",
+  "page": 235
+ },
+ {
+  "command": "CALibration:SECure:STATe",
+  "subsystem": "CALibration",
+  "set_syntax": "CALibration:SECure:STATe {OFF|ON} [, <code>]",
+  "query_syntax": "CALibration:SECure:STATe?",
+  "summary": "Secures or unsecures the instrument for calibration (optionally giving the code).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON",
+    "default": "ON",
+    "unit": null
+   },
+   {
+    "name": "code",
+    "type": "string",
+    "values": "security code (optional)",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 236
+ },
+ {
+  "command": "CALibration:STORe",
+  "subsystem": "CALibration",
+  "set_syntax": "CALibration:STORe",
+  "query_syntax": null,
+  "summary": "Stores the calibration constants into non-volatile memory.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 236
+ },
+ {
+  "command": "CALibration:STRing",
+  "subsystem": "CALibration",
+  "set_syntax": "CALibration:STRing \"<string>\"",
+  "query_syntax": "CALibration:STRing?",
+  "summary": "Stores or reads a calibration message of up to 40 characters.",
+  "parameters": [
+   {
+    "name": "string",
+    "type": "string",
+    "values": "quoted string, up to 40 characters",
+    "default": "\"\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 237
+ },
+ {
+  "command": "CALibration:TEMPerature?",
+  "subsystem": "CALibration",
+  "set_syntax": null,
+  "query_syntax": "CALibration:TEMPerature?",
+  "summary": "Returns the internal temperature recorded at the last calibration.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 237
+ },
+ {
+  "command": "CALibration:TIME?",
+  "subsystem": "CALibration",
+  "set_syntax": null,
+  "query_syntax": "CALibration:TIME?",
+  "summary": "Returns the time of the last calibration.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 237
+ },
+ {
+  "command": "CALibration:VALue",
+  "subsystem": "CALibration",
+  "set_syntax": "CALibration:VALue <value>",
+  "query_syntax": "CALibration:VALue?",
+  "summary": "Specifies the value of the applied calibration signal.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "any numeric",
+    "default": "0.0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Unit follows the function being calibrated.",
+  "page": 238
+ },
+ {
+  "command": "CALibration[:ALL]?",
+  "subsystem": "CALibration",
+  "set_syntax": null,
+  "query_syntax": "CALibration[:ALL]?",
+  "summary": "Performs calibration using the value set by CALibration:VALue and returns 0 (pass) or 1 (fail).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 234
+ },
+ {
+  "command": "CONFigure:CAPacitance",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure:CAPacitance [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "query_syntax": null,
+  "summary": "Configures capacitance measurement with default settings and the given range/resolution.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4 (F); AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "F"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; resolution is optional and ignored (fixed 4.5 digits); MIN|MAX|DEF",
+    "default": null,
+    "unit": "F"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Capacitance exists only on 34465A/34470A.",
+  "page": 241
+ },
+ {
+  "command": "CONFigure:CONTinuity",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure:CONTinuity",
+  "query_syntax": null,
+  "summary": "Configures the instrument for a continuity test with default settings.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Range and resolution are fixed (1 kOhm, threshold about 10 Ohm).",
+  "page": 242
+ },
+ {
+  "command": "CONFigure:CURRent:AC",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure:CURRent:AC [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "query_syntax": null,
+  "summary": "Configures AC current measurement with default settings and the given range/resolution.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "1e-4, 1e-3, 1e-2, 0.1, 1, 3, 10 (A); AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "A"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; resolution ignored for AC (fixed 6.5 digits); MIN|MAX|DEF",
+    "default": null,
+    "unit": "A"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 243
+ },
+ {
+  "command": "CONFigure:CURRent:DC",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure:CURRent:DC [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "query_syntax": null,
+  "summary": "Configures DC current measurement with default settings and the given range/resolution.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "1e-4, 1e-3, 1e-2, 0.1, 1, 3, 10 (A); 1e-6, 1e-5 also on 34465A/70A; AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "A"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "A"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 243
+ },
+ {
+  "command": "CONFigure:DIODe",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure:DIODe",
+  "query_syntax": null,
+  "summary": "Configures the instrument for a diode test with default settings.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Range and resolution are fixed (1 V range with 1 mA source).",
+  "page": 244
+ },
+ {
+  "command": "CONFigure:FREQuency",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure:FREQuency [{<range>|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "query_syntax": null,
+  "summary": "Configures frequency measurement with default settings and the given range/resolution.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "3 to 300e3 (Hz); MIN|MAX|DEF",
+    "default": "20",
+    "unit": "Hz"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": null,
+    "unit": "Hz"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Range is the expected input frequency (period) limit; manual gives default 20 Hz (FREQ) / 50 ms (PER). Specifying an explicit resolution while autoranging raises an error on other functions.",
+  "page": 245
+ },
+ {
+  "command": "CONFigure:FRESistance",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure:FRESistance [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "query_syntax": null,
+  "summary": "Configures 4-wire resistance measurement with default settings and the given range/resolution.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9 (Ohm); 1 GOhm only on 34465A/70A; AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "Ohm"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 246
+ },
+ {
+  "command": "CONFigure:PERiod",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure:PERiod [{<range>|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "query_syntax": null,
+  "summary": "Configures period measurement with default settings and the given range/resolution.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "3.33e-6 to 0.33333 (s); MIN|MAX|DEF",
+    "default": "0.05",
+    "unit": "s"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": null,
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Range is the expected input frequency (period) limit; manual gives default 20 Hz (FREQ) / 50 ms (PER). Specifying an explicit resolution while autoranging raises an error on other functions.",
+  "page": 245
+ },
+ {
+  "command": "CONFigure:RESistance",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure:RESistance [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "query_syntax": null,
+  "summary": "Configures 2-wire resistance measurement with default settings and the given range/resolution.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9 (Ohm); 1 GOhm only on 34465A/70A; AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "Ohm"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 246
+ },
+ {
+  "command": "CONFigure:TEMPerature",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure:TEMPerature [{FRTD|RTD|FTHermistor|THERmistor|TCouple|DEFault} [, {<type>|DEFault} [, {<resolution>|MIN|MAX|DEF}]]]",
+  "query_syntax": null,
+  "summary": "Configures temperature measurement with defaults.",
+  "parameters": [
+   {
+    "name": "probe_type",
+    "type": "discrete",
+    "values": "FRTD|RTD|FTHermistor|THERmistor|TCouple|DEFault",
+    "default": "FRTD",
+    "unit": null
+   },
+   {
+    "name": "type",
+    "type": "discrete",
+    "values": "85 (RTD/FRTD); 5000 (thermistor); E|J|K|N|R|T (TCouple); DEFault",
+    "default": null,
+    "unit": null
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "degC"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Thermocouple (TCouple) probe type is 34465A/34470A only. Manual syntax shows a stray literal \",1\" before resolution.",
+  "page": 247
+ },
+ {
+  "command": "CONFigure?",
+  "subsystem": "CONFigure",
+  "set_syntax": null,
+  "query_syntax": "CONFigure?",
+  "summary": "Returns the current function, range and resolution as a quoted string.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 241
+ },
+ {
+  "command": "CONFigure[:VOLTage]:AC",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure[:VOLTage]:AC [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "query_syntax": null,
+  "summary": "Configures AC voltage measurement with default settings and the given range/resolution.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "0.1, 1, 10, 100, 1000 (V); AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "V"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; resolution ignored for AC (fixed 6.5 digits); MIN|MAX|DEF",
+    "default": null,
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 248
+ },
+ {
+  "command": "CONFigure[:VOLTage]:DC",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure[:VOLTage]:DC [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "query_syntax": null,
+  "summary": "Configures DC voltage measurement with default settings and the given range/resolution.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "0.1, 1, 10, 100, 1000 (V); AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "V"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 248
+ },
+ {
+  "command": "CONFigure[:VOLTage][:DC]:RATio",
+  "subsystem": "CONFigure",
+  "set_syntax": "CONFigure[:VOLTage][:DC]:RATio [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "query_syntax": null,
+  "summary": "Configures DC voltage ratio measurement with default settings and the given range/resolution.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "0.1, 1, 10, 100, 1000 (V); AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "V"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 250
+ },
+ {
+  "command": "DATA:LAST?",
+  "subsystem": "DATA",
+  "set_syntax": null,
+  "query_syntax": "DATA:LAST?",
+  "summary": "Returns the most recent reading together with its units.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Returns 9.91E37 with units if no data.",
+  "page": 252
+ },
+ {
+  "command": "DATA:POINts:EVENt:THReshold",
+  "subsystem": "DATA",
+  "set_syntax": "DATA:POINts:EVENt:THReshold <count>",
+  "query_syntax": "DATA:POINts:EVENt:THReshold?",
+  "summary": "Sets the reading-memory fill level that triggers the operation-status event bit 9.",
+  "parameters": [
+   {
+    "name": "count",
+    "type": "numeric",
+    "values": "1 to 1,000 (34460A); 10,000 (34461A); 50,000 (34465A/70A) or 2,000,000 with MEM option",
+    "default": "1",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Upper limit 50,000 readings, or 2,000,000 with the MEM option.",
+  "page": 253
+ },
+ {
+  "command": "DATA:POINts?",
+  "subsystem": "DATA",
+  "set_syntax": null,
+  "query_syntax": "DATA:POINts?",
+  "summary": "Returns the number of readings currently in reading memory.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 252
+ },
+ {
+  "command": "DATA:REMove?",
+  "subsystem": "DATA",
+  "set_syntax": null,
+  "query_syntax": "DATA:REMove? <num_readings> [,WAIT]",
+  "summary": "Reads and erases the given number of oldest readings from reading memory.",
+  "parameters": [
+   {
+    "name": "num_readings",
+    "type": "numeric",
+    "values": "1 up to reading memory size (50,000; 2,000,000 with MEM option on 34465A/70A)",
+    "default": null,
+    "unit": null
+   },
+   {
+    "name": "WAIT",
+    "type": "discrete",
+    "values": "WAIT (optional literal)",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Errors if fewer readings are available unless WAIT is given.",
+  "page": 254
+ },
+ {
+  "command": "DISPlay:TEXT:CLEar",
+  "subsystem": "DISPlay",
+  "set_syntax": "DISPlay:TEXT:CLEar",
+  "query_syntax": null,
+  "summary": "Clears the front panel text message.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 256
+ },
+ {
+  "command": "DISPlay:TEXT[:DATA]",
+  "subsystem": "DISPlay",
+  "set_syntax": "DISPlay:TEXT[:DATA] \"<string>\"",
+  "query_syntax": "DISPlay:TEXT[:DATA]?",
+  "summary": "Displays a text message (up to 40 characters) on the front panel.",
+  "parameters": [
+   {
+    "name": "string",
+    "type": "string",
+    "values": "quoted string, up to 40 characters",
+    "default": "\"\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 255
+ },
+ {
+  "command": "DISPlay:VIEW",
+  "subsystem": "DISPlay",
+  "set_syntax": "DISPlay:VIEW {NUMeric|HISTogram|TCHart|METer}",
+  "query_syntax": "DISPlay:VIEW?",
+  "summary": "Selects numeric, histogram, trend chart or bar meter display.",
+  "parameters": [
+   {
+    "name": "view",
+    "type": "discrete",
+    "values": "NUMeric|HISTogram|TCHart|METer",
+    "default": "NUMeric",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Trend chart not available on the 34460A.",
+  "page": 256
+ },
+ {
+  "command": "DISPlay[:STATe]",
+  "subsystem": "DISPlay",
+  "set_syntax": "DISPlay[:STATe] {OFF|ON}",
+  "query_syntax": "DISPlay[:STATe]?",
+  "summary": "Turns the front panel display on or off.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 255
+ },
+ {
+  "command": "FETCh?",
+  "subsystem": "Root",
+  "set_syntax": null,
+  "query_syntax": "FETCh?",
+  "summary": "Waits for measurements to complete and copies all readings from reading memory to the output buffer without erasing them.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 198
+ },
+ {
+  "command": "FORMat:BORDer",
+  "subsystem": "FORMat",
+  "set_syntax": "FORMat:BORDer {NORMal|SWAPped}",
+  "query_syntax": "FORMat:BORDer?",
+  "summary": "Selects byte order for binary (REAL) data.",
+  "parameters": [
+   {
+    "name": "order",
+    "type": "discrete",
+    "values": "NORMal|SWAPped",
+    "default": "NORMal",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Stored in non-volatile memory.",
+  "page": 257
+ },
+ {
+  "command": "FORMat[:DATA]",
+  "subsystem": "FORMat",
+  "set_syntax": "FORMat[:DATA] {ASCii|REAL} [, <length>]",
+  "query_syntax": "FORMat[:DATA]?",
+  "summary": "Selects ASCII or 64-bit REAL (IEEE-488.2 block) format for readings.",
+  "parameters": [
+   {
+    "name": "format",
+    "type": "discrete",
+    "values": "ASCii|REAL",
+    "default": "ASCii",
+    "unit": null
+   },
+   {
+    "name": "length",
+    "type": "numeric",
+    "values": "9 for ASCii, 64 for REAL (only allowed values)",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 257
+ },
+ {
+  "command": "HCOPy:SDUMp:DATA:FORMat",
+  "subsystem": "HCOPy",
+  "set_syntax": "HCOPy:SDUMp:DATA:FORMat {PNG|BMP}",
+  "query_syntax": "HCOPy:SDUMp:DATA:FORMat?",
+  "summary": "Selects PNG or BMP as the screen-capture image format.",
+  "parameters": [
+   {
+    "name": "format",
+    "type": "discrete",
+    "values": "PNG|BMP",
+    "default": "PNG",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 259
+ },
+ {
+  "command": "HCOPy:SDUMp:DATA?",
+  "subsystem": "HCOPy",
+  "set_syntax": null,
+  "query_syntax": "HCOPy:SDUMp:DATA?",
+  "summary": "Returns a screen capture of the front panel display as a binary block.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 259
+ },
+ {
+  "command": "INITiate[:IMMediate]",
+  "subsystem": "Root",
+  "set_syntax": "INITiate[:IMMediate]",
+  "query_syntax": null,
+  "summary": "Moves the trigger system from idle to wait-for-trigger and clears reading memory.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 199
+ },
+ {
+  "command": "LXI:IDENtify[:STATe]",
+  "subsystem": "LXI",
+  "set_syntax": "LXI:IDENtify[:STATe] {OFF|ON}",
+  "query_syntax": "LXI:IDENtify[:STATe]?",
+  "summary": "Turns the LXI web identify indicator on or off.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 273
+ },
+ {
+  "command": "LXI:MDNS:ENABle",
+  "subsystem": "LXI",
+  "set_syntax": "LXI:MDNS:ENABle {OFF|ON}",
+  "query_syntax": "LXI:MDNS:ENABle?",
+  "summary": "Enables or disables multicast DNS.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 273
+ },
+ {
+  "command": "LXI:MDNS:HNAMe[:RESolved]?",
+  "subsystem": "LXI",
+  "set_syntax": null,
+  "query_syntax": "LXI:MDNS:HNAMe[:RESolved]?",
+  "summary": "Returns the resolved mDNS hostname.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 274
+ },
+ {
+  "command": "LXI:MDNS:SNAMe:DESired",
+  "subsystem": "LXI",
+  "set_syntax": "LXI:MDNS:SNAMe:DESired \"<name>\"",
+  "query_syntax": "LXI:MDNS:SNAMe:DESired?",
+  "summary": "Sets the desired mDNS service name.",
+  "parameters": [
+   {
+    "name": "name",
+    "type": "string",
+    "values": "quoted string up to 63 characters",
+    "default": "\"Keysight <model> Digital Multimeter - <serial>\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 274
+ },
+ {
+  "command": "LXI:MDNS:SNAMe[:RESolved]?",
+  "subsystem": "LXI",
+  "set_syntax": null,
+  "query_syntax": "LXI:MDNS:SNAMe[:RESolved]?",
+  "summary": "Returns the resolved mDNS service name.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 274
+ },
+ {
+  "command": "LXI:RESTart",
+  "subsystem": "LXI",
+  "set_syntax": "LXI:RESTart",
+  "query_syntax": null,
+  "summary": "Restarts the LAN with current settings.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 275
+ },
+ {
+  "command": "LXI:RESet",
+  "subsystem": "LXI",
+  "set_syntax": "LXI:RESet",
+  "query_syntax": null,
+  "summary": "Resets LAN settings to defaults (DHCP) and clears the web password.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 275
+ },
+ {
+  "command": "MEASure:CAPacitance?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure:CAPacitance? [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "summary": "Configures capacitance measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4 (F); AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "F"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; resolution is optional and ignored (fixed 4.5 digits); MIN|MAX|DEF",
+    "default": null,
+    "unit": "F"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Capacitance exists only on 34465A/34470A.",
+  "page": 278
+ },
+ {
+  "command": "MEASure:CONTinuity?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure:CONTinuity?",
+  "summary": "Configures for a continuity test with defaults, triggers it, and returns the reading.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Range and resolution are fixed (1 kOhm, threshold about 10 Ohm).",
+  "page": 279
+ },
+ {
+  "command": "MEASure:CURRent:AC?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure:CURRent:AC? [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "summary": "Configures AC current measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "1e-4, 1e-3, 1e-2, 0.1, 1, 3, 10 (A); AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "A"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; resolution ignored for AC (fixed 6.5 digits); MIN|MAX|DEF",
+    "default": null,
+    "unit": "A"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 280
+ },
+ {
+  "command": "MEASure:CURRent:DC?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure:CURRent:DC? [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "summary": "Configures DC current measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "1e-4, 1e-3, 1e-2, 0.1, 1, 3, 10 (A); 1e-6, 1e-5 also on 34465A/70A; AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "A"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "A"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 280
+ },
+ {
+  "command": "MEASure:DIODe?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure:DIODe?",
+  "summary": "Configures for a diode test with defaults, triggers it, and returns the reading.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Range and resolution are fixed (1 V range with 1 mA source).",
+  "page": 281
+ },
+ {
+  "command": "MEASure:FREQuency?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure:FREQuency? [{<range>|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "summary": "Configures frequency measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "3 to 300e3 (Hz); MIN|MAX|DEF",
+    "default": "20",
+    "unit": "Hz"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": null,
+    "unit": "Hz"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Range is the expected input frequency (period) limit; manual gives default 20 Hz (FREQ) / 50 ms (PER). Specifying an explicit resolution while autoranging raises an error on other functions.",
+  "page": 282
+ },
+ {
+  "command": "MEASure:FRESistance?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure:FRESistance? [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "summary": "Configures 4-wire resistance measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9 (Ohm); 1 GOhm only on 34465A/70A; AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "Ohm"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 283
+ },
+ {
+  "command": "MEASure:PERiod?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure:PERiod? [{<range>|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "summary": "Configures period measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "3.33e-6 to 0.33333 (s); MIN|MAX|DEF",
+    "default": "0.05",
+    "unit": "s"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": null,
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Range is the expected input frequency (period) limit; manual gives default 20 Hz (FREQ) / 50 ms (PER). Specifying an explicit resolution while autoranging raises an error on other functions.",
+  "page": 282
+ },
+ {
+  "command": "MEASure:RESistance?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure:RESistance? [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "summary": "Configures 2-wire resistance measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9 (Ohm); 1 GOhm only on 34465A/70A; AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "Ohm"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 283
+ },
+ {
+  "command": "MEASure:TEMPerature?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure:TEMPerature? [{FRTD|RTD|FTHermistor|THERmistor|TCouple|DEFault} [, {<type>|DEFault} [, {<resolution>|MIN|MAX|DEF}]]]",
+  "summary": "Configures temperature measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "probe_type",
+    "type": "discrete",
+    "values": "FRTD|RTD|FTHermistor|THERmistor|TCouple|DEFault",
+    "default": "FRTD",
+    "unit": null
+   },
+   {
+    "name": "type",
+    "type": "discrete",
+    "values": "85 (RTD/FRTD); 5000 (thermistor); E|J|K|N|R|T (TCouple); DEFault",
+    "default": null,
+    "unit": null
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "degC"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Thermocouple (TCouple) probe type is 34465A/34470A only. Manual syntax shows a stray literal \",1\" before resolution.",
+  "page": 284
+ },
+ {
+  "command": "MEASure[:VOLTage]:AC?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure[:VOLTage]:AC? [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "summary": "Configures AC voltage measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "0.1, 1, 10, 100, 1000 (V); AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "V"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; resolution ignored for AC (fixed 6.5 digits); MIN|MAX|DEF",
+    "default": null,
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 285
+ },
+ {
+  "command": "MEASure[:VOLTage]:DC?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure[:VOLTage]:DC? [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "summary": "Configures DC voltage measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "0.1, 1, 10, 100, 1000 (V); AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "V"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 285
+ },
+ {
+  "command": "MEASure[:VOLTage][:DC]:RATio?",
+  "subsystem": "MEASure",
+  "set_syntax": null,
+  "query_syntax": "MEASure[:VOLTage][:DC]:RATio? [{<range>|AUTO|MIN|MAX|DEF} [, {<resolution>|MIN|MAX|DEF}]]",
+  "summary": "Configures DC voltage ratio measurement with defaults, triggers it, and returns the reading.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "0.1, 1, 10, 100, 1000 (V); AUTO|MIN|MAX|DEF",
+    "default": "AUTO",
+    "unit": "V"
+   },
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "optional; see resolution table; MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 286
+ },
+ {
+  "command": "MMEMory:CATalog[:ALL]?",
+  "subsystem": "MMEMory",
+  "set_syntax": null,
+  "query_syntax": "MMEMory:CATalog[:ALL]? [<folder>[<filespec>]]",
+  "summary": "Lists files in a folder with sizes.",
+  "parameters": [
+   {
+    "name": "folder",
+    "type": "string",
+    "values": "folder name/filespec (optional)",
+    "default": "current MMEMory folder",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 289
+ },
+ {
+  "command": "MMEMory:CDIRectory",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:CDIRectory <folder>",
+  "query_syntax": "MMEMory:CDIRectory?",
+  "summary": "Sets (or queries) the default folder for MMEMory commands.",
+  "parameters": [
+   {
+    "name": "folder",
+    "type": "string",
+    "values": "valid folder name",
+    "default": "INT:\\",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 290
+ },
+ {
+  "command": "MMEMory:COPY",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:COPY <file1>, <file2>",
+  "query_syntax": null,
+  "summary": "Copies one file to another name or folder.",
+  "parameters": [
+   {
+    "name": "file1",
+    "type": "string",
+    "values": "source file name",
+    "default": null,
+    "unit": null
+   },
+   {
+    "name": "file2",
+    "type": "string",
+    "values": "destination file or folder",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 290
+ },
+ {
+  "command": "MMEMory:DELete",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:DELete {<file>|<filespec>}",
+  "query_syntax": null,
+  "summary": "Deletes a file (wildcards allowed).",
+  "parameters": [
+   {
+    "name": "file",
+    "type": "string",
+    "values": "file name or filespec",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 291
+ },
+ {
+  "command": "MMEMory:DOWNload:DATA",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:DOWNload:DATA <binary_block>",
+  "query_syntax": null,
+  "summary": "Writes a binary block into the file opened by MMEMory:DOWNload:FNAMe.",
+  "parameters": [
+   {
+    "name": "binary_block",
+    "type": "block",
+    "values": "IEEE-488.2 definite or indefinite block",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 299
+ },
+ {
+  "command": "MMEMory:DOWNload:FNAMe",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:DOWNload:FNAMe <file>",
+  "query_syntax": "MMEMory:DOWNload:FNAMe?",
+  "summary": "Creates or opens the file that MMEMory:DOWNload:DATA writes to.",
+  "parameters": [
+   {
+    "name": "file",
+    "type": "string",
+    "values": "valid file name",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 299
+ },
+ {
+  "command": "MMEMory:FORMat:READing:CSEParator",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:FORMat:READing:CSEParator {COMMa|SEMicolon|TAB}",
+  "query_syntax": "MMEMory:FORMat:READing:CSEParator?",
+  "summary": "Selects the column separator for stored .csv data files.",
+  "parameters": [
+   {
+    "name": "separator",
+    "type": "discrete",
+    "values": "COMMa|SEMicolon|TAB",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 299
+ },
+ {
+  "command": "MMEMory:FORMat:READing:INFormation",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:FORMat:READing:INFormation {OFF|ON}",
+  "query_syntax": "MMEMory:FORMat:READing:INFormation?",
+  "summary": "Adds header and reading-number information to stored .csv data files.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 300
+ },
+ {
+  "command": "MMEMory:FORMat:READing:RLIMit",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:FORMat:READing:RLIMit {OFF|ON}",
+  "query_syntax": "MMEMory:FORMat:READing:RLIMit?",
+  "summary": "Limits stored .csv files to one million rows when on.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 300
+ },
+ {
+  "command": "MMEMory:LOAD:PREFerences",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:LOAD:PREFerences <file>",
+  "query_syntax": null,
+  "summary": "Loads I/O settings and user preferences from a file and reboots.",
+  "parameters": [
+   {
+    "name": "file",
+    "type": "string",
+    "values": "valid file name",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 294
+ },
+ {
+  "command": "MMEMory:LOAD:STATe",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:LOAD:STATe <file>",
+  "query_syntax": null,
+  "summary": "Loads an instrument state from a .sta file.",
+  "parameters": [
+   {
+    "name": "file",
+    "type": "string",
+    "values": "valid file name",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 295
+ },
+ {
+  "command": "MMEMory:MDIRectory",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:MDIRectory <folder>",
+  "query_syntax": null,
+  "summary": "Creates a folder.",
+  "parameters": [
+   {
+    "name": "folder",
+    "type": "string",
+    "values": "folder name",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 290
+ },
+ {
+  "command": "MMEMory:MOVE",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:MOVE <file1>, <file2>",
+  "query_syntax": null,
+  "summary": "Moves or renames a file.",
+  "parameters": [
+   {
+    "name": "file1",
+    "type": "string",
+    "values": "source file name",
+    "default": null,
+    "unit": null
+   },
+   {
+    "name": "file2",
+    "type": "string",
+    "values": "destination file or folder",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 291
+ },
+ {
+  "command": "MMEMory:RDIRectory",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:RDIRectory <folder>",
+  "query_syntax": null,
+  "summary": "Removes a folder.",
+  "parameters": [
+   {
+    "name": "folder",
+    "type": "string",
+    "values": "folder name",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 290
+ },
+ {
+  "command": "MMEMory:STATe:RECall:AUTO",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:STATe:RECall:AUTO {OFF|ON}",
+  "query_syntax": "MMEMory:STATe:RECall:AUTO?",
+  "summary": "Enables automatic recall of the selected state at power-on.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 295
+ },
+ {
+  "command": "MMEMory:STATe:RECall:SELect",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:STATe:RECall:SELect <file>",
+  "query_syntax": "MMEMory:STATe:RECall:SELect?",
+  "summary": "Selects which state file is recalled at power-on.",
+  "parameters": [
+   {
+    "name": "file",
+    "type": "string",
+    "values": "valid file name",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 296
+ },
+ {
+  "command": "MMEMory:STATe:VALid?",
+  "subsystem": "MMEMory",
+  "set_syntax": null,
+  "query_syntax": "MMEMory:STATe:VALid? <file>",
+  "summary": "Returns 1 if the named state file exists and is valid, else 0.",
+  "parameters": [
+   {
+    "name": "file",
+    "type": "string",
+    "values": "valid file name",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 296
+ },
+ {
+  "command": "MMEMory:STORe:DATA",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:STORe:DATA RDG_STORE, <file>",
+  "query_syntax": null,
+  "summary": "Saves all readings in reading memory to a .csv or .dat file.",
+  "parameters": [
+   {
+    "name": "target",
+    "type": "discrete",
+    "values": "RDG_STORE (literal)",
+    "default": null,
+    "unit": null
+   },
+   {
+    "name": "file",
+    "type": "string",
+    "values": "file name; .csv/no extension = ASCII, .dat = binary",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 301
+ },
+ {
+  "command": "MMEMory:STORe:PREFerences",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:STORe:PREFerences <file>",
+  "query_syntax": null,
+  "summary": "Stores I/O settings and user preferences to a file.",
+  "parameters": [
+   {
+    "name": "file",
+    "type": "string",
+    "values": "valid file name",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 294
+ },
+ {
+  "command": "MMEMory:STORe:STATe",
+  "subsystem": "MMEMory",
+  "set_syntax": "MMEMory:STORe:STATe <file>",
+  "query_syntax": null,
+  "summary": "Saves the current instrument state to a .sta file.",
+  "parameters": [
+   {
+    "name": "file",
+    "type": "string",
+    "values": "valid file name",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 295
+ },
+ {
+  "command": "MMEMory:UPLoad?",
+  "subsystem": "MMEMory",
+  "set_syntax": null,
+  "query_syntax": "MMEMory:UPLoad? <file>",
+  "summary": "Returns the contents of a file as a definite-length block.",
+  "parameters": [
+   {
+    "name": "file",
+    "type": "string",
+    "values": "valid file name",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 301
+ },
+ {
+  "command": "OUTPut:TRIGger:SLOPe",
+  "subsystem": "OUTPut",
+  "set_syntax": "OUTPut:TRIGger:SLOPe {POSitive|NEGative}",
+  "query_syntax": "OUTPut:TRIGger:SLOPe?",
+  "summary": "Selects the edge polarity of the voltmeter-complete pulse on the rear VM Comp BNC.",
+  "parameters": [
+   {
+    "name": "slope",
+    "type": "discrete",
+    "values": "POSitive|NEGative",
+    "default": "NEGative",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 200
+ },
+ {
+  "command": "R?",
+  "subsystem": "Root",
+  "set_syntax": null,
+  "query_syntax": "R? [<max_readings>]",
+  "summary": "Reads and removes up to the given number of oldest readings from reading memory.",
+  "parameters": [
+   {
+    "name": "max_readings",
+    "type": "numeric",
+    "values": "1 to 2,000,000 (reading memory depends on model/MEM option)",
+    "default": "all readings in memory",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Reading memory: 50,000 readings, or 2,000,000 with the MEM option. Does not wait for outstanding readings. Response is an IEEE-488.2 definite-length block (#<n><len>...).",
+  "page": 201
+ },
+ {
+  "command": "READ?",
+  "subsystem": "Root",
+  "set_syntax": null,
+  "query_syntax": "READ?",
+  "summary": "Starts a new set of measurements, waits for them to finish, and returns all readings (like INITiate then FETCh?).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 202
+ },
+ {
+  "command": "ROUTe:TERMinals?",
+  "subsystem": "ROUTe",
+  "set_syntax": null,
+  "query_syntax": "ROUTe:TERMinals?",
+  "summary": "Reports whether the front/rear terminal switch is set to FRONt or REAR (read-only).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Always FRON on the 34460A.",
+  "page": 203
+ },
+ {
+  "command": "SAMPle:COUNt",
+  "subsystem": "SAMPle",
+  "set_syntax": "SAMPle:COUNt {<count>|MIN|MAX|DEF}",
+  "query_syntax": "SAMPle:COUNt? [{MIN|MAX|DEF}]",
+  "summary": "Sets the number of readings taken per trigger.",
+  "parameters": [
+   {
+    "name": "count",
+    "type": "numeric",
+    "values": "1 to 1e6 (34460A/61A); 1 to 1e9 (34465A/70A)",
+    "default": "1",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Limit is 1,000,000,000.",
+  "page": 302
+ },
+ {
+  "command": "SAMPle:COUNt:PRETrigger",
+  "subsystem": "SAMPle",
+  "set_syntax": "SAMPle:COUNt:PRETrigger {<count>|MIN|MAX|DEF}",
+  "query_syntax": "SAMPle:COUNt:PRETrigger? [{MIN|MAX|DEF}]",
+  "summary": "Sets how many pre-trigger samples are retained (reserved from the sample count).",
+  "parameters": [
+   {
+    "name": "count",
+    "type": "numeric",
+    "values": "0 to 1,999,999; MIN|MAX|DEF",
+    "default": "0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 303
+ },
+ {
+  "command": "SAMPle:SOURce",
+  "subsystem": "SAMPle",
+  "set_syntax": "SAMPle:SOURce {IMMediate|TIMer}",
+  "query_syntax": "SAMPle:SOURce?",
+  "summary": "Selects immediate or timer-paced sampling when sample count is above 1.",
+  "parameters": [
+   {
+    "name": "source",
+    "type": "discrete",
+    "values": "IMMediate|TIMer",
+    "default": "IMMediate",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 304
+ },
+ {
+  "command": "SAMPle:TIMer",
+  "subsystem": "SAMPle",
+  "set_syntax": "SAMPle:TIMer {<interval>|MIN|MAX|DEF}",
+  "query_syntax": "SAMPle:TIMer? [{MIN|MAX|DEF}]",
+  "summary": "Sets the sample interval used with SAMPle:SOURce TIMer.",
+  "parameters": [
+   {
+    "name": "interval",
+    "type": "numeric",
+    "values": "MIN (measurement dependent) to 3600 s (~1 us steps)",
+    "default": null,
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 306
+ },
+ {
+  "command": "STATus:OPERation:CONDition?",
+  "subsystem": "STATus",
+  "set_syntax": null,
+  "query_syntax": "STATus:OPERation:CONDition?",
+  "summary": "Reads the Standard Operation condition register.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 386
+ },
+ {
+  "command": "STATus:OPERation:ENABle",
+  "subsystem": "STATus",
+  "set_syntax": "STATus:OPERation:ENABle <enable_value>",
+  "query_syntax": "STATus:OPERation:ENABle?",
+  "summary": "Sets the Standard Operation enable register mask reported to the Status Byte.",
+  "parameters": [
+   {
+    "name": "enable_value",
+    "type": "numeric",
+    "values": "0 to 32767 (bit mask)",
+    "default": "0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 386
+ },
+ {
+  "command": "STATus:OPERation[:EVENt]?",
+  "subsystem": "STATus",
+  "set_syntax": null,
+  "query_syntax": "STATus:OPERation[:EVENt]?",
+  "summary": "Reads and clears the Standard Operation event register.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 387
+ },
+ {
+  "command": "STATus:PRESet",
+  "subsystem": "STATus",
+  "set_syntax": "STATus:PRESet",
+  "query_syntax": null,
+  "summary": "Clears the Questionable Data and Standard Operation enable registers.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 387
+ },
+ {
+  "command": "STATus:QUEStionable:CONDition?",
+  "subsystem": "STATus",
+  "set_syntax": null,
+  "query_syntax": "STATus:QUEStionable:CONDition?",
+  "summary": "Reads the Questionable Data condition register.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 387
+ },
+ {
+  "command": "STATus:QUEStionable:ENABle",
+  "subsystem": "STATus",
+  "set_syntax": "STATus:QUEStionable:ENABle <enable_value>",
+  "query_syntax": "STATus:QUEStionable:ENABle?",
+  "summary": "Sets the Questionable Data enable register mask reported to the Status Byte.",
+  "parameters": [
+   {
+    "name": "enable_value",
+    "type": "numeric",
+    "values": "0 to 32767 (bit mask)",
+    "default": "0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 388
+ },
+ {
+  "command": "STATus:QUEStionable[:EVENt]?",
+  "subsystem": "STATus",
+  "set_syntax": null,
+  "query_syntax": "STATus:QUEStionable[:EVENt]?",
+  "summary": "Reads and clears the Questionable Data event register.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 388
+ },
+ {
+  "command": "SYSTem:ACALibration:DATE?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:ACALibration:DATE?",
+  "summary": "Returns the date of the last autocalibration as yyyy,mm,dd.",
+  "parameters": [],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 390
+ },
+ {
+  "command": "SYSTem:ACALibration:TEMPerature?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:ACALibration:TEMPerature?",
+  "summary": "Returns the instrument temperature at the last autocalibration.",
+  "parameters": [],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 390
+ },
+ {
+  "command": "SYSTem:ACALibration:TIME?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:ACALibration:TIME?",
+  "summary": "Returns the time of the last autocalibration as hh,mm,ss.sss.",
+  "parameters": [],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 391
+ },
+ {
+  "command": "SYSTem:BEEPer:STATe",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:BEEPer:STATe {OFF|ON}",
+  "query_syntax": "SYSTem:BEEPer:STATe?",
+  "summary": "Enables or disables the beeper.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 392
+ },
+ {
+  "command": "SYSTem:BEEPer[:IMMediate]",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:BEEPer[:IMMediate]",
+  "query_syntax": null,
+  "summary": "Sounds a single beep.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 391
+ },
+ {
+  "command": "SYSTem:CLICk:STATe",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:CLICk:STATe {OFF|ON}",
+  "query_syntax": "SYSTem:CLICk:STATe?",
+  "summary": "Enables or disables the front panel key click.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 392
+ },
+ {
+  "command": "SYSTem:COMMunicate:ENABle",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:ENABle {OFF|ON}, {GPIB|HISLip|USB|LAN|SOCKets|TELNet|VXI11|WEB|USBMtp|USBHost}",
+  "query_syntax": "SYSTem:COMMunicate:ENABle? {GPIB|HISLip|USB|LAN|SOCKets|TELNet|VXI11|WEB|USBMtp|USBHost}",
+  "summary": "Enables or disables a remote interface or service (needs power cycle).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   },
+   {
+    "name": "interface",
+    "type": "discrete",
+    "values": "GPIB|HISLip|USB|LAN|SOCKets|TELNet|VXI11|WEB|USBMtp|USBHost",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 403
+ },
+ {
+  "command": "SYSTem:COMMunicate:GPIB:ADDRess",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:GPIB:ADDRess <address>",
+  "query_syntax": "SYSTem:COMMunicate:GPIB:ADDRess?",
+  "summary": "Sets the GPIB address.",
+  "parameters": [
+   {
+    "name": "address",
+    "type": "numeric",
+    "values": "0 to 30",
+    "default": "22",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "GPIB is an optional feature; power cycle needed.",
+  "page": 404
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:CONTrol?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:COMMunicate:LAN:CONTrol?",
+  "summary": "Returns the TCP control port number for sockets (0 if unsupported).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 405
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:DHCP",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:DHCP {OFF|ON}",
+  "query_syntax": "SYSTem:COMMunicate:LAN:DHCP?",
+  "summary": "Enables or disables DHCP.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Requires SYSTem:COMMunicate:LAN:UPDate to take effect.",
+  "page": 405
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:DNS1",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:DNS1 \"<address>\"",
+  "query_syntax": "SYSTem:COMMunicate:LAN:DNS1? [{CURRent|STATic}]",
+  "summary": "Sets the static IP address of DNS server 1.",
+  "parameters": [
+   {
+    "name": "address",
+    "type": "string",
+    "values": "quoted \"nnn.nnn.nnn.nnn\"; query: CURRent|STATic",
+    "default": "\"0.0.0.0\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual writes DNS[{1|2}]. Needs LAN:UPDate.",
+  "page": 406
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:DNS2",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:DNS2 \"<address>\"",
+  "query_syntax": "SYSTem:COMMunicate:LAN:DNS2? [{CURRent|STATic}]",
+  "summary": "Sets the static IP address of DNS server 2.",
+  "parameters": [
+   {
+    "name": "address",
+    "type": "string",
+    "values": "quoted \"nnn.nnn.nnn.nnn\"; query: CURRent|STATic",
+    "default": "\"0.0.0.0\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual writes DNS[{1|2}]. Needs LAN:UPDate.",
+  "page": 406
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:DOMain?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:COMMunicate:LAN:DOMain?",
+  "summary": "Returns the domain name assigned to the instrument.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 406
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:GATeway",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:GATeway \"<address>\"",
+  "query_syntax": "SYSTem:COMMunicate:LAN:GATeway? [{CURRent|STATic}]",
+  "summary": "Sets the default gateway address.",
+  "parameters": [
+   {
+    "name": "address",
+    "type": "string",
+    "values": "quoted \"nnn.nnn.nnn.nnn\"; query: CURRent|STATic",
+    "default": "\"0.0.0.0\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Needs LAN:UPDate.",
+  "page": 407
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:HOSTname",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:HOSTname \"<name>\"",
+  "query_syntax": "SYSTem:COMMunicate:LAN:HOSTname? [{CURRent|STATic}]",
+  "summary": "Sets the LAN hostname.",
+  "parameters": [
+   {
+    "name": "name",
+    "type": "string",
+    "values": "quoted string up to 15 characters; query: CURRent|STATic",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Needs LAN:UPDate.",
+  "page": 408
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:IPADdress",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:IPADdress \"<address>\"",
+  "query_syntax": "SYSTem:COMMunicate:LAN:IPADdress? [{CURRent|STATic}]",
+  "summary": "Sets the static IP address.",
+  "parameters": [
+   {
+    "name": "address",
+    "type": "string",
+    "values": "quoted \"nnn.nnn.nnn.nnn\"; query: CURRent|STATic",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Needs LAN:UPDate; unused when DHCP is on.",
+  "page": 409
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:MAC?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:COMMunicate:LAN:MAC?",
+  "summary": "Returns the MAC address as a 12-digit hex string.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 409
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:SMASk",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:SMASk \"<mask>\"",
+  "query_syntax": "SYSTem:COMMunicate:LAN:SMASk? [{CURRent|STATic}]",
+  "summary": "Sets the subnet mask.",
+  "parameters": [
+   {
+    "name": "mask",
+    "type": "string",
+    "values": "quoted \"nnn.nnn.nnn.nnn\"; query: CURRent|STATic",
+    "default": "\"255.255.0.0\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Needs LAN:UPDate.",
+  "page": 410
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:TELNet:PROMpt",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:TELNet:PROMpt \"<string>\"",
+  "query_syntax": "SYSTem:COMMunicate:LAN:TELNet:PROMpt?",
+  "summary": "Sets the Telnet command prompt string.",
+  "parameters": [
+   {
+    "name": "string",
+    "type": "string",
+    "values": "quoted string up to 15 characters",
+    "default": "model number, e.g. 34470A>",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 411
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:TELNet:WMESsage",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:TELNet:WMESsage \"<string>\"",
+  "query_syntax": "SYSTem:COMMunicate:LAN:TELNet:WMESsage?",
+  "summary": "Sets the Telnet welcome message.",
+  "parameters": [
+   {
+    "name": "string",
+    "type": "string",
+    "values": "quoted string up to 63 characters",
+    "default": "Welcome to Keysight's <model> Digital Multimeter",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 412
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:UPDate",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:UPDate",
+  "query_syntax": null,
+  "summary": "Saves LAN settings to non-volatile memory and restarts the LAN driver.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 412
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:WINS1",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:WINS1 \"<address>\"",
+  "query_syntax": "SYSTem:COMMunicate:LAN:WINS1? [{CURRent|STATic}]",
+  "summary": "Sets the static IP address of WINS server 1.",
+  "parameters": [
+   {
+    "name": "address",
+    "type": "string",
+    "values": "quoted \"nnn.nnn.nnn.nnn\"; query: CURRent|STATic",
+    "default": "\"0.0.0.0\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual writes WINS[{1|2}]. Needs LAN:UPDate.",
+  "page": 414
+ },
+ {
+  "command": "SYSTem:COMMunicate:LAN:WINS2",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:COMMunicate:LAN:WINS2 \"<address>\"",
+  "query_syntax": "SYSTem:COMMunicate:LAN:WINS2? [{CURRent|STATic}]",
+  "summary": "Sets the static IP address of WINS server 2.",
+  "parameters": [
+   {
+    "name": "address",
+    "type": "string",
+    "values": "quoted \"nnn.nnn.nnn.nnn\"; query: CURRent|STATic",
+    "default": "\"0.0.0.0\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual writes WINS[{1|2}]. Needs LAN:UPDate.",
+  "page": 414
+ },
+ {
+  "command": "SYSTem:DATE",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:DATE <year>, <month>, <day>",
+  "query_syntax": "SYSTem:DATE?",
+  "summary": "Sets the real-time clock date.",
+  "parameters": [
+   {
+    "name": "year",
+    "type": "numeric",
+    "values": "2000 to 2099",
+    "default": null,
+    "unit": null
+   },
+   {
+    "name": "month",
+    "type": "numeric",
+    "values": "1 to 12",
+    "default": null,
+    "unit": null
+   },
+   {
+    "name": "day",
+    "type": "numeric",
+    "values": "1 to 31",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 393
+ },
+ {
+  "command": "SYSTem:ERRor[:NEXT]?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:ERRor[:NEXT]?",
+  "summary": "Reads and removes the oldest entry from the error queue (up to 20 entries, per I/O session).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 394
+ },
+ {
+  "command": "SYSTem:HELP?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:HELP?",
+  "summary": "Returns a block listing all SCPI commands the instrument supports.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 395
+ },
+ {
+  "command": "SYSTem:IDENtify",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:IDENtify {DEFault|AT34460A|AT34461A|AT34410A|AT34411A|HP34401A}*",
+  "query_syntax": "SYSTem:IDENtify?",
+  "summary": "Chooses the manufacturer/model reported by *IDN? for compatibility.",
+  "parameters": [
+   {
+    "name": "id",
+    "type": "discrete",
+    "values": "DEFault|AT34460A|AT34461A|AT34410A|AT34411A|HP34401A (allowed set depends on model)",
+    "default": "DEFault",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "34470A accepts DEFault, AT34410A, AT34411A.",
+  "page": 396
+ },
+ {
+  "command": "SYSTem:LABel",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:LABel \"<string>\"",
+  "query_syntax": "SYSTem:LABel?",
+  "summary": "Shows a large-font label of up to 40 characters on the display.",
+  "parameters": [
+   {
+    "name": "string",
+    "type": "string",
+    "values": "quoted string, up to 40 characters",
+    "default": "\"\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 397
+ },
+ {
+  "command": "SYSTem:LFRequency?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:LFRequency?",
+  "summary": "Returns the detected line frequency (50 or 60 Hz).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 397
+ },
+ {
+  "command": "SYSTem:LICense:CATalog?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:LICense:CATalog?",
+  "summary": "Lists installed licensed options.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 419
+ },
+ {
+  "command": "SYSTem:LICense:DELete",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:LICense:DELete \"<option_name>\"",
+  "query_syntax": null,
+  "summary": "Deletes one license and disables its feature.",
+  "parameters": [
+   {
+    "name": "option_name",
+    "type": "string",
+    "values": "\"LAN\"|\"SEC\"|\"DIG\"|\"MEM\" depending on model",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 420
+ },
+ {
+  "command": "SYSTem:LICense:DELete:ALL",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:LICense:DELete:ALL",
+  "query_syntax": null,
+  "summary": "Deletes all licenses and restores factory defaults.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 420
+ },
+ {
+  "command": "SYSTem:LICense:DESCription?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:LICense:DESCription? \"<option_name>\"",
+  "summary": "Returns the description of a named option.",
+  "parameters": [
+   {
+    "name": "option_name",
+    "type": "string",
+    "values": "\"LAN\"|\"SEC\"|\"DIG\"|\"MEM\" depending on model",
+    "default": null,
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 420
+ },
+ {
+  "command": "SYSTem:LICense:ERRor:COUNt?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:LICense:ERRor:COUNt?",
+  "summary": "Returns the number of license installation errors.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 421
+ },
+ {
+  "command": "SYSTem:LICense:ERRor?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:LICense:ERRor?",
+  "summary": "Returns the text of errors from SYSTem:LICense:INSTall.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 421
+ },
+ {
+  "command": "SYSTem:LICense:INSTall",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:LICense:INSTall [{<folder>|<file>}]",
+  "query_syntax": "SYSTem:LICense:INSTall? \"<option_name>\"",
+  "summary": "Installs licenses from a file or from all files in a folder.",
+  "parameters": [
+   {
+    "name": "source",
+    "type": "string",
+    "values": "folder or file name (optional)",
+    "default": "root of front USB storage",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Query form takes an option name and returns 1 if installed.",
+  "page": 422
+ },
+ {
+  "command": "SYSTem:LOCK:NAME?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:LOCK:NAME?",
+  "summary": "Returns the I/O interface used by the querying session.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 417
+ },
+ {
+  "command": "SYSTem:LOCK:OWNer?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:LOCK:OWNer?",
+  "summary": "Returns the I/O interface that currently holds the lock (NONE if unlocked).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 417
+ },
+ {
+  "command": "SYSTem:LOCK:RELease",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:LOCK:RELease",
+  "query_syntax": null,
+  "summary": "Decrements the lock count and may release the interface lock.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 417
+ },
+ {
+  "command": "SYSTem:LOCK:REQuest?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:LOCK:REQuest?",
+  "summary": "Requests a lock on the current interface; returns 1 if granted.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 418
+ },
+ {
+  "command": "SYSTem:LOCal",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:LOCal",
+  "query_syntax": null,
+  "summary": "Returns the instrument to local (front panel) control.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 397
+ },
+ {
+  "command": "SYSTem:PRESet",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:PRESet",
+  "query_syntax": null,
+  "summary": "Resets the instrument for front-panel operation (like *RST but statistics and histogram on).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 398
+ },
+ {
+  "command": "SYSTem:SECurity:COUNt?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:SECurity:COUNt?",
+  "summary": "Returns the count of security-relevant actions performed.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 398
+ },
+ {
+  "command": "SYSTem:SECurity:IMMediate",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:SECurity:IMMediate",
+  "query_syntax": null,
+  "summary": "Sanitizes user memory per NISPOM and reboots the instrument.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": "SEC",
+  "notes_34470A": null,
+  "page": 399
+ },
+ {
+  "command": "SYSTem:TEMPerature?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:TEMPerature?",
+  "summary": "Returns the internal instrument temperature in degrees Celsius.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Unaffected by UNIT:TEMPerature.",
+  "page": 399
+ },
+ {
+  "command": "SYSTem:TIME",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:TIME <hour>, <minute>, <second>",
+  "query_syntax": "SYSTem:TIME?",
+  "summary": "Sets the real-time clock time.",
+  "parameters": [
+   {
+    "name": "hour",
+    "type": "numeric",
+    "values": "0 to 23",
+    "default": null,
+    "unit": null
+   },
+   {
+    "name": "minute",
+    "type": "numeric",
+    "values": "0 to 59",
+    "default": null,
+    "unit": null
+   },
+   {
+    "name": "second",
+    "type": "numeric",
+    "values": "0 to 60",
+    "default": null,
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 400
+ },
+ {
+  "command": "SYSTem:UPTime?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:UPTime?",
+  "summary": "Returns time since power-on as days,hours,minutes,seconds.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 400
+ },
+ {
+  "command": "SYSTem:USB:HOST:ENABle",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:USB:HOST:ENABle {OFF|ON}",
+  "query_syntax": "SYSTem:USB:HOST:ENABle?",
+  "summary": "Enables or disables the front panel USB host port.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": "SEC",
+  "notes_34470A": "Needs calibration security unsecured.",
+  "page": 415
+ },
+ {
+  "command": "SYSTem:VERSion?",
+  "subsystem": "SYSTem",
+  "set_syntax": null,
+  "query_syntax": "SYSTem:VERSion?",
+  "summary": "Returns the SCPI version the instrument conforms to.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 400
+ },
+ {
+  "command": "SYSTem:WMESsage",
+  "subsystem": "SYSTem",
+  "set_syntax": "SYSTem:WMESsage \"<string>\"",
+  "query_syntax": "SYSTem:WMESsage?",
+  "summary": "Sets a power-on message of up to 40 characters.",
+  "parameters": [
+   {
+    "name": "string",
+    "type": "string",
+    "values": "quoted string, up to 40 characters",
+    "default": "\"\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 401
+ },
+ {
+  "command": "TEST:ALL?",
+  "subsystem": "TEST",
+  "set_syntax": null,
+  "query_syntax": "TEST:ALL?",
+  "summary": "Runs the full self-test and returns 0 (pass) or 1 (fail); inputs must be disconnected.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 204
+ },
+ {
+  "command": "TRIGger:COUNt",
+  "subsystem": "TRIGger",
+  "set_syntax": "TRIGger:COUNt {<count>|MIN|MAX|DEF|INFinity}",
+  "query_syntax": "TRIGger:COUNt? [{MIN|MAX|DEF}]",
+  "summary": "Sets the number of triggers accepted before the instrument returns to idle.",
+  "parameters": [
+   {
+    "name": "count",
+    "type": "numeric",
+    "values": "1 to 1e6 (34460A/61A); 1 to 1e9 (34465A/70A); INFinity",
+    "default": "1",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Limit is 1,000,000,000 or INFinity.",
+  "page": 425
+ },
+ {
+  "command": "TRIGger:DELay",
+  "subsystem": "TRIGger",
+  "set_syntax": "TRIGger:DELay {<seconds>|MIN|MAX|DEF}",
+  "query_syntax": "TRIGger:DELay? [{MIN|MAX|DEF}]",
+  "summary": "Sets the delay between the trigger and the first reading (disables automatic delay).",
+  "parameters": [
+   {
+    "name": "seconds",
+    "type": "numeric",
+    "values": "0 to ~3600 (about 1 us steps); MIN|MAX|DEF",
+    "default": "1",
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual lists \"Default: 1 s\", but TRIGger:DELay:AUTO is ON by default.",
+  "page": 426
+ },
+ {
+  "command": "TRIGger:DELay:AUTO",
+  "subsystem": "TRIGger",
+  "set_syntax": "TRIGger:DELay:AUTO {OFF|ON}",
+  "query_syntax": "TRIGger:DELay:AUTO?",
+  "summary": "Enables automatic trigger delay chosen from function, range and integration time.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 427
+ },
+ {
+  "command": "TRIGger:LEVel",
+  "subsystem": "TRIGger",
+  "set_syntax": "TRIGger:LEVel {<level>|MIN|MAX|DEF}",
+  "query_syntax": "TRIGger:LEVel? [{MIN|MAX|DEF}]",
+  "summary": "Sets the signal level for level (internal) triggering.",
+  "parameters": [
+   {
+    "name": "level",
+    "type": "numeric",
+    "values": "depends on function and range (e.g. +/-120% of range for DCV); MIN|MAX|DEF",
+    "default": "0",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": "DIG",
+  "notes_34470A": "Unit is the fundamental unit of the active function (V, A, Ohm, Hz, s). Needs TRIGger:SOURce INTernal.",
+  "page": 427
+ },
+ {
+  "command": "TRIGger:SLOPe",
+  "subsystem": "TRIGger",
+  "set_syntax": "TRIGger:SLOPe {POSitive|NEGative}",
+  "query_syntax": "TRIGger:SLOPe?",
+  "summary": "Selects trigger edge for external or level triggering.",
+  "parameters": [
+   {
+    "name": "slope",
+    "type": "discrete",
+    "values": "POSitive|NEGative",
+    "default": "NEGative",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Level triggering applies only to 34465A/34470A.",
+  "page": 429
+ },
+ {
+  "command": "TRIGger:SOURce",
+  "subsystem": "TRIGger",
+  "set_syntax": "TRIGger:SOURce {IMMediate|EXTernal|BUS|INTernal}",
+  "query_syntax": "TRIGger:SOURce?",
+  "summary": "Selects the trigger source.",
+  "parameters": [
+   {
+    "name": "source",
+    "type": "discrete",
+    "values": "IMMediate|EXTernal|BUS|INTernal",
+    "default": "IMMediate",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "INTernal (level trigger) is available on 34465A/34470A with the DIG option only.",
+  "page": 430
+ },
+ {
+  "command": "UNIT:TEMPerature",
+  "subsystem": "UNIT",
+  "set_syntax": "UNIT:TEMPerature {C|F|K}",
+  "query_syntax": "UNIT:TEMPerature?",
+  "summary": "Selects Celsius, Fahrenheit or Kelvin for temperature measurements.",
+  "parameters": [
+   {
+    "name": "unit",
+    "type": "discrete",
+    "values": "C|F|K (CEL and FAR also accepted)",
+    "default": "C",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Does not affect SYSTem:TEMPerature?.",
+  "page": 205
+ },
+ {
+  "command": "[SENSe:]CAPacitance:NULL:VALue",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CAPacitance:NULL:VALue {<value>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]CAPacitance:NULL:VALue? [{MIN|MAX|DEF}]",
+  "summary": "Sets the value subtracted from capacitance readings when null is enabled.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-120e-6 to +120e-6; MIN|MAX|DEF",
+    "default": "0",
+    "unit": "F"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting a value turns NULL:VALue:AUTO off.",
+  "page": 311
+ },
+ {
+  "command": "[SENSe:]CAPacitance:NULL:VALue:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CAPacitance:NULL:VALue:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]CAPacitance:NULL:VALue:AUTO?",
+  "summary": "Enables or disables automatic null-value capture (first reading becomes the null value) for capacitance.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 312
+ },
+ {
+  "command": "[SENSe:]CAPacitance:NULL[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CAPacitance:NULL[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]CAPacitance:NULL[:STATe]?",
+  "summary": "Turns the null (relative) function on or off for capacitance measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 310
+ },
+ {
+  "command": "[SENSe:]CAPacitance:RANGe",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CAPacitance:RANGe {<range>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]CAPacitance:RANGe? [{MIN|MAX|DEF}]",
+  "summary": "Selects a fixed measurement range for capacitance, which turns autoranging off.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4 (F); MIN|MAX|DEF",
+    "default": "AUTO (autorange)",
+    "unit": "F"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 313
+ },
+ {
+  "command": "[SENSe:]CAPacitance:RANGe:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CAPacitance:RANGe:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]CAPacitance:RANGe:AUTO?",
+  "summary": "Turns autoranging off, on, or performs a single autorange (ONCE) for capacitance.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 312
+ },
+ {
+  "command": "[SENSe:]CAPacitance:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CAPacitance:SECondary {\"OFF\"|\"CALCulate:DATA\"}",
+  "query_syntax": "[SENSe:]CAPacitance:SECondary?",
+  "summary": "Selects the secondary (second-reading) measurement returned by DATA2? for capacitance.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"",
+    "default": "\"OFF\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A.",
+  "page": 314
+ },
+ {
+  "command": "[SENSe:]CURRent:AC:BANDwidth",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent:AC:BANDwidth {<filter>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]CURRent:AC:BANDwidth? [{MIN|MAX|DEF}]",
+  "summary": "Selects the AC filter bandwidth (lowest expected signal frequency) for AC current measurements.",
+  "parameters": [
+   {
+    "name": "filter",
+    "type": "numeric",
+    "values": "3, 20, 200 (Hz); MIN|MAX|DEF",
+    "default": "20",
+    "unit": "Hz"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual notes that an entered frequency is mapped to the nearest filter (e.g. 15 Hz selects the 3 Hz filter).",
+  "page": 316
+ },
+ {
+  "command": "[SENSe:]CURRent:AC:NULL:VALue",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent:AC:NULL:VALue {<value>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]CURRent:AC:NULL:VALue? [{MIN|MAX|DEF}]",
+  "summary": "Sets the value subtracted from AC current readings when null is enabled.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-12 to +12; MIN|MAX|DEF",
+    "default": "0",
+    "unit": "A"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting a value turns NULL:VALue:AUTO off.",
+  "page": 318
+ },
+ {
+  "command": "[SENSe:]CURRent:AC:NULL:VALue:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent:AC:NULL:VALue:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]CURRent:AC:NULL:VALue:AUTO?",
+  "summary": "Enables or disables automatic null-value capture (first reading becomes the null value) for AC current.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 319
+ },
+ {
+  "command": "[SENSe:]CURRent:AC:NULL[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent:AC:NULL[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]CURRent:AC:NULL[:STATe]?",
+  "summary": "Turns the null (relative) function on or off for AC current measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 317
+ },
+ {
+  "command": "[SENSe:]CURRent:AC:RANGe",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent:AC:RANGe {<range>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]CURRent:AC:RANGe? [{MIN|MAX|DEF}]",
+  "summary": "Selects a fixed measurement range for AC current, which turns autoranging off.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "1e-4, 1e-3, 1e-2, 0.1, 1, 3 (A); DC on 34465A/70A also 1e-6, 1e-5; 10 A only via TERMinals 10; MIN|MAX|DEF",
+    "default": "AUTO (autorange)",
+    "unit": "A"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "The 10 A range cannot be selected here; use CURRent:{AC|DC}:TERMinals 10 or CONFigure:CURRent.",
+  "page": 320
+ },
+ {
+  "command": "[SENSe:]CURRent:AC:RANGe:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent:AC:RANGe:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]CURRent:AC:RANGe:AUTO?",
+  "summary": "Turns autoranging off, on, or performs a single autorange (ONCE) for AC current.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 321
+ },
+ {
+  "command": "[SENSe:]CURRent:AC:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent:AC:SECondary {\"OFF\"|\"CALCulate:DATA\"|\"FREQuency\"|\"CURRent[:DC]\"}",
+  "query_syntax": "[SENSe:]CURRent:AC:SECondary?",
+  "summary": "Selects the secondary (second-reading) measurement returned by DATA2? for AC current.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"|\"FREQuency\"|\"CURRent[:DC]\"",
+    "default": "\"OFF\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A. The AC/DC cross-measurement choices (VOLTage:AC, CURRent:AC, VOLTage[:DC], CURRent[:DC]) take effect only from the front panel and are ignored remotely.",
+  "page": 323
+ },
+ {
+  "command": "[SENSe:]CURRent:AC:TERMinals",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent:AC:TERMinals {3|10}",
+  "query_syntax": "[SENSe:]CURRent:AC:TERMinals?",
+  "summary": "Selects the 3 A or 10 A current input terminals for AC current measurements.",
+  "parameters": [
+   {
+    "name": "terminals",
+    "type": "discrete",
+    "values": "3|10",
+    "default": "3",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Selecting 10 forces the 10 A range; the 10 A terminal does not exist on the 34460A.",
+  "page": 322
+ },
+ {
+  "command": "[SENSe:]CURRent:SWITch:MODE",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent:SWITch:MODE {FAST|CONTinuous}",
+  "query_syntax": "[SENSe:]CURRent:SWITch:MODE?",
+  "summary": "Selects fast or continuous range switching for current measurements.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "FAST|CONTinuous",
+    "default": "CONTinuous",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 329
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:APERture",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:APERture {<seconds>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:APERture? [{MIN|MAX|DEF}]",
+  "summary": "Sets the integration (aperture) time in seconds for DC current.",
+  "parameters": [
+   {
+    "name": "seconds",
+    "type": "numeric",
+    "values": "200e-6 to 1 (2 us steps); 20e-6 to 1 with DIG option; MIN|MAX|DEF",
+    "default": "0.1",
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Aperture mode must be enabled with APERture:ENABled; NPLC and APERture override each other (last one sent wins). Below 200 us requires the DIG option.",
+  "page": 323
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:APERture:ENABled",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:APERture:ENABled {OFF|ON}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:APERture:ENABled?",
+  "summary": "Selects aperture-time mode (seconds) instead of PLC for the integration time of DC current.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 324
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:NPLC",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:NPLC {<PLCs>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:NPLC? [{MIN|MAX|DEF}]",
+  "summary": "Sets the integration time in power line cycles for DC current.",
+  "parameters": [
+   {
+    "name": "PLC",
+    "type": "numeric",
+    "values": "0.001, 0.002, 0.006, 0.02, 0.06, 0.2, 1, 10, 100 (34470A with DIG option); 0.02, 0.06, 0.2, 1, 10, 100 (34470A without DIG); MIN|MAX|DEF",
+    "default": "10",
+    "unit": "PLC"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual groups the 34465A/34470A: 0.001/0.002/0.006 PLC need the DIG option; 0.06 PLC is not available on 34460A/34461A.",
+  "page": 325
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:NULL:VALue",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:NULL:VALue {<value>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:NULL:VALue? [{MIN|MAX|DEF}]",
+  "summary": "Sets the value subtracted from DC current readings when null is enabled.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-12 to +12; MIN|MAX|DEF",
+    "default": "0",
+    "unit": "A"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting a value turns NULL:VALue:AUTO off.",
+  "page": 318
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:NULL:VALue:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:NULL:VALue:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:NULL:VALue:AUTO?",
+  "summary": "Enables or disables automatic null-value capture (first reading becomes the null value) for DC current.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 319
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:NULL[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:NULL[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:NULL[:STATe]?",
+  "summary": "Turns the null (relative) function on or off for DC current measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 317
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:RANGe",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:RANGe {<range>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:RANGe? [{MIN|MAX|DEF}]",
+  "summary": "Selects a fixed measurement range for DC current, which turns autoranging off.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "1e-4, 1e-3, 1e-2, 0.1, 1, 3 (A); DC on 34465A/70A also 1e-6, 1e-5; 10 A only via TERMinals 10; MIN|MAX|DEF",
+    "default": "AUTO (autorange)",
+    "unit": "A"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "The 10 A range cannot be selected here; use CURRent:{AC|DC}:TERMinals 10 or CONFigure:CURRent.",
+  "page": 320
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:RANGe:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:RANGe:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:RANGe:AUTO?",
+  "summary": "Turns autoranging off, on, or performs a single autorange (ONCE) for DC current.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 321
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:RESolution",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:RESolution {<resolution>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:RESolution? [{MIN|MAX|DEF}]",
+  "summary": "Selects the measurement resolution (in measurement units, not digits) for DC current.",
+  "parameters": [
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "see Range/Resolution/NPLC table (resolution = ResFactor x range); MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "A"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting resolution selects the integration time in PLC and disables aperture mode.",
+  "page": 326
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:SECondary {\"OFF\"|\"CALCulate:DATA\"|\"CURRent:AC\"|\"PTPeak\"}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:SECondary?",
+  "summary": "Selects the secondary (second-reading) measurement returned by DATA2? for DC current.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"|\"CURRent:AC\"|\"PTPeak\"",
+    "default": "\"OFF\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A. The AC/DC cross-measurement choices (VOLTage:AC, CURRent:AC, VOLTage[:DC], CURRent[:DC]) take effect only from the front panel and are ignored remotely.",
+  "page": 327
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:TERMinals",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:TERMinals {3|10}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:TERMinals?",
+  "summary": "Selects the 3 A or 10 A current input terminals for DC current measurements.",
+  "parameters": [
+   {
+    "name": "terminals",
+    "type": "discrete",
+    "values": "3|10",
+    "default": "3",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Selecting 10 forces the 10 A range; the 10 A terminal does not exist on the 34460A.",
+  "page": 322
+ },
+ {
+  "command": "[SENSe:]CURRent[:DC]:ZERO:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]CURRent[:DC]:ZERO:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]CURRent[:DC]:ZERO:AUTO?",
+  "summary": "Controls the autozero mode for DC current.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 328
+ },
+ {
+  "command": "[SENSe:]DATA2:CLEar[:IMMediate]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]DATA2:CLEar[:IMMediate]",
+  "query_syntax": null,
+  "summary": "Clears the accumulated secondary (peak-to-peak) measurement data.",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 331
+ },
+ {
+  "command": "[SENSe:]DATA2?",
+  "subsystem": "SENSe",
+  "set_syntax": null,
+  "query_syntax": "[SENSe:]DATA2?",
+  "summary": "Retrieves the secondary measurement (1 to 3 values depending on the active secondary function).",
+  "parameters": [],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 330
+ },
+ {
+  "command": "[SENSe:]FREQuency:APERture",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FREQuency:APERture {<seconds>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]FREQuency:APERture? [{MIN|MAX|DEF}]",
+  "summary": "Sets the gate (aperture) time in seconds for frequency and period measurements.",
+  "parameters": [
+   {
+    "name": "seconds",
+    "type": "numeric",
+    "values": "0.001 (34465A/70A only), 0.01, 0.1, 1; MIN|MAX|DEF",
+    "default": "0.1",
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Shared by the FREQuency and PERiod forms. The 1 ms aperture exists only on 34465A/34470A.",
+  "page": 333
+ },
+ {
+  "command": "[SENSe:]FREQuency:NULL:VALue",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FREQuency:NULL:VALue {<value>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]FREQuency:NULL:VALue? [{MIN|MAX|DEF}]",
+  "summary": "Sets the value subtracted from frequency readings when null is enabled.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-1.2e6 to +1.2e6; MIN|MAX|DEF",
+    "default": "0",
+    "unit": "Hz"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting a value turns NULL:VALue:AUTO off.",
+  "page": 335
+ },
+ {
+  "command": "[SENSe:]FREQuency:NULL:VALue:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FREQuency:NULL:VALue:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]FREQuency:NULL:VALue:AUTO?",
+  "summary": "Enables or disables automatic null-value capture (first reading becomes the null value) for frequency.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 335
+ },
+ {
+  "command": "[SENSe:]FREQuency:NULL[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FREQuency:NULL[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]FREQuency:NULL[:STATe]?",
+  "summary": "Turns the null (relative) function on or off for frequency measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 334
+ },
+ {
+  "command": "[SENSe:]FREQuency:RANGe:LOWer",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FREQuency:RANGe:LOWer {<freq>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]FREQuency:RANGe:LOWer?",
+  "summary": "Sets the AC filter low cutoff used to detect the signal for frequency/period measurements.",
+  "parameters": [
+   {
+    "name": "freq",
+    "type": "numeric",
+    "values": "3, 20, 200 (Hz); MIN|MAX|DEF",
+    "default": "20",
+    "unit": "Hz"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Shared by FREQuency and PERiod forms.",
+  "page": 336
+ },
+ {
+  "command": "[SENSe:]FREQuency:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FREQuency:SECondary {\"OFF\"|\"CALCulate:DATA\"|\"PERiod\"|\"VOLTage:AC\"}",
+  "query_syntax": "[SENSe:]FREQuency:SECondary?",
+  "summary": "Selects the secondary (second-reading) measurement returned by DATA2? for frequency.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"|\"PERiod\"|\"VOLTage:AC\"",
+    "default": "\"OFF\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A.",
+  "page": 340
+ },
+ {
+  "command": "[SENSe:]FREQuency:TIMeout:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FREQuency:TIMeout:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]FREQuency:TIMeout:AUTO?",
+  "summary": "Selects how long a frequency/period measurement waits for a signal (ON scales with filter, OFF waits 1 s).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 337
+ },
+ {
+  "command": "[SENSe:]FREQuency:VOLTage:RANGe",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FREQuency:VOLTage:RANGe {<range>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]FREQuency:VOLTage:RANGe? [{MIN|MAX|DEF}]",
+  "summary": "Selects a fixed AC voltage range for frequency and period measurements.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "0.1, 1, 10, 100, 1000 (V); MIN|MAX|DEF",
+    "default": "10",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Shared by FREQuency and PERiod forms.",
+  "page": 338
+ },
+ {
+  "command": "[SENSe:]FREQuency:VOLTage:RANGe:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FREQuency:VOLTage:RANGe:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]FREQuency:VOLTage:RANGe:AUTO?",
+  "summary": "Turns voltage autoranging off, on or once for frequency and period measurements.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Shared by FREQuency and PERiod forms.",
+  "page": 339
+ },
+ {
+  "command": "[SENSe:]FRESistance:APERture",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:APERture {<seconds>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]FRESistance:APERture? [{MIN|MAX|DEF}]",
+  "summary": "Sets the integration (aperture) time in seconds for 4-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "seconds",
+    "type": "numeric",
+    "values": "200e-6 to 1 (2 us steps); 20e-6 to 1 with DIG option; MIN|MAX|DEF",
+    "default": "0.1",
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Aperture mode must be enabled with APERture:ENABled; NPLC and APERture override each other (last one sent wins). Below 200 us requires the DIG option.",
+  "page": 342
+ },
+ {
+  "command": "[SENSe:]FRESistance:APERture:ENABled",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:APERture:ENABled {OFF|ON}",
+  "query_syntax": "[SENSe:]FRESistance:APERture:ENABled?",
+  "summary": "Selects aperture-time mode (seconds) instead of PLC for the integration time of 4-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 343
+ },
+ {
+  "command": "[SENSe:]FRESistance:NPLC",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:NPLC {<PLCs>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]FRESistance:NPLC? [{MIN|MAX|DEF}]",
+  "summary": "Sets the integration time in power line cycles for 4-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "PLC",
+    "type": "numeric",
+    "values": "0.001, 0.002, 0.006, 0.02, 0.06, 0.2, 1, 10, 100 (34470A with DIG option); 0.02, 0.06, 0.2, 1, 10, 100 (34470A without DIG); MIN|MAX|DEF",
+    "default": "10",
+    "unit": "PLC"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual groups the 34465A/34470A: 0.001/0.002/0.006 PLC need the DIG option; 0.06 PLC is not available on 34460A/34461A.",
+  "page": 344
+ },
+ {
+  "command": "[SENSe:]FRESistance:NULL:VALue",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:NULL:VALue {<value>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]FRESistance:NULL:VALue? [{MIN|MAX|DEF}]",
+  "summary": "Sets the value subtracted from 4-wire resistance readings when null is enabled (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-120e6 to +120e6 (34460A/61A); -1.2e9 to +1.2e9 (34465A/70A); MIN|MAX|DEF",
+    "default": "0",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "34470A range is +/-1.2 GOhm. Setting a value turns NULL:VALue:AUTO off. 34470A range is +/-1.2 GOhm. Setting a value turns NULL:VALue:AUTO off.",
+  "page": 346
+ },
+ {
+  "command": "[SENSe:]FRESistance:NULL:VALue:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:NULL:VALue:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]FRESistance:NULL:VALue:AUTO?",
+  "summary": "Enables or disables automatic null-value capture (first reading becomes the null value) for 4-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 347
+ },
+ {
+  "command": "[SENSe:]FRESistance:NULL[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:NULL[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]FRESistance:NULL[:STATe]?",
+  "summary": "Turns the null (relative) function on or off for 4-wire resistance measurements (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 345
+ },
+ {
+  "command": "[SENSe:]FRESistance:OCOMpensated",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:OCOMpensated {OFF|ON}",
+  "query_syntax": "[SENSe:]FRESistance:OCOMpensated?",
+  "summary": "Enables offset compensation (removes small DC offsets, roughly doubling reading time) for resistance measurements (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Applies only to the 100 Ohm to 100 kOhm ranges.",
+  "page": 348
+ },
+ {
+  "command": "[SENSe:]FRESistance:POWer:LIMit[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:POWer:LIMit[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]FRESistance:POWer:LIMit[:STATe]?",
+  "summary": "Enables low-power resistance measurements (100 Ohm to 100 kOhm ranges) (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 349
+ },
+ {
+  "command": "[SENSe:]FRESistance:RANGe",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:RANGe {<range>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]FRESistance:RANGe? [{MIN|MAX|DEF}]",
+  "summary": "Selects a fixed measurement range for 4-wire resistance, which turns autoranging off (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9 (Ohm); 1 GOhm on 34465A/70A only; MIN|MAX|DEF",
+    "default": "1000",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 349
+ },
+ {
+  "command": "[SENSe:]FRESistance:RANGe:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:RANGe:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]FRESistance:RANGe:AUTO?",
+  "summary": "Turns autoranging off, on, or performs a single autorange (ONCE) for 4-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 350
+ },
+ {
+  "command": "[SENSe:]FRESistance:RESolution",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:RESolution {<resolution>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]FRESistance:RESolution? [{MIN|MAX|DEF}]",
+  "summary": "Selects the measurement resolution (in measurement units, not digits) for 4-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "see Range/Resolution/NPLC table (resolution = ResFactor x range); MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting resolution selects the integration time in PLC and disables aperture mode.",
+  "page": 351
+ },
+ {
+  "command": "[SENSe:]FRESistance:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FRESistance:SECondary {\"OFF\"|\"CALCulate:DATA\"}",
+  "query_syntax": "[SENSe:]FRESistance:SECondary?",
+  "summary": "Selects the secondary (second-reading) measurement returned by DATA2? for 4-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"",
+    "default": "\"OFF\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A.",
+  "page": 352
+ },
+ {
+  "command": "[SENSe:]FUNCtion[:ON]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]FUNCtion[:ON] \"<function>\"",
+  "query_syntax": "[SENSe:]FUNCtion[:ON]?",
+  "summary": "Selects the measurement function.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"CAPacitance\"|\"CONTinuity\"|\"CURRent:AC\"|\"CURRent[:DC]\"|\"DIODe\"|\"FREQuency\"|\"FRESistance\"|\"PERiod\"|\"RESistance\"|\"TEMPerature\"|\"VOLTage:AC\"|\"VOLTage[:DC]\"|\"VOLTage[:DC]:RATio\"",
+    "default": "\"VOLTage[:DC]\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "CAPacitance function is 34465A/34470A only.",
+  "page": 309
+ },
+ {
+  "command": "[SENSe:]PERiod:APERture",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]PERiod:APERture {<seconds>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]PERiod:APERture? [{MIN|MAX|DEF}]",
+  "summary": "Sets the gate (aperture) time in seconds for frequency and period measurements.",
+  "parameters": [
+   {
+    "name": "seconds",
+    "type": "numeric",
+    "values": "0.001 (34465A/70A only), 0.01, 0.1, 1; MIN|MAX|DEF",
+    "default": "0.1",
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Shared by the FREQuency and PERiod forms. The 1 ms aperture exists only on 34465A/34470A.",
+  "page": 333
+ },
+ {
+  "command": "[SENSe:]PERiod:NULL:VALue",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]PERiod:NULL:VALue {<value>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]PERiod:NULL:VALue? [{MIN|MAX|DEF}]",
+  "summary": "Sets the value subtracted from period readings when null is enabled.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-1.2 to +1.2; MIN|MAX|DEF",
+    "default": "0",
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting a value turns NULL:VALue:AUTO off.",
+  "page": 335
+ },
+ {
+  "command": "[SENSe:]PERiod:NULL:VALue:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]PERiod:NULL:VALue:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]PERiod:NULL:VALue:AUTO?",
+  "summary": "Enables or disables automatic null-value capture (first reading becomes the null value) for period.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 335
+ },
+ {
+  "command": "[SENSe:]PERiod:NULL[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]PERiod:NULL[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]PERiod:NULL[:STATe]?",
+  "summary": "Turns the null (relative) function on or off for period measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 334
+ },
+ {
+  "command": "[SENSe:]PERiod:RANGe:LOWer",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]PERiod:RANGe:LOWer {<freq>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]PERiod:RANGe:LOWer?",
+  "summary": "Sets the AC filter low cutoff used to detect the signal for frequency/period measurements.",
+  "parameters": [
+   {
+    "name": "freq",
+    "type": "numeric",
+    "values": "3, 20, 200 (Hz); MIN|MAX|DEF",
+    "default": "20",
+    "unit": "Hz"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Shared by FREQuency and PERiod forms.",
+  "page": 336
+ },
+ {
+  "command": "[SENSe:]PERiod:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]PERiod:SECondary {\"OFF\"|\"CALCulate:DATA\"|\"FREQuency\"|\"VOLTage:AC\"}",
+  "query_syntax": "[SENSe:]PERiod:SECondary?",
+  "summary": "Selects the secondary (second-reading) measurement returned by DATA2? for period.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"|\"FREQuency\"|\"VOLTage:AC\"",
+    "default": "\"OFF\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A.",
+  "page": 340
+ },
+ {
+  "command": "[SENSe:]PERiod:TIMeout:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]PERiod:TIMeout:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]PERiod:TIMeout:AUTO?",
+  "summary": "Selects how long a frequency/period measurement waits for a signal (ON scales with filter, OFF waits 1 s).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 337
+ },
+ {
+  "command": "[SENSe:]PERiod:VOLTage:RANGe",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]PERiod:VOLTage:RANGe {<range>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]PERiod:VOLTage:RANGe? [{MIN|MAX|DEF}]",
+  "summary": "Selects a fixed AC voltage range for frequency and period measurements.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "0.1, 1, 10, 100, 1000 (V); MIN|MAX|DEF",
+    "default": "10",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Shared by FREQuency and PERiod forms.",
+  "page": 338
+ },
+ {
+  "command": "[SENSe:]PERiod:VOLTage:RANGe:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]PERiod:VOLTage:RANGe:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]PERiod:VOLTage:RANGe:AUTO?",
+  "summary": "Turns voltage autoranging off, on or once for frequency and period measurements.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Shared by FREQuency and PERiod forms.",
+  "page": 339
+ },
+ {
+  "command": "[SENSe:]RESistance:APERture",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:APERture {<seconds>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]RESistance:APERture? [{MIN|MAX|DEF}]",
+  "summary": "Sets the integration (aperture) time in seconds for 2-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "seconds",
+    "type": "numeric",
+    "values": "200e-6 to 1 (2 us steps); 20e-6 to 1 with DIG option; MIN|MAX|DEF",
+    "default": "0.1",
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Aperture mode must be enabled with APERture:ENABled; NPLC and APERture override each other (last one sent wins). Below 200 us requires the DIG option.",
+  "page": 342
+ },
+ {
+  "command": "[SENSe:]RESistance:APERture:ENABled",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:APERture:ENABled {OFF|ON}",
+  "query_syntax": "[SENSe:]RESistance:APERture:ENABled?",
+  "summary": "Selects aperture-time mode (seconds) instead of PLC for the integration time of 2-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 343
+ },
+ {
+  "command": "[SENSe:]RESistance:NPLC",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:NPLC {<PLCs>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]RESistance:NPLC? [{MIN|MAX|DEF}]",
+  "summary": "Sets the integration time in power line cycles for 2-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "PLC",
+    "type": "numeric",
+    "values": "0.001, 0.002, 0.006, 0.02, 0.06, 0.2, 1, 10, 100 (34470A with DIG option); 0.02, 0.06, 0.2, 1, 10, 100 (34470A without DIG); MIN|MAX|DEF",
+    "default": "10",
+    "unit": "PLC"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual groups the 34465A/34470A: 0.001/0.002/0.006 PLC need the DIG option; 0.06 PLC is not available on 34460A/34461A.",
+  "page": 344
+ },
+ {
+  "command": "[SENSe:]RESistance:NULL:VALue",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:NULL:VALue {<value>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]RESistance:NULL:VALue? [{MIN|MAX|DEF}]",
+  "summary": "Sets the value subtracted from 2-wire resistance readings when null is enabled (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-120e6 to +120e6 (34460A/61A); -1.2e9 to +1.2e9 (34465A/70A); MIN|MAX|DEF",
+    "default": "0",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "34470A range is +/-1.2 GOhm. Setting a value turns NULL:VALue:AUTO off. 34470A range is +/-1.2 GOhm. Setting a value turns NULL:VALue:AUTO off.",
+  "page": 346
+ },
+ {
+  "command": "[SENSe:]RESistance:NULL:VALue:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:NULL:VALue:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]RESistance:NULL:VALue:AUTO?",
+  "summary": "Enables or disables automatic null-value capture (first reading becomes the null value) for 2-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 347
+ },
+ {
+  "command": "[SENSe:]RESistance:NULL[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:NULL[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]RESistance:NULL[:STATe]?",
+  "summary": "Turns the null (relative) function on or off for 2-wire resistance measurements (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 345
+ },
+ {
+  "command": "[SENSe:]RESistance:OCOMpensated",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:OCOMpensated {OFF|ON}",
+  "query_syntax": "[SENSe:]RESistance:OCOMpensated?",
+  "summary": "Enables offset compensation (removes small DC offsets, roughly doubling reading time) for resistance measurements (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Applies only to the 100 Ohm to 100 kOhm ranges.",
+  "page": 348
+ },
+ {
+  "command": "[SENSe:]RESistance:POWer:LIMit[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:POWer:LIMit[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]RESistance:POWer:LIMit[:STATe]?",
+  "summary": "Enables low-power resistance measurements (100 Ohm to 100 kOhm ranges) (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 349
+ },
+ {
+  "command": "[SENSe:]RESistance:RANGe",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:RANGe {<range>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]RESistance:RANGe? [{MIN|MAX|DEF}]",
+  "summary": "Selects a fixed measurement range for 2-wire resistance, which turns autoranging off (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9 (Ohm); 1 GOhm on 34465A/70A only; MIN|MAX|DEF",
+    "default": "1000",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 349
+ },
+ {
+  "command": "[SENSe:]RESistance:RANGe:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:RANGe:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]RESistance:RANGe:AUTO?",
+  "summary": "Turns autoranging off, on, or performs a single autorange (ONCE) for 2-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 350
+ },
+ {
+  "command": "[SENSe:]RESistance:RESolution",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:RESolution {<resolution>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]RESistance:RESolution? [{MIN|MAX|DEF}]",
+  "summary": "Selects the measurement resolution (in measurement units, not digits) for 2-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "see Range/Resolution/NPLC table (resolution = ResFactor x range); MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting resolution selects the integration time in PLC and disables aperture mode.",
+  "page": 351
+ },
+ {
+  "command": "[SENSe:]RESistance:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:SECondary {\"OFF\"|\"CALCulate:DATA\"}",
+  "query_syntax": "[SENSe:]RESistance:SECondary?",
+  "summary": "Selects the secondary (second-reading) measurement returned by DATA2? for 2-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"",
+    "default": "\"OFF\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A.",
+  "page": 352
+ },
+ {
+  "command": "[SENSe:]RESistance:ZERO:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]RESistance:ZERO:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]RESistance:ZERO:AUTO?",
+  "summary": "Controls the autozero mode for 2-wire resistance (the RESistance and FRESistance forms share this setting).",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual describes this as 2-wire resistance only; no FRESistance form is listed.",
+  "page": 353
+ },
+ {
+  "command": "[SENSe:]TEMPerature:APERture",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:APERture {<seconds>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]TEMPerature:APERture? [{MIN|MAX|DEF}]",
+  "summary": "Sets the integration (aperture) time in seconds for temperature.",
+  "parameters": [
+   {
+    "name": "seconds",
+    "type": "numeric",
+    "values": "200e-6 to 1 (2 us steps); 20e-6 to 1 with DIG option; MIN|MAX|DEF",
+    "default": "0.1",
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Aperture mode must be enabled with APERture:ENABled; NPLC and APERture override each other (last one sent wins). Below 200 us requires the DIG option.",
+  "page": 355
+ },
+ {
+  "command": "[SENSe:]TEMPerature:APERture:ENABled",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:APERture:ENABled {OFF|ON}",
+  "query_syntax": "[SENSe:]TEMPerature:APERture:ENABled?",
+  "summary": "Selects aperture-time mode (seconds) instead of PLC for the integration time of temperature.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 355
+ },
+ {
+  "command": "[SENSe:]TEMPerature:NPLC",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:NPLC {<PLCs>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]TEMPerature:NPLC? [{MIN|MAX|DEF}]",
+  "summary": "Sets the integration time in power line cycles for temperature.",
+  "parameters": [
+   {
+    "name": "PLC",
+    "type": "numeric",
+    "values": "0.001, 0.002, 0.006, 0.02, 0.06, 0.2, 1, 10, 100 (34470A with DIG option); 0.02, 0.06, 0.2, 1, 10, 100 (34470A without DIG); MIN|MAX|DEF",
+    "default": "10",
+    "unit": "PLC"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual groups the 34465A/34470A: 0.001/0.002/0.006 PLC need the DIG option; 0.06 PLC is not available on 34460A/34461A.",
+  "page": 356
+ },
+ {
+  "command": "[SENSe:]TEMPerature:NULL:VALue",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:NULL:VALue {<value>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]TEMPerature:NULL:VALue? [{MIN|MAX|DEF}]",
+  "summary": "Sets the value subtracted from temperature readings when null is enabled.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-1e15 to +1e15; MIN|MAX|DEF",
+    "default": "0",
+    "unit": "degC"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting a value turns NULL:VALue:AUTO off. Unit presumed to follow UNIT:TEMPerature (inferred; manual gives no unit).",
+  "page": 357
+ },
+ {
+  "command": "[SENSe:]TEMPerature:NULL:VALue:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:NULL:VALue:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]TEMPerature:NULL:VALue:AUTO?",
+  "summary": "Enables or disables automatic null-value capture (first reading becomes the null value) for temperature.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 358
+ },
+ {
+  "command": "[SENSe:]TEMPerature:NULL[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:NULL[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]TEMPerature:NULL[:STATe]?",
+  "summary": "Turns the null (relative) function on or off for temperature measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 357
+ },
+ {
+  "command": "[SENSe:]TEMPerature:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:SECondary {\"OFF\"|\"CALCulate:DATA\"|\"SENSe:DATA\"}",
+  "query_syntax": "[SENSe:]TEMPerature:SECondary?",
+  "summary": "Selects the secondary (second-reading) measurement returned by DATA2? for temperature.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"|\"SENSe:DATA\"",
+    "default": "\"CALC:DATA\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A; \"SENSe:DATA\" is the raw sensor value. Manual states default \"CALC:DATA\" for this command (others default \"OFF\").",
+  "page": 359
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:FRTD:OCOMpensated",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:FRTD:OCOMpensated {OFF|ON}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:FRTD:OCOMpensated?",
+  "summary": "Enables offset compensation for RTD temperature measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "FRTD and RTD forms share this setting.",
+  "page": 360
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:FRTD:POWer:LIMit[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:FRTD:POWer:LIMit[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:FRTD:POWer:LIMit[:STATe]?",
+  "summary": "Enables low-power RTD measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "FRTD and RTD forms share this setting.",
+  "page": 361
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:FRTD:RESistance[:REFerence]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:FRTD:RESistance[:REFerence] {<reference>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:FRTD:RESistance[:REFerence]? [{MIN|MAX|DEF}]",
+  "summary": "Sets the nominal RTD resistance R0 at 0 degC.",
+  "parameters": [
+   {
+    "name": "reference",
+    "type": "numeric",
+    "values": "80 to 120 (34460A/61A); 49 to 2100 (34465A/70A); MIN|MAX|DEF",
+    "default": "100",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Range is 49 to 2100 Ohm. FRTD and RTD forms share this setting.",
+  "page": 361
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:FTHermistor:POWer:LIMit[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:FTHermistor:POWer:LIMit[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:FTHermistor:POWer:LIMit[:STATe]?",
+  "summary": "Enables low-power thermistor measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "FTHermistor and THERmistor forms share this setting.",
+  "page": 362
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:FTHermistor:TYPE",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:FTHermistor:TYPE 5000",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:FTHermistor:TYPE?",
+  "summary": "Selects the thermistor type (only 5000 is available).",
+  "parameters": [
+   {
+    "name": "type",
+    "type": "numeric",
+    "values": "5000 (only choice)",
+    "default": "5000",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Not listed in the Command Quick Reference; found in the full reference only. 2.2k/10k thermistors are mentioned elsewhere in the manual but this command accepts only 5000.",
+  "page": 367
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:RTD:OCOMpensated",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:RTD:OCOMpensated {OFF|ON}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:RTD:OCOMpensated?",
+  "summary": "Enables offset compensation for RTD temperature measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "FRTD and RTD forms share this setting.",
+  "page": 360
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:RTD:POWer:LIMit[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:RTD:POWer:LIMit[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:RTD:POWer:LIMit[:STATe]?",
+  "summary": "Enables low-power RTD measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "FRTD and RTD forms share this setting.",
+  "page": 361
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:RTD:RESistance[:REFerence]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:RTD:RESistance[:REFerence] {<reference>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:RTD:RESistance[:REFerence]? [{MIN|MAX|DEF}]",
+  "summary": "Sets the nominal RTD resistance R0 at 0 degC.",
+  "parameters": [
+   {
+    "name": "reference",
+    "type": "numeric",
+    "values": "80 to 120 (34460A/61A); 49 to 2100 (34465A/70A); MIN|MAX|DEF",
+    "default": "100",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Range is 49 to 2100 Ohm. FRTD and RTD forms share this setting.",
+  "page": 361
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:TCouple:CHECk",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:TCouple:CHECk {OFF|ON}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:TCouple:CHECk?",
+  "summary": "Enables checking thermocouple connection integrity after each measurement.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 363
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:TCouple:RJUNction",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:TCouple:RJUNction {<temperature>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:TCouple:RJUNction? [{MIN|MAX|DEF}]",
+  "summary": "Sets the fixed reference-junction temperature for thermocouples.",
+  "parameters": [
+   {
+    "name": "temperature",
+    "type": "numeric",
+    "values": "-20 to +80; MIN|MAX|DEF",
+    "default": "0",
+    "unit": "degC"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Always in degrees Celsius regardless of UNIT:TEMPerature.",
+  "page": 364
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:TCouple:RJUNction:OFFSet:ADJust",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:TCouple:RJUNction:OFFSet:ADJust {<temperature>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:TCouple:RJUNction:OFFSet:ADJust? [{MIN|MAX|DEF}]",
+  "summary": "Adjusts the internal reference-junction temperature reading.",
+  "parameters": [
+   {
+    "name": "temperature",
+    "type": "numeric",
+    "values": "-20 to +20; MIN|MAX|DEF",
+    "default": "0",
+    "unit": "degC"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 365
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:TCouple:RJUNction:TYPE",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:TCouple:RJUNction:TYPE {INTernal|FIXed}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:TCouple:RJUNction:TYPE?",
+  "summary": "Chooses internal or fixed thermocouple reference junction.",
+  "parameters": [
+   {
+    "name": "type",
+    "type": "discrete",
+    "values": "INTernal|FIXed",
+    "default": "INTernal",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 366
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:TCouple:TYPE",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:TCouple:TYPE {E|J|K|N|R|T}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:TCouple:TYPE?",
+  "summary": "Selects the thermocouple type.",
+  "parameters": [
+   {
+    "name": "type",
+    "type": "discrete",
+    "values": "E|J|K|N|R|T",
+    "default": "J",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 367
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:THERmistor:POWer:LIMit[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:THERmistor:POWer:LIMit[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:THERmistor:POWer:LIMit[:STATe]?",
+  "summary": "Enables low-power thermistor measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "FTHermistor and THERmistor forms share this setting.",
+  "page": 362
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:THERmistor:TYPE",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:THERmistor:TYPE 5000",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:THERmistor:TYPE?",
+  "summary": "Selects the thermistor type (only 5000 is available).",
+  "parameters": [
+   {
+    "name": "type",
+    "type": "numeric",
+    "values": "5000 (only choice)",
+    "default": "5000",
+    "unit": "Ohm"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Not listed in the Command Quick Reference; found in the full reference only. 2.2k/10k thermistors are mentioned elsewhere in the manual but this command accepts only 5000.",
+  "page": 367
+ },
+ {
+  "command": "[SENSe:]TEMPerature:TRANsducer:TYPE",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:TRANsducer:TYPE {FRTD|RTD|FTHermistor|THERmistor|TCouple}",
+  "query_syntax": "[SENSe:]TEMPerature:TRANsducer:TYPE?",
+  "summary": "Selects the temperature transducer: RTD, thermistor or thermocouple (2- or 4-wire).",
+  "parameters": [
+   {
+    "name": "type",
+    "type": "discrete",
+    "values": "FRTD|RTD|FTHermistor|THERmistor|TCouple",
+    "default": "FRTD",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "TCouple applies only to 34465A/34470A.",
+  "page": 363
+ },
+ {
+  "command": "[SENSe:]TEMPerature:ZERO:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]TEMPerature:ZERO:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]TEMPerature:ZERO:AUTO?",
+  "summary": "Controls the autozero mode for temperature.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 368
+ },
+ {
+  "command": "[SENSe:]VOLTage:AC:BANDwidth",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage:AC:BANDwidth {<filter>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]VOLTage:AC:BANDwidth? [{MIN|MAX|DEF}]",
+  "summary": "Selects the AC filter bandwidth (lowest expected signal frequency) for AC voltage measurements.",
+  "parameters": [
+   {
+    "name": "filter",
+    "type": "numeric",
+    "values": "3, 20, 200 (Hz); MIN|MAX|DEF",
+    "default": "20",
+    "unit": "Hz"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual notes that an entered frequency is mapped to the nearest filter (e.g. 15 Hz selects the 3 Hz filter).",
+  "page": 370
+ },
+ {
+  "command": "[SENSe:]VOLTage:AC:NULL:VALue",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage:AC:NULL:VALue {<value>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]VOLTage:AC:NULL:VALue? [{MIN|MAX|DEF}]",
+  "summary": "Sets the value subtracted from AC voltage readings when null is enabled.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-1200 to +1200; MIN|MAX|DEF",
+    "default": "0",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting a value turns NULL:VALue:AUTO off.",
+  "page": 372
+ },
+ {
+  "command": "[SENSe:]VOLTage:AC:NULL:VALue:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage:AC:NULL:VALue:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]VOLTage:AC:NULL:VALue:AUTO?",
+  "summary": "Enables or disables automatic null-value capture (first reading becomes the null value) for AC voltage.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 373
+ },
+ {
+  "command": "[SENSe:]VOLTage:AC:NULL[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage:AC:NULL[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]VOLTage:AC:NULL[:STATe]?",
+  "summary": "Turns the null (relative) function on or off for AC voltage measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 371
+ },
+ {
+  "command": "[SENSe:]VOLTage:AC:RANGe",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage:AC:RANGe {<range>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]VOLTage:AC:RANGe? [{MIN|MAX|DEF}]",
+  "summary": "Selects a fixed measurement range for AC voltage, which turns autoranging off.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "0.1, 1, 10, 100, 1000 (V); MIN|MAX|DEF",
+    "default": "10",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual lists \"AC default: 10 V, DC default: 1000 V\" for this command; also applies to DC ratio measurements. MAX is 1000 V but the AC input safety limit is 750 VAC rms.",
+  "page": 374
+ },
+ {
+  "command": "[SENSe:]VOLTage:AC:RANGe:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage:AC:RANGe:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]VOLTage:AC:RANGe:AUTO?",
+  "summary": "Turns autoranging off, on, or performs a single autorange (ONCE) for AC voltage.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 375
+ },
+ {
+  "command": "[SENSe:]VOLTage:AC:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage:AC:SECondary {\"OFF\"|\"CALCulate:DATA\"|\"FREQuency\"|\"VOLTage[:DC]\"}",
+  "query_syntax": "[SENSe:]VOLTage:AC:SECondary?",
+  "summary": "Selects the secondary (second-reading) measurement returned by DATA2? for AC voltage.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"|\"FREQuency\"|\"VOLTage[:DC]\"",
+    "default": "\"OFF\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A. The AC/DC cross-measurement choices (VOLTage:AC, CURRent:AC, VOLTage[:DC], CURRent[:DC]) take effect only from the front panel and are ignored remotely.",
+  "page": 376
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:APERture",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:APERture {<seconds>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:APERture? [{MIN|MAX|DEF}]",
+  "summary": "Sets the integration (aperture) time in seconds for DC voltage.",
+  "parameters": [
+   {
+    "name": "seconds",
+    "type": "numeric",
+    "values": "200e-6 to 1 (2 us steps); 20e-6 to 1 with DIG option; MIN|MAX|DEF",
+    "default": "0.1",
+    "unit": "s"
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Aperture mode must be enabled with APERture:ENABled; NPLC and APERture override each other (last one sent wins). Below 200 us requires the DIG option.",
+  "page": 376
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:APERture:ENABled",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:APERture:ENABled {OFF|ON}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:APERture:ENABled?",
+  "summary": "Selects aperture-time mode (seconds) instead of PLC for the integration time of DC voltage.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 377
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:IMPedance:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:IMPedance:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:IMPedance:AUTO?",
+  "summary": "Enables automatic input impedance (>10 GOhm on 100 mV, 1 V and 10 V ranges) for DC voltage and ratio measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 378
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:NPLC",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:NPLC {<PLCs>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:NPLC? [{MIN|MAX|DEF}]",
+  "summary": "Sets the integration time in power line cycles for DC voltage.",
+  "parameters": [
+   {
+    "name": "PLC",
+    "type": "numeric",
+    "values": "0.001, 0.002, 0.006, 0.02, 0.06, 0.2, 1, 10, 100 (34470A with DIG option); 0.02, 0.06, 0.2, 1, 10, 100 (34470A without DIG); MIN|MAX|DEF",
+    "default": "10",
+    "unit": "PLC"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual groups the 34465A/34470A: 0.001/0.002/0.006 PLC need the DIG option; 0.06 PLC is not available on 34460A/34461A.",
+  "page": 379
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:NULL:VALue",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:NULL:VALue {<value>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:NULL:VALue? [{MIN|MAX|DEF}]",
+  "summary": "Sets the value subtracted from DC voltage readings when null is enabled.",
+  "parameters": [
+   {
+    "name": "value",
+    "type": "numeric",
+    "values": "-1200 to +1200; MIN|MAX|DEF",
+    "default": "0",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting a value turns NULL:VALue:AUTO off.",
+  "page": 372
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:NULL:VALue:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:NULL:VALue:AUTO {OFF|ON}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:NULL:VALue:AUTO?",
+  "summary": "Enables or disables automatic null-value capture (first reading becomes the null value) for DC voltage.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 373
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:NULL[:STATe]",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:NULL[:STATe] {OFF|ON}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:NULL[:STATe]?",
+  "summary": "Turns the null (relative) function on or off for DC voltage measurements.",
+  "parameters": [
+   {
+    "name": "state",
+    "type": "boolean",
+    "values": "OFF|ON (0|1 also accepted); query returns 0 or 1",
+    "default": "OFF",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 371
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:RANGe",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:RANGe {<range>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:RANGe? [{MIN|MAX|DEF}]",
+  "summary": "Selects a fixed measurement range for DC voltage, which turns autoranging off.",
+  "parameters": [
+   {
+    "name": "range",
+    "type": "numeric",
+    "values": "0.1, 1, 10, 100, 1000 (V); MIN|MAX|DEF",
+    "default": "1000",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Manual lists \"AC default: 10 V, DC default: 1000 V\" for this command; also applies to DC ratio measurements. MAX is 1000 V but the AC input safety limit is 750 VAC rms.",
+  "page": 374
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:RANGe:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:RANGe:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:RANGe:AUTO?",
+  "summary": "Turns autoranging off, on, or performs a single autorange (ONCE) for DC voltage.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 375
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:RATio:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:RATio:SECondary {\"OFF\"|\"CALCulate:DATA\"|\"SENSe:DATA\"}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:RATio:SECondary?",
+  "summary": "Selects the secondary measurement for DC ratio measurements.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"|\"SENSe:DATA\"",
+    "default": "\"CALC:DATA\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A; \"SENSe:DATA\" returns signal and reference voltages. Manual states default \"CALC:DATA\".",
+  "page": 380
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:RESolution",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:RESolution {<resolution>|MIN|MAX|DEF}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:RESolution? [{MIN|MAX|DEF}]",
+  "summary": "Selects the measurement resolution (in measurement units, not digits) for DC voltage.",
+  "parameters": [
+   {
+    "name": "resolution",
+    "type": "numeric",
+    "values": "see Range/Resolution/NPLC table (resolution = ResFactor x range); MIN|MAX|DEF",
+    "default": "equivalent to 10 PLC",
+    "unit": "V"
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "Setting resolution selects the integration time in PLC and disables aperture mode.",
+  "page": 380
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:SECondary",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:SECondary {\"OFF\"|\"CALCulate:DATA\"|\"VOLTage:AC\"|\"PTPeak\"}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:SECondary?",
+  "summary": "Selects the secondary (second-reading) measurement returned by DATA2? for DC voltage.",
+  "parameters": [
+   {
+    "name": "function",
+    "type": "string",
+    "values": "\"OFF\"|\"CALCulate:DATA\"|\"VOLTage:AC\"|\"PTPeak\"",
+    "default": "\"OFF\"",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": "\"CALCulate:DATA\" applies only to 34465A/34470A. The AC/DC cross-measurement choices (VOLTage:AC, CURRent:AC, VOLTage[:DC], CURRent[:DC]) take effect only from the front panel and are ignored remotely.",
+  "page": 381
+ },
+ {
+  "command": "[SENSe:]VOLTage[:DC]:ZERO:AUTO",
+  "subsystem": "SENSe",
+  "set_syntax": "[SENSe:]VOLTage[:DC]:ZERO:AUTO {OFF|ON|ONCE}",
+  "query_syntax": "[SENSe:]VOLTage[:DC]:ZERO:AUTO?",
+  "summary": "Controls the autozero mode for DC voltage.",
+  "parameters": [
+   {
+    "name": "mode",
+    "type": "discrete",
+    "values": "OFF|ON|ONCE; query returns 0 or 1",
+    "default": "ON",
+    "unit": null
+   }
+  ],
+  "applies_to": [
+   "34460A",
+   "34461A",
+   "34465A",
+   "34470A"
+  ],
+  "requires_option": null,
+  "notes_34470A": null,
+  "page": 382
+ }
+]

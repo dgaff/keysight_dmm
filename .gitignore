@@ -1,0 +1,9 @@
+.build/
+build/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+.swiftpm/
+# Keysight's copyrighted manual and text extracted from it (regenerate with scripts/extract_manual.sh)
+KeysightDMM.pdf
+docs/manual/

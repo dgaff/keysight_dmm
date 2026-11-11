@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:keysight_dmm}",
+            "name": "Debug dmmprobe",
+            "target": "dmmprobe",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug dmmprobe"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:keysight_dmm}",
+            "name": "Release dmmprobe",
+            "target": "dmmprobe",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release dmmprobe"
+        }
+    ]
+}

@@ -1,0 +1,185 @@
+import DMMKit
+import Foundation
+
+// dmmprobe — bench/debug tool for DMMKit.
+//
+//   dmmprobe discover [seconds]            list SCPI instruments found over Bonjour
+//   dmmprobe idn <host>                    connect, print identity and any queued errors
+//   dmmprobe read <host> [count]           take readings with the meter's current setup
+//   dmmprobe send <host> <command>...      send commands; queries print their response,
+//                                          then the error queue is printed
+//   options: --stay-remote   do not send SYST:LOC before disconnecting
+//            --trace         print all SCPI traffic
+//            --timeout <s>   per-query timeout (default 5)
+//
+// <host> is an IP address, a DNS/mDNS name (K-34470A-17466.local) or "sim".
+
+var arguments = Array(CommandLine.arguments.dropFirst())
+
+@MainActor func takeFlag(_ name: String) -> Bool {
+    guard let index = arguments.firstIndex(of: name) else { return false }
+    arguments.remove(at: index)
+    return true
+}
+
+@MainActor func takeOption(_ name: String) -> String? {
+    guard let index = arguments.firstIndex(of: name), index + 1 < arguments.count else { return nil }
+    let value = arguments[index + 1]
+    arguments.removeSubrange(index...index + 1)
+    return value
+}
+
+func fail(_ message: String) -> Never {
+    FileHandle.standardError.write(Data((message + "\n").utf8))
+    exit(1)
+}
+
+let stayRemote = takeFlag("--stay-remote")
+let trace = takeFlag("--trace")
+let timeout = Duration.seconds(takeOption("--timeout").flatMap(Double.init) ?? 5)
+
+@Sendable func printTraffic(_ event: SCPITrafficEvent) {
+    let mark: String
+    switch event.direction {
+    case .sent: mark = ">>"
+    case .received: mark = "<<"
+    case .note: mark = "--"
+    }
+    FileHandle.standardError.write(Data("\(mark) \(event.text)\n".utf8))
+}
+
+@MainActor func connect(_ host: String) async -> Multimeter {
+    let transport: any SCPITransport = host == "sim" ? SimulatedMeter() : TCPTransport(host: host)
+    do {
+        let meter = try await Multimeter.connect(transport: transport, trafficHandler: trace ? printTraffic : nil)
+        await meter.session.setDefaultTimeout(timeout)
+        return meter
+    } catch {
+        fail("""
+            \(error.localizedDescription)
+            If the meter is on and reachable, check that the firewall (Little Snitch) allows \
+            this binary to reach \(host) on TCP 5025.
+            """)
+    }
+}
+
+guard let verb = arguments.first else {
+    fail("usage: dmmprobe discover | idn <host> | read <host> [count] | send <host> <command>...")
+}
+arguments.removeFirst()
+
+switch verb {
+case "discover":
+    let seconds = arguments.first.flatMap(Double.init) ?? 3
+    let browser = InstrumentBrowser()
+    let listing = Task {
+        var latest: [DiscoveredInstrument] = []
+        for await event in browser.events() {
+            switch event {
+            case .instruments(let found): latest = found
+            case .unavailable(let why): print("Browsing unavailable: \(why)")
+            }
+        }
+        return latest
+    }
+    try? await Task.sleep(for: .seconds(seconds))
+    browser.stop()
+    let found = await listing.value
+    if found.isEmpty { print("No instruments found.") }
+    for instrument in found {
+        let tag = instrument.isSupportedMultimeter ? "DMM" : "   "
+        print("\(tag)  \(instrument.name)  [model \(instrument.model ?? "?"), s/n \(instrument.serialNumber ?? "?"), fw \(instrument.firmware ?? "?")]")
+    }
+
+case "idn":
+    guard let host = arguments.first else { fail("usage: dmmprobe idn <host>") }
+    let meter = await connect(host)
+    let id = meter.identity
+    print("Manufacturer: \(id.manufacturer)\nModel:        \(id.model)\nSerial:       \(id.serialNumber)\nFirmware:     \(id.firmware)")
+    print("Supported:    \(id.truevoltModel != nil ? "yes" : "no (not a Truevolt DMM)")")
+    for error in meter.errorsAtConnect { print("Queued error: \(error)") }
+    await meter.disconnect(returnToLocal: !stayRemote)
+
+case "read":
+    guard let host = arguments.first else { fail("usage: dmmprobe read <host> [count]") }
+    let count = arguments.dropFirst().first.flatMap(Int.init) ?? 1
+    let meter = await connect(host)
+    do {
+        let function = try await meter.function()
+        for _ in 0..<count {
+            let reading = try await meter.read()
+            let text = EngineeringNotation.string(reading, unit: function.unit, significantDigits: 8)
+            print("\(function.displayName): \(text)\(function.unitQualifier)   (raw \(reading.value))")
+        }
+    } catch {
+        print("error: \(error.localizedDescription)")
+    }
+    await meter.disconnect(returnToLocal: !stayRemote)
+
+case "send":
+    guard arguments.count >= 2 else { fail("usage: dmmprobe send <host> <command>...") }
+    let meter = await connect(arguments[0])
+    for command in arguments.dropFirst() {
+        do {
+            if command.contains("?") {
+                let response = try await meter.session.query(command)
+                print("\(command)  ->  \(response)")
+            } else {
+                try await meter.session.write(command)
+                print("\(command)  (sent)")
+            }
+        } catch {
+            print("\(command)  ->  error: \(error.localizedDescription)")
+        }
+        if let errors = try? await meter.session.drainErrors() {
+            for error in errors { print("    instrument error: \(error)") }
+        }
+    }
+    await meter.disconnect(returnToLocal: !stayRemote)
+
+case "settings":
+    // dmmprobe settings <host> [function ...]   read every profile setting; restores the original function
+    guard let host = arguments.first else { fail("usage: dmmprobe settings <host> [function ...]") }
+    let wanted = arguments.dropFirst().compactMap { MeasurementFunction(rawValue: $0) }
+    let functions = wanted.isEmpty ? MeasurementFunction.allCases : wanted
+    let meter = await connect(host)
+    do {
+        let original = try await meter.function()
+        for function in functions {
+            let profile = FunctionProfile.profile(for: function)
+            let settings = profile.settings(for: meter.identity.truevoltModel)
+            if settings.isEmpty { continue }
+            if function != original || functions.count > 1 { try await meter.setFunction(function) }
+            let states = try await meter.readSettings(settings)
+            print("== \(function.displayName) ==")
+            for setting in settings {
+                guard let state = states[setting.id] else {
+                    print("  \(setting.label) [\(setting.header)]: NOT ANSWERED")
+                    continue
+                }
+                var text: String
+                switch state.value {
+                case .number(let v): text = EngineeringNotation.compact(v, unit: setting.unit ?? .none)
+                case .bool(let on): text = on ? setting.onLabel : setting.offLabel
+                case .choice(let c): text = c
+                }
+                if let auto = state.auto { text += auto ? "  (auto on)" : "  (auto off)" }
+                if let lo = state.minimum, let hi = state.maximum {
+                    let unit = setting.unit ?? .none
+                    text += "  limits \(EngineeringNotation.compact(lo, unit: unit)) … \(EngineeringNotation.compact(hi, unit: unit))"
+                }
+                if let steps = state.allowedSteps {
+                    text += "  steps " + steps.map { EngineeringNotation.compact($0, unit: setting.unit ?? .none) }.joined(separator: ", ")
+                }
+                print("  \(setting.label) [\(setting.header)]: \(text)")
+            }
+        }
+        if try await meter.function() != original { try await meter.setFunction(original) }
+    } catch {
+        print("error: \(error.localizedDescription)")
+    }
+    await meter.disconnect(returnToLocal: !stayRemote)
+
+default:
+    fail("unknown command \"\(verb)\"")
+}
