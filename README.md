@@ -2,13 +2,13 @@
 
 # Keysight DMM for macOS
 
-A native Mac app for controlling a Keysight Truevolt bench multimeter (34470A, and in
-principle the 34460A, 34461A and 34465A) over the network.
+<a href="https://www.buymeacoffee.com/douggaff" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
-Keysight's own software for these meters is Windows-only. This app finds the meter on
-your LAN, shows live readings, exposes the meter's settings with the same names the
-front panel uses, and runs data logs and fast captures that are timed by the meter
-itself.
+This is a native Mac app for controlling a Keysight Truevolt bench multimeter (34470A, and in
+principle the 34460A, 34461A and 34465A) over the network using SCPI commands. I had Claude Fable 5.2 (and Sonnet 5.5 sub-agents) build this because Keysight doesn't offer a Mac app similar to its Bench View DMM Windows app.
+
+This app finds the meter on your LAN, shows live readings, exposes the meter's settings with the same names the
+front panel uses, and runs data logs and fast captures that are timed by the meter itself.
 
 ![Measure page showing a live reading, statistics, a trend chart and the settings panel](docs/screenshots/measure.png)
 

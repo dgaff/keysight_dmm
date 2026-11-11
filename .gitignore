@@ -7,3 +7,4 @@ xcuserdata/
 # Keysight's copyrighted manual and text extracted from it (regenerate with scripts/extract_manual.sh)
 KeysightDMM.pdf
 docs/manual/
+sample_screens/
