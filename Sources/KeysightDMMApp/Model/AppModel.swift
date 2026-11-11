@@ -63,7 +63,11 @@ final class AppModel {
         case .simulator: transport = SimulatedMeter()
         }
         do {
-            let connected = try await MeterController.connect(transport: transport, isSimulated: target == .simulator)
+            // Demo recordings are kept apart from real ones (and are not worth keeping).
+            let demoStore = RecordingStore(directory: FileManager.default.temporaryDirectory.appendingPathComponent("KeysightDMM-Demo-Recordings"))
+            let connected = try await MeterController.connect(
+                transport: transport, isSimulated: target == .simulator,
+                store: target == .simulator ? demoStore : .standard)
             guard connected.model != nil else {
                 await connected.shutdown()
                 connectionError = "\(connected.identity.manufacturer) \(connected.identity.model) is not a Truevolt multimeter (34460A, 34461A, 34465A or 34470A)."

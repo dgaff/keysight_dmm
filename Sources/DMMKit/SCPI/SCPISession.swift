@@ -8,6 +8,11 @@ public struct SCPITrafficEvent: Sendable {
     public let text: String
 }
 
+public enum SCPIResponse: Sendable, Equatable {
+    case text(String)
+    case block(Data)
+}
+
 /// Serialises command/response exchanges with one instrument.
 ///
 /// Every public operation takes the session lock, so callers on different tasks (a live
@@ -154,6 +159,37 @@ public actor SCPISession {
             _ = try await inbox.line(timeout: limit)  // trailing terminator
             trace(.received, "#\(digits)\(length)<\(length) bytes>")
             return payload
+        } catch {
+            throw note(error, command: command)
+        }
+    }
+
+    /// Sends a query whose response type is not known in advance (the console) and
+    /// returns it as text, or as a block's payload if it starts with `#`.
+    public func rawQueryAny(_ command: String, timeout: Duration? = nil) async throws -> SCPIResponse {
+        try await rawWrite(command)
+        let limit = timeout ?? defaultTimeout
+        let inbox = transport.inbox
+        do {
+            let first = try await inbox.bytes(1, timeout: limit)
+            if first[0] == UInt8(ascii: "#") {
+                let digitByte = try await inbox.bytes(1, timeout: limit)
+                if let digits = Int(String(decoding: digitByte, as: UTF8.self)), digits > 0 {
+                    let lengthField = try await inbox.bytes(digits, timeout: limit)
+                    if let length = Int(String(decoding: lengthField, as: UTF8.self)) {
+                        let payload = try await inbox.bytes(length, timeout: limit)
+                        _ = try await inbox.line(timeout: limit)
+                        trace(.received, "#\(digits)\(length)<\(length) bytes>")
+                        return .block(payload)
+                    }
+                }
+                desynced = true
+                throw SCPIError.malformedResponse(command: command, response: "#…")
+            }
+            let rest = first[0] == 0x0A ? Data() : try await inbox.line(timeout: limit)
+            let text = String(decoding: first + rest, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
+            trace(.received, text)
+            return .text(text)
         } catch {
             throw note(error, command: command)
         }

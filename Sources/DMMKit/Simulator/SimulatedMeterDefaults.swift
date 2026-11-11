@@ -112,6 +112,19 @@ extension SimulatedMeter {
         quoted("TEMP:SEC")
         mnemonic("UNIT:TEMP", "C")
 
+        // Math
+        flag("CALC:SCAL:STAT")
+        mnemonic("CALC:SCAL:FUNC", "DB")
+        number("CALC:SCAL:DBM:REF", 600, 50, 8000)
+        number("CALC:SCAL:DB:REF", 0, -200, 200)
+        flag("CALC:SCAL:REF:AUTO", true)
+        number("CALC:SCAL:REF", 0, -1e15, 1e15)
+        number("CALC:SCAL:GAIN", 1, -1e15, 1e15)
+        number("CALC:SCAL:OFFS", 0, -1e15, 1e15)
+        flag("CALC:LIM:STAT")
+        number("CALC:LIM:LOW", 0, -1e15, 1e15)
+        number("CALC:LIM:UPP", 0, -1e15, 1e15)
+
         // Sampling, triggering and data format (used by acquisitions)
         mnemonic("SAMP:SOUR", "IMM")
         number("SAMP:TIM", 1, 1e-3, 3600)

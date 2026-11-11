@@ -16,6 +16,8 @@ final class MeterController {
 
     /// State of a meter-paced logging run, for progress display.
     struct LogState {
+        enum Purpose { case dataLog, digitize }
+        var purpose: Purpose
         var plan: AcquisitionPlan
         var info: AcquisitionInfo?
         var recording: Recording
@@ -90,12 +92,20 @@ final class MeterController {
     @ObservationIgnored private var resumedAfterPause = false
     @ObservationIgnored private var logTask: Task<Void, Never>?
     @ObservationIgnored private var logRun: AcquisitionRun?
+    @ObservationIgnored private let store: RecordingStore
 
     /// Connects, identifies the meter and adopts its current configuration.
-    static func connect(transport: any SCPITransport, isSimulated: Bool = false) async throws -> MeterController {
+    static func connect(
+        transport: any SCPITransport, isSimulated: Bool = false, store: RecordingStore = .standard
+    ) async throws -> MeterController {
         let (stream, continuation) = AsyncStream.makeStream(of: SCPITrafficEvent.self, bufferingPolicy: .bufferingNewest(5_000))
         let meter = try await Multimeter.connect(transport: transport, trafficHandler: { continuation.yield($0) })
-        let controller = MeterController(meter: meter, endpoint: transport.endpointDescription, isSimulated: isSimulated)
+        let controller = MeterController(meter: meter, endpoint: transport.endpointDescription, isSimulated: isSimulated, store: store)
+        let stored = await Task.detached(priority: .userInitiated) { store.loadAll() }.value
+        controller.recordings = stored.recordings
+        if !stored.unreadable.isEmpty {
+            controller.log("Could not read \(stored.unreadable.count) saved recording file(s) in \(store.directory.path): \(stored.unreadable.joined(separator: ", "))")
+        }
         controller.trafficTask = Task { [weak controller] in
             for await event in stream {
                 controller?.record(event)
@@ -108,7 +118,8 @@ final class MeterController {
         return controller
     }
 
-    private init(meter: Multimeter, endpoint: String, isSimulated: Bool) {
+    private init(meter: Multimeter, endpoint: String, isSimulated: Bool, store: RecordingStore) {
+        self.store = store
         self.meter = meter
         self.identity = meter.identity
         self.endpointDescription = endpoint
@@ -121,6 +132,15 @@ final class MeterController {
 
     /// Unit of the primary reading, accounting for `UNIT:TEMP`.
     var unit: MeasurementUnit {
+        // With scaling on, READ? returns the scaled value, so the unit follows the math.
+        if states["scaling"]?.value.bool == true, let kind = states["scalingFunction"]?.value.choice {
+            switch kind {
+            case "DB": return .decibel
+            case "DBM": return .dBm
+            case "PCT": return .percent
+            default: return .none
+            }
+        }
         guard function == .temperature, let choice = states["unit"]?.value.choice else { return function.unit }
         switch choice {
         case "F": return .fahrenheit
@@ -131,11 +151,7 @@ final class MeterController {
 
     /// Settings whose `visibleWhen` condition currently holds, in profile order.
     var visibleSettings: [MeterSetting] {
-        settings.filter { setting in
-            guard states[setting.id] != nil else { return false }
-            guard let condition = setting.visibleWhen else { return true }
-            return states[condition.settingID]?.value == condition.equals
-        }
+        settings.filter { $0.isVisible(in: states) }
     }
 
     /// Live readings need the meter to trigger itself.
@@ -176,7 +192,9 @@ final class MeterController {
                 clearHistory()
             }
             triggerSource = try await meter.triggerSource()
+            let before = unit
             states = try await meter.readSettings(settings)
+            if unit != before { clearHistory() }
         } catch {
             handle(error)
         }
@@ -184,7 +202,11 @@ final class MeterController {
 
     func refreshSettings() async {
         do {
+            // A change of unit (scaling on or off, °C to °F) starts a new history:
+            // old and new readings cannot share one chart or one set of statistics.
+            let before = unit
             states = try await meter.readSettings(settings)
+            if unit != before { clearHistory() }
         } catch {
             handle(error)
         }
@@ -308,7 +330,7 @@ final class MeterController {
 
     /// Starts a run paced by the meter's sample timer. Live readings pause for the
     /// duration and resume afterwards if they were running.
-    func startLog(_ plan: AcquisitionPlan, name: String) async {
+    func startLog(_ plan: AcquisitionPlan, name: String, purpose: LogState.Purpose = .dataLog) async {
         guard !isLogging, link == .connected else { return }
         isLogging = true
         let resumeLive = isLive
@@ -318,7 +340,7 @@ final class MeterController {
         let recording = Recording(
             name: name, instrument: identity, function: function, unit: unit,
             timing: .meterPaced(interval: 0), started: Date(), settings: settingNotes)
-        log = LogState(plan: plan, recording: recording)
+        log = LogState(purpose: purpose, plan: plan, recording: recording)
         let run = meter.acquire(plan)
         logRun = run
         logTask = Task { [weak self] in
@@ -358,7 +380,7 @@ final class MeterController {
 
     private func finishLog(resumeLive: Bool) {
         if let finished = log, finished.recording.count > 0 {
-            recordings.insert(finished.recording, at: 0)
+            keep(finished.recording)
         }
         logRun = nil
         logTask = nil
@@ -380,16 +402,160 @@ final class MeterController {
     func stopLiveCapture() {
         guard let capture = liveCapture else { return }
         liveCapture = nil
-        if capture.count > 0 { recordings.insert(capture, at: 0) }
+        if capture.count > 0 { keep(capture) }
+    }
+
+    /// Adds a finished recording to the list and writes it to disk in the background.
+    private func keep(_ recording: Recording) {
+        recordings.insert(recording, at: 0)
+        persist(recording)
+    }
+
+    private func persist(_ recording: Recording) {
+        let store = store
+        Task.detached(priority: .utility) { [weak self] in
+            do {
+                try store.save(recording)
+            } catch {
+                await self?.log("Could not save the recording \"\(recording.name)\" to disk: \(error.localizedDescription)")
+            }
+        }
     }
 
     func deleteRecording(_ id: Recording.ID) {
         recordings.removeAll { $0.id == id }
+        try? store.delete(id)
     }
 
     func renameRecording(_ id: Recording.ID, to name: String) {
         guard let index = recordings.firstIndex(where: { $0.id == id }) else { return }
         recordings[index].name = name
+        persist(recordings[index])
+    }
+
+    // MARK: Digitizing
+
+    /// Sets the current function up for the highest sample rate (fixed range, auto zero
+    /// off, shortest integration, no trigger delay) and re-reads the settings.
+    func applyFastestSamplingPreset() async {
+        guard !isLogging else { return }
+        let wasLive = isLive
+        await stopLive()
+        await perform { try await self.meter.applyFastestSamplingPreset() }
+        await refreshSettings()
+        if wasLive { startLive() }
+    }
+
+    // MARK: Console
+
+    /// Commands the console will not send: they change calibration or erase the meter.
+    static func isBlocked(_ command: String) -> Bool {
+        command.split(separator: ";").contains { part in
+            var header = part.trimmingCharacters(in: .whitespaces).uppercased()
+            if header.hasPrefix(":") { header.removeFirst() }
+            let isQuery = header.split(separator: " ").first?.hasSuffix("?") ?? false
+            if header.hasPrefix("CAL") && !isQuery { return true }
+            return header.hasPrefix("SYST:SEC") && !isQuery
+        }
+    }
+
+    /// Sends one line typed in the console. The exchange appears in `traffic`; the
+    /// return value is a short outcome for display next to the input field.
+    func sendConsole(_ line: String) async -> String {
+        let command = line.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !command.isEmpty, link == .connected else { return "" }
+        guard !isLogging else { return "A data log is running. Stop it before sending commands." }
+        guard !Self.isBlocked(command) else {
+            return "Not sent: commands that change calibration or security are blocked in this app."
+        }
+        let wasLive = isLive
+        await stopLive()  // keep typed queries from interleaving with a measurement in progress
+        defer { if wasLive { startLive() } }
+        do {
+            var outcome = "Sent."
+            if command.contains("?") {
+                switch try await meter.session.exclusive({ try await $0.rawQueryAny(command, timeout: .seconds(15)) }) {
+                case .text(let text): outcome = text
+                case .block(let data):
+                    let text = String(data: data, encoding: .utf8).flatMap { $0.allSatisfy { !$0.isASCII || $0.isNewline || ($0.asciiValue ?? 0) >= 32 } ? $0 : nil }
+                    outcome = text ?? "Binary block, \(data.count) bytes."
+                }
+            } else {
+                try await meter.session.write(command)
+            }
+            let errors = try await meter.session.drainErrors()
+            if !errors.isEmpty { outcome = errors.map(\.description).joined(separator: "; ") }
+            await adoptCurrentState()  // the command may have changed anything
+            return outcome
+        } catch SCPIError.timeout {
+            let errors = (try? await meter.session.drainErrors()) ?? []
+            return errors.isEmpty ? "No response." : errors.map(\.description).joined(separator: "; ")
+        } catch {
+            handle(error)
+            return error.localizedDescription
+        }
+    }
+
+    // MARK: Utilities
+
+    func meterInfo() async -> MeterInfo? {
+        await attempt { try await self.meter.info() }
+    }
+
+    /// Runs something that needs the meter to itself (self-test, autocalibration,
+    /// preset…), pausing live readings around it and adopting the resulting state.
+    private func exclusively<T: Sendable>(_ operation: @escaping () async throws -> T) async -> T? {
+        guard !isLogging else { return nil }
+        let wasLive = isLive
+        await stopLive()
+        isApplying = true
+        let result = await attempt(operation)
+        isApplying = false
+        await adoptCurrentState()
+        if wasLive { startLive() }
+        return result
+    }
+
+    /// Nil if it could not run; otherwise the failures (empty means pass).
+    func selfTest() async -> [InstrumentError]? {
+        await exclusively { try await self.meter.selfTest() }
+    }
+
+    func autocalibrate() async -> [InstrumentError]? {
+        await exclusively { try await self.meter.autocalibrate() }
+    }
+
+    func preset() async -> Bool {
+        await exclusively { try await self.meter.preset(); return true } ?? false
+    }
+
+    func saveState(slot: Int) async -> Bool {
+        await attempt { try await self.meter.saveState(slot: slot); return true } ?? false
+    }
+
+    func recallState(slot: Int) async -> Bool {
+        await exclusively { try await self.meter.recallState(slot: slot); return true } ?? false
+    }
+
+    func loadState(from file: MeterFile) async -> Bool {
+        await exclusively { try await self.meter.loadState(from: file.path); return true } ?? false
+    }
+
+    func storeState(named name: String) async -> Bool {
+        let path = Multimeter.internalRoot + name + (name.lowercased().hasSuffix(".sta") ? "" : ".sta")
+        return await attempt { try await self.meter.storeState(to: path); return true } ?? false
+    }
+
+    func setClockToNow() async -> Bool {
+        await attempt { try await self.meter.setClock(); return true } ?? false
+    }
+
+    func beep() async {
+        _ = await attempt { try await self.meter.beep() }
+    }
+
+    func setDisplayText(_ text: String?) async -> Bool {
+        await attempt { try await self.meter.setDisplayText(text); return true } ?? false
     }
 
     /// Default name for the next recording, e.g. "DC Voltage log 3".

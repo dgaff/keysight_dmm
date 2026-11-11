@@ -6,7 +6,14 @@ import Foundation
 /// Step lists are the superset across the Truevolt family; the connected meter's
 /// `MIN`/`MAX` answers trim them (see `Multimeter.readSettings`).
 extension FunctionProfile {
+    /// The function's own settings followed by the math settings (scaling, limits)
+    /// that apply to it.
     public static func profile(for function: MeasurementFunction) -> FunctionProfile {
+        let own = measurementSettings(for: function)
+        return FunctionProfile(function: function, settings: own.settings + mathSettings(for: function))
+    }
+
+    static func measurementSettings(for function: MeasurementFunction) -> FunctionProfile {
         switch function {
         case .dcVoltage: dcVoltage
         case .acVoltage: acVoltage
@@ -22,6 +29,89 @@ extension FunctionProfile {
         case .diode: diode
         case .dcRatio: dcRatio
         }
+    }
+
+    // MARK: Math (manual pp. 101–113, 206–232). Verified on a 34470A: with scaling on,
+    // READ? returns the scaled value; continuity and diode reject scaling (-221).
+
+    static func mathSettings(for function: MeasurementFunction) -> [MeterSetting] {
+        switch function {
+        case .continuity, .diode, .dcRatio: return []
+        default: break
+        }
+        let isVoltage = function == .dcVoltage || function == .acVoltage
+        let on = MeterSetting.Condition("scaling", equals: .bool(true))
+        func when(_ kind: String) -> MeterSetting.Condition {
+            .init("scalingFunction", equals: .choice(kind), and: [on])
+        }
+        // The selection is shared by all functions on the meter, so dB and dBm are listed
+        // everywhere (the meter may report them); it refuses them outside voltage.
+        let note = isVoltage ? "" : " (voltage only)"
+        let kinds: [MeterSetting.Choice] = [
+            .init("DB", "dB" + note), .init("DBM", "dBm" + note),
+            .init("PCT", "Percent change"), .init("SCAL", "Gain and offset (Mx-B)"),
+        ]
+        let limitsOn = MeterSetting.Condition("limits", equals: .bool(true))
+
+        var settings: [MeterSetting] = [
+            MeterSetting(
+                id: "scaling", label: "Scaling", group: "Scaling", header: "CALC:SCAL:STAT",
+                control: .toggle,
+                help: "Converts every reading with the chosen function before it is displayed and returned. The meter turns scaling off whenever the measurement function changes."),
+            MeterSetting(
+                id: "scalingFunction", label: "Function", group: "Scaling", header: "CALC:SCAL:FUNC",
+                control: .choice(kinds),
+                help: "What scaling computes: dB or dBm (voltage only), percent change from a reference, or reading × gain − offset.",
+                visibleWhen: on),
+        ]
+        if isVoltage {
+            settings += [
+                MeterSetting(
+                    id: "dbmReference", label: "Ref R", group: "Scaling", header: "CALC:SCAL:DBM:REF",
+                    control: .steps([50, 75, 93, 110, 124, 125, 135, 150, 250, 300, 500, 600, 800, 900, 1000, 1200, 8000], unit: .ohm),
+                    help: "The load resistance the power is referred to: dBm = 10·log10(V² / R / 1 mW). Use the impedance of the system being measured (600 Ω audio, 50 Ω RF).",
+                    visibleWhen: when("DBM")),
+                MeterSetting(
+                    id: "dbReference", label: "dB Ref Value", group: "Scaling", header: "CALC:SCAL:DB:REF",
+                    control: .number(unit: .dBm),
+                    auto: .init(header: "CALC:SCAL:REF:AUTO", label: "Use first reading"),
+                    help: "The level, in dBm, that reads as 0 dB. Readings show how far above or below it they are. The dBm conversion uses the reference resistance set for dBm.",
+                    visibleWhen: when("DB")),
+            ]
+        }
+        settings += [
+            MeterSetting(
+                id: "percentReference", label: "Reference", group: "Scaling", header: "CALC:SCAL:REF",
+                control: .number(unit: function.unit),
+                auto: .init(header: "CALC:SCAL:REF:AUTO", label: "Use first reading"),
+                help: "The value that reads as 0 %. Readings show the percentage difference from it.",
+                visibleWhen: when("PCT"), models: advancedModels),
+            MeterSetting(
+                id: "gain", label: "Gain (M)", group: "Scaling", header: "CALC:SCAL:GAIN",
+                control: .number(unit: .none),
+                help: "Each reading is multiplied by this before the offset is subtracted. Use it to convert a sensor's output to its real quantity.",
+                visibleWhen: when("SCAL"), models: advancedModels),
+            MeterSetting(
+                id: "offset", label: "Offset (B)", group: "Scaling", header: "CALC:SCAL:OFFS",
+                control: .number(unit: .none),
+                help: "Subtracted from each reading after the gain is applied.",
+                visibleWhen: when("SCAL"), models: advancedModels),
+            MeterSetting(
+                id: "limits", label: "Limits", group: "Limits", header: "CALC:LIM:STAT",
+                control: .toggle,
+                help: "Has the meter itself check each reading against a lower and upper limit. The meter's display shows pass or fail, and a rear-panel pulse can be issued. This is separate from the limit lines the app draws on a data log."),
+            MeterSetting(
+                id: "limitLower", label: "Low", group: "Limits", header: "CALC:LIM:LOW",
+                control: .number(unit: function.unit),
+                help: "Readings below this fail. Compared with the reading as displayed, so after null and scaling.",
+                visibleWhen: limitsOn),
+            MeterSetting(
+                id: "limitUpper", label: "High", group: "Limits", header: "CALC:LIM:UPP",
+                control: .number(unit: function.unit),
+                help: "Readings above this fail. Compared with the reading as displayed, so after null and scaling.",
+                visibleWhen: limitsOn),
+        ]
+        return settings
     }
 
     // MARK: Shared building blocks

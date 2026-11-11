@@ -71,3 +71,52 @@ import Testing
         #expect(recording.statistics.excluded == 1)
     }
 }
+
+@Suite struct RecordingStoreTests {
+    @Test func saveLoadRenameDelete() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("dmmkit-store-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let store = RecordingStore(directory: directory)
+        #expect(store.loadAll().recordings.isEmpty)
+
+        let identity = InstrumentIdentity(manufacturer: "K", model: "34470A", serialNumber: "1", firmware: "A")
+        var older = Recording(name: "Older", instrument: identity, function: .dcVoltage, unit: .volt,
+                              timing: .meterPaced(interval: 0.1), started: Date(timeIntervalSince1970: 1000), values: [1, .infinity, 3])
+        let newer = Recording(name: "Newer", instrument: identity, function: .temperature, unit: .fahrenheit,
+                              timing: .appTimed, started: Date(timeIntervalSince1970: 2000), values: [70.5], times: [0.25])
+        try store.save(older)
+        try store.save(newer)
+        try Data("not json".utf8).write(to: directory.appendingPathComponent("broken.json"))
+
+        var loaded = store.loadAll()
+        #expect(loaded.recordings.map(\.name) == ["Newer", "Older"])
+        #expect(loaded.recordings[0] == newer)
+        #expect(loaded.recordings[1].values == older.values)
+        #expect(loaded.unreadable == ["broken.json"])
+
+        older.name = "Renamed"
+        try store.save(older)
+        try store.delete(newer.id)
+        loaded = store.loadAll()
+        #expect(loaded.recordings.map(\.name) == ["Renamed"])
+    }
+}
+
+@Suite struct UtilityTests {
+    @Test func calibrationDateFormatting() {
+        #expect(Multimeter.isoDate("+2025,+3,+7") == "2025-03-07")
+        #expect(Multimeter.isoDate("2014,4,26") == "2014-04-26")
+        #expect(Multimeter.isoDate("junk") == nil)
+    }
+
+    @Test func textOrBlockResponses() async throws {
+        let transport = ScriptedTransport()
+        transport.on("FUNC?", reply: "\"VOLT\"\n")
+        transport.on("SYST:HELP?", reply: Data("#212".utf8) + Data("line1\nline2\n".utf8) + Data("\n".utf8))
+        transport.on("*OPC?", reply: "1\n")
+        let session = SCPISession(transport: transport)
+        #expect(try await session.exclusive { try await $0.rawQueryAny("FUNC?") } == .text("\"VOLT\""))
+        #expect(try await session.exclusive { try await $0.rawQueryAny("SYST:HELP?") } == .block(Data("line1\nline2\n".utf8)))
+        #expect(try await session.query("*OPC?") == "1")
+    }
+}

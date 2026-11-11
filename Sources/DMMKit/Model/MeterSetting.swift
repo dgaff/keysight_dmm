@@ -51,10 +51,23 @@ public struct MeterSetting: Sendable, Identifiable, Hashable {
     public struct Condition: Sendable, Hashable {
         public let settingID: String
         public let equals: SettingValue
-        public init(_ settingID: String, equals: SettingValue) {
+        /// Further conditions that must hold as well.
+        public let and: [Condition]
+        public init(_ settingID: String, equals: SettingValue, and: [Condition] = []) {
             self.settingID = settingID
             self.equals = equals
+            self.and = and
         }
+
+        public func holds(in states: [String: SettingState]) -> Bool {
+            states[settingID]?.value == equals && and.allSatisfy { $0.holds(in: states) }
+        }
+    }
+
+    /// Whether the setting should be shown, given what the meter reported: it must have
+    /// answered, and its `visibleWhen` condition (if any) must hold.
+    public func isVisible(in states: [String: SettingState]) -> Bool {
+        states[id] != nil && (visibleWhen?.holds(in: states) ?? true)
     }
 
     /// Stable identifier, unique within one function's profile (e.g. `"range"`).

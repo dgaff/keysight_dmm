@@ -266,6 +266,12 @@ case "undocumented":
         if SCPICatalogue.shared.lookup(concrete) == nil { print(line) }
     }
 
+case "info":
+    guard let host = arguments.first else { fail("usage: dmmprobe info <host>") }
+    let meter = await connect(host)
+    if let info = try? await meter.info() { dump(info) }
+    await meter.disconnect(returnToLocal: !stayRemote)
+
 default:
     fail("unknown command \"\(verb)\"")
 }
