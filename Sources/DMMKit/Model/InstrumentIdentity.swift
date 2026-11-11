@@ -1,7 +1,7 @@
 import Foundation
 
 /// Parsed `*IDN?` response: `Keysight Technologies,34470A,MY64017466,A.03.03-03.15-03.03-00.52-05-02`.
-public struct InstrumentIdentity: Sendable, Equatable, Hashable {
+public struct InstrumentIdentity: Sendable, Equatable, Hashable, Codable {
     public let manufacturer: String
     public let model: String
     public let serialNumber: String

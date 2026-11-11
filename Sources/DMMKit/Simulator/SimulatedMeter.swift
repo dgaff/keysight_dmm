@@ -30,6 +30,23 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
     ]
     public var noiseFraction = 2e-6
 
+    /// A run started by `INIT`: readings become available as simulated time passes.
+    private struct Run {
+        var started: Date
+        var interval: Double
+        var count: Int
+        var delivered = 0
+        /// Set by `ABOR`: no readings after this many.
+        var cappedAt: Int?
+
+        func taken(at now: Date) -> Int {
+            let elapsed = now.timeIntervalSince(started)
+            let byTime = elapsed < 0 ? 0 : Int(elapsed / interval) + 1
+            return min(count, cappedAt ?? .max, byTime)
+        }
+    }
+    private var run: Run?
+
     public static let idn = "Keysight Technologies,34470A,SIM0000001,A.03.03-03.15-03.03-00.52-05-02"
 
     public init() {
@@ -55,17 +72,22 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
         guard lock.withLock({ connected }) else { throw .notConnected }
         let text = String(decoding: data, as: UTF8.self)
         for line in text.split(whereSeparator: \.isNewline) {
-            var responses: [String] = []
+            var responses: [Data] = []
             lock.withLock {
                 received.append(String(line))
                 for command in line.split(separator: ";") {
-                    if let response = handle(command.trimmingCharacters(in: .whitespaces)) {
-                        responses.append(response)
+                    let trimmed = command.trimmingCharacters(in: .whitespaces)
+                    if let block = handleReadingMemory(trimmed) {
+                        responses.append(block)
+                    } else if let response = handle(trimmed) {
+                        responses.append(Data(response.utf8))
                     }
                 }
             }
             if !responses.isEmpty {
-                inbox.append(Data((responses.joined(separator: ";") + "\n").utf8))
+                var out = Data(responses.joined(separator: Data(";".utf8)))
+                out.append(0x0A)
+                inbox.append(out)
             }
         }
     }
@@ -73,6 +95,33 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
     /// Queues an error as the instrument would, e.g. to test error surfacing.
     public func injectError(_ code: Int, _ message: String) {
         lock.withLock { errors.append("\(code),\"\(message)\"") }
+    }
+
+    /// `R? [max]`: removes readings from the simulated memory and returns them as a
+    /// definite-length block in the current `FORM:DATA`. Called with the lock held.
+    private func handleReadingMemory(_ command: String) -> Data? {
+        let parts = command.split(separator: " ", maxSplits: 1).map(String.init)
+        guard let head = parts.first?.uppercased(), head == "R?" || head == ":R?" else { return nil }
+        var available = 0
+        if var current = run {
+            available = current.taken(at: Date()) - current.delivered
+            if parts.count > 1, let limit = Int(parts[1]) { available = min(available, limit) }
+            current.delivered += available
+            run = current
+        }
+        let values = (0..<available).map { _ in simulatedReading() }
+        var payload = Data()
+        if (settings["FORM:DATA"] ?? "ASC,9").hasPrefix("REAL") {
+            let swapped = settings["FORM:BORD"] == "SWAP"
+            for value in values {
+                let bits = swapped ? value.bitPattern.littleEndian : value.bitPattern.bigEndian
+                withUnsafeBytes(of: bits) { payload.append(contentsOf: $0) }
+            }
+        } else {
+            payload = Data(values.map(Self.formatNumber).joined(separator: ",").utf8)
+        }
+        let length = String(payload.count)
+        return Data("#\(length.count)\(length)".utf8) + payload
     }
 
     // Called with the lock held.
@@ -92,6 +141,11 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
             case "SYST:ERR": return errors.isEmpty ? "+0,\"No error\"" : errors.removeFirst()
             case "*OPC": return "1"
             case "*STB", "*ESR": return "+0"
+            case "STAT:OPER:COND":
+                guard let run else { return "+0" }
+                return run.taken(at: Date()) < min(run.count, run.cappedAt ?? .max) ? "+16" : "+0"
+            case "DATA:POIN":
+                return "+\(run.map { $0.taken(at: Date()) - $0.delivered } ?? 0)"
             case "READ", "MEAS", "FETC": return formatted(simulatedReading())
             default:
                 let canonical = Self.canonical(key)
@@ -117,7 +171,19 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
         case "*RST", "SYST:PRES":
             settings["FUNC"] = "\"VOLT\""
             settings = settings.filter { Self.defaults[$0.key] == nil }
-        case "SYST:LOC", "SYST:REM", "ABOR", "INIT", "*TRG", "*WAI":
+        case "ABOR":
+            if var current = run {
+                current.cappedAt = current.taken(at: Date())
+                run = current
+            }
+        case "INIT":
+            func number(_ key: String, _ fallback: Double) -> Double {
+                SCPIValue.parseDouble(settings[key] ?? Self.defaults[key]?.value ?? "") ?? fallback
+            }
+            let timed = (settings["SAMP:SOUR"] ?? "IMM") == "TIM"
+            run = Run(started: Date(), interval: timed ? number("SAMP:TIM", 1) : 0.01,
+                      count: Int(number("SAMP:COUN", 1)) * Int(min(number("TRIG:COUN", 1), 1e6)))
+        case "SYST:LOC", "SYST:REM", "*TRG", "*WAI":
             break
         case "FUNC":
             if let argument, let function = MeasurementFunction(scpiResponse: argument) {

@@ -180,6 +180,62 @@ case "settings":
     }
     await meter.disconnect(returnToLocal: !stayRemote)
 
+case "log":
+    // dmmprobe log <host> <interval-seconds|fast> <count>   meter-paced acquisition
+    guard arguments.count >= 3, let count = Int(arguments[2]) else { fail("usage: dmmprobe log <host> <interval|fast> <count>") }
+    let pacing: AcquisitionPlan.Pacing = arguments[1] == "fast" ? .fastest : .interval(Double(arguments[1]) ?? 1)
+    let meter = await connect(arguments[0])
+    do {
+        var stats = RunningStatistics()
+        var unit = MeasurementUnit.none
+        let began = Date()
+        for try await event in meter.acquire(AcquisitionPlan(pacing: pacing, stop: .samples(count))).events {
+            switch event {
+            case .started(let info):
+                unit = info.function.unit
+                print("started: \(info.function.displayName), interval \(EngineeringNotation.compact(info.interval, unit: .second)) (minimum \(EngineeringNotation.compact(info.minimumInterval, unit: .second))), autorange \(info.autorangeOn ? "ON" : "off")")
+            case .readings(let batch):
+                batch.forEach { stats.add($0) }
+                print(String(format: "  %6.2f s  +%d readings (total %d)", Date().timeIntervalSince(began), batch.count, stats.count + stats.excluded))
+            case .finished(let end, let total):
+                print("finished: \(end), \(total) readings in \(String(format: "%.2f", Date().timeIntervalSince(began))) s")
+            }
+        }
+        if !stats.isEmpty {
+            print("mean \(EngineeringNotation.string(stats.mean, unit: unit, significantDigits: 8)), min \(EngineeringNotation.string(stats.minimum, unit: unit)), max \(EngineeringNotation.string(stats.maximum, unit: unit)), sd \(EngineeringNotation.string(stats.standardDeviation ?? 0, unit: unit, significantDigits: 4))")
+        }
+    } catch {
+        print("error: \(error.localizedDescription)")
+    }
+    if let errors = try? await meter.session.drainErrors() { for e in errors { print("    instrument error: \(e)") } }
+    await meter.disconnect(returnToLocal: !stayRemote)
+
+case "files":
+    // dmmprobe files <host> [folder]
+    guard let host = arguments.first else { fail("usage: dmmprobe files <host> [folder]") }
+    let meter = await connect(host)
+    do {
+        let listing = try await meter.listFiles(in: arguments.count > 1 ? arguments[1] : Multimeter.internalRoot)
+        print("\(listing.folder)  used \(listing.bytesUsed) bytes, free \(listing.bytesFree) bytes")
+        for file in listing.files { print("  \(file.kind)\t\(file.size)\t\(file.name)") }
+    } catch {
+        print("error: \(error.localizedDescription)")
+    }
+    await meter.disconnect(returnToLocal: !stayRemote)
+
+case "screenshot":
+    // dmmprobe screenshot <host> <output.png>
+    guard arguments.count >= 2 else { fail("usage: dmmprobe screenshot <host> <output.png>") }
+    let meter = await connect(arguments[0])
+    do {
+        let png = try await meter.captureScreen()
+        try png.write(to: URL(fileURLWithPath: arguments[1]))
+        print("wrote \(png.count) bytes to \(arguments[1])")
+    } catch {
+        print("error: \(error.localizedDescription)")
+    }
+    await meter.disconnect(returnToLocal: !stayRemote)
+
 default:
     fail("unknown command \"\(verb)\"")
 }

@@ -112,6 +112,17 @@ extension SimulatedMeter {
         quoted("TEMP:SEC")
         mnemonic("UNIT:TEMP", "C")
 
+        // Sampling, triggering and data format (used by acquisitions)
+        mnemonic("SAMP:SOUR", "IMM")
+        number("SAMP:TIM", 1, 1e-3, 3600)
+        number("SAMP:COUN", 1, 1, 1e9)
+        number("TRIG:COUN", 1, 1, 1e6)
+        mnemonic("TRIG:SOUR", "IMM")
+        mnemonic("TRIG:SLOP", "NEG")
+        number("TRIG:DEL", 160e-6, 0, 3600)
+        flag("TRIG:DEL:AUTO", true)
+        mnemonic("FORM:BORD", "NORM")
+
         // Terminals answer "+3" / "+10" on the real meter.
         table["CURR:TERM"]?.value = "+3"
         table["CURR:AC:TERM"]?.value = "+3"

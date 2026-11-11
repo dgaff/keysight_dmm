@@ -2,7 +2,7 @@ import Foundation
 
 /// Physical unit of a value. Values are always stored in the unprefixed unit
 /// (volts, not millivolts); prefixes exist only in `EngineeringNotation`.
-public enum MeasurementUnit: Sendable, Hashable {
+public enum MeasurementUnit: Sendable, Hashable, Codable {
     case volt, ampere, ohm, farad, hertz, second
     case celsius, fahrenheit, kelvin
     case decibel, dBm, percent
