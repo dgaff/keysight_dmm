@@ -35,8 +35,40 @@ Genuinely undocumented and potentially useful:
 
 Also observed: `CALC:FUNC?` → `NULL`, `CALC:STAT?` → `1` (legacy view of the math state).
 
+## `SYSTem:FPANel:KEYPress` (explored 2026-11-11 with Doug at the meter)
+
+**It presses real front-panel keys, and it works while the meter is in remote.**
+
+- Parameter: one quoted, case-sensitive key name. Unquoted → -148, number → -128,
+  unknown name → -222 "Data out of range". No query form.
+- Key names found (each confirmed by the meter accepting it; effects confirmed on the
+  display for those marked ✓):
+
+  | Keys | Names |
+  |---|---|
+  | Functions | `DCV` ✓, `ACV` ✓, `Ohms2W` ✓, `Freq`, `Cont`, `Temp` |
+  | Second functions (DCI, ACI, Ω4W, Cap, Diode, Utility, Math, Probe Hold…) | `Shift` then the key they share; no names of their own were found |
+  | Menus and actions | `Acquire` ✓, `Display`, `Null` ✓, `Range` ✓, `Single` ✓ (sets a bus trigger), `RunStop`, `Help`, `Back`, `Select` |
+  | Soft keys, left to right | `Softkey0` … `Softkey5` ✓ (zero-based) |
+  | Navigation | `ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight` |
+  | Numeric entry | `0`–`9`, `.`, `+/-` |
+
+  Not found: a `Local` key name.
+- **Data Log mode can be selected but does not survive remote access.**
+  `Acquire`, `Softkey0`, `Softkey1` selects Data Log (the menu shows Continuous /
+  Data Log / Digitize). The very next SCPI command of any kind puts the display back
+  to Continuous, as the manual warns. What stays behind is `SAMP:SOUR TIM`,
+  `SAMP:TIM 1`, `SAMP:COUN 400`: front-panel Data Log mode is a wrapper over the same
+  sample-timer settings the app's Data Log already uses. So there is nothing to gain
+  for an attended log. The one thing the front panel can do that SCPI cannot is log
+  **to a file on the meter with no computer attached**; driving that blind through key
+  presses and numeric entry would be fragile.
+- Lesson: an accepted name has already pressed the key. Guess one name at a time and
+  look at the display; save the state first (`MMEM:STOR:STAT`) and load it afterwards.
+- Useful application: with `HCOP:SDUM:DATA?` for the picture and this for the keys,
+  the app could offer a working remote front panel.
+
 ## Next steps (with Doug at the bench)
 
-1. Try `SYST:FPAN:KEYP` with plausible key names while watching the display.
 2. Find the legal values of `…:AC:MODE` (try sending an invalid one and read the error).
 3. Decide which of these to expose under an "Experimental" switch in the app.
