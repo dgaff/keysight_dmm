@@ -269,6 +269,16 @@ struct MeterView: View {
 
     private var frontPanelSection: some View {
         Section("Front panel") {
+            if let url = info?.webInterfaceURL {
+                VStack(alignment: .leading, spacing: 4) {
+                    Link(destination: url) {
+                        Label("Open the meter's web page", systemImage: "safari")
+                    }
+                    Text("Opens \(url.absoluteString) in your browser. The meter's own web interface mirrors the front panel and lets you press its keys.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+            }
             Button("Beep") { Task { await controller.beep() } }.disabled(!idle)
             LabeledContent("Message") {
                 HStack {

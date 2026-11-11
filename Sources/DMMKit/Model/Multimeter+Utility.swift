@@ -11,6 +11,14 @@ public struct MeterInfo: Sendable, Equatable {
     /// `FRON` or `REAR`: which input terminals the front-panel switch selects.
     public var terminals: String?
     public var macAddress: String?
+    /// The meter's IP address as it reports it (`SYST:COMM:LAN:IPAD?`).
+    public var ipAddress: String?
+
+    /// The meter's built-in web interface, which mirrors the front panel.
+    public var webInterfaceURL: URL? {
+        guard let ipAddress, !ipAddress.isEmpty, ipAddress != "0.0.0.0" else { return nil }
+        return URL(string: "http://\(ipAddress)/")
+    }
     /// The meter's real-time clock, read as local time.
     public var clock: Date?
     public var calibrationDate: String?
@@ -37,6 +45,7 @@ extension Multimeter {
         info.lineFrequency = try await ask("SYST:LFR?").flatMap(SCPIValue.parseDouble)
         info.terminals = try await ask("ROUT:TERM?")
         info.macAddress = try await ask("SYST:COMM:LAN:MAC?").map(SCPIValue.parseString)
+        info.ipAddress = try await ask("SYST:COMM:LAN:IPAD?").map(SCPIValue.parseString)
         if let date = try await ask("SYST:DATE?").flatMap(SCPIValue.parseDoubleList), date.count == 3,
            let time = try await ask("SYST:TIME?").flatMap(SCPIValue.parseDoubleList), time.count == 3 {
             var components = DateComponents()

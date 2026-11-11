@@ -193,6 +193,7 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
             case "SYST:LFR": return "+60"
             case "ROUT:TERM": return "FRON"
             case "SYST:COMM:LAN:MAC": return "\"0030D3000001\""
+            case "SYST:COMM:LAN:IPAD": return "\"0.0.0.0\""
             case "CAL:DATE", "SYST:ACAL:DATE": return "+2026,+1,+15"
             case "CAL:COUN": return "+12"
             case "SYST:ACAL:TEMP": return Self.formatNumber(30.2)
