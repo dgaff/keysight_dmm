@@ -116,6 +116,8 @@ extension SimulatedMeter {
         mnemonic("SAMP:SOUR", "IMM")
         number("SAMP:TIM", 1, 1e-3, 3600)
         number("SAMP:COUN", 1, 1, 1e9)
+        number("SAMP:COUN:PRET", 0, 0, 49_999)
+        number("TRIG:LEV", 0, -1000, 1000)
         number("TRIG:COUN", 1, 1, 1e6)
         mnemonic("TRIG:SOUR", "IMM")
         mnemonic("TRIG:SLOP", "NEG")

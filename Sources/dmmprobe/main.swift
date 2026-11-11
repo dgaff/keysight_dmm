@@ -185,6 +185,10 @@ case "log":
     guard arguments.count >= 3, let count = Int(arguments[2]) else { fail("usage: dmmprobe log <host> <interval|fast> <count>") }
     let pacing: AcquisitionPlan.Pacing = arguments[1] == "fast" ? .fastest : .interval(Double(arguments[1]) ?? 1)
     let meter = await connect(arguments[0])
+    if takeFlag("--fastest-preset") {
+        let applied = (try? await meter.applyFastestSamplingPreset()) ?? []
+        print("preset: \(applied.joined(separator: "; "))")
+    }
     do {
         var stats = RunningStatistics()
         var unit = MeasurementUnit.none

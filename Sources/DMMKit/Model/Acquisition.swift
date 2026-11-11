@@ -27,16 +27,23 @@ public struct AcquisitionPlan: Sendable, Equatable {
         case immediate
         /// Start on an edge at the rear-panel Ext Trig input.
         case external(rising: Bool)
+        /// Start when the input crosses `level` (in the function's unit) in the given
+        /// direction. 34465A/70A only; needs a fixed range.
+        case level(Double, rising: Bool)
     }
 
     public var pacing: Pacing
     public var stop: Stop
     public var trigger: Trigger
+    /// Samples to keep from before the trigger (digitizing). Counted within the
+    /// total, so it must be less than the sample count. Not for immediate triggers.
+    public var pretriggerSamples: Int
 
-    public init(pacing: Pacing = .fastest, stop: Stop = .manual, trigger: Trigger = .immediate) {
+    public init(pacing: Pacing = .fastest, stop: Stop = .manual, trigger: Trigger = .immediate, pretriggerSamples: Int = 0) {
         self.pacing = pacing
         self.stop = stop
         self.trigger = trigger
+        self.pretriggerSamples = pretriggerSamples
     }
 }
 
@@ -133,7 +140,7 @@ extension Multimeter {
         try await session.write("ABOR")
 
         // Remember what we are about to change so the meter is left as we found it.
-        let savedHeaders = ["SAMP:SOUR", "SAMP:TIM", "SAMP:COUN", "TRIG:COUN", "TRIG:SOUR", "TRIG:SLOP", "FORM:DATA", "FORM:BORD"]
+        let savedHeaders = ["SAMP:COUN:PRET", "SAMP:SOUR", "SAMP:TIM", "SAMP:COUN", "TRIG:COUN", "TRIG:SLOP", "TRIG:LEV", "TRIG:SOUR", "FORM:DATA", "FORM:BORD"]
         let savedLine = try await session.query(savedHeaders.map { ":\($0)?" }.joined(separator: ";"))
         let savedValues = savedLine.split(separator: ";", omittingEmptySubsequences: false).map(String.init)
         guard savedValues.count == savedHeaders.count else {
@@ -197,6 +204,22 @@ extension Multimeter {
         case .external(let rising):
             try await session.set("TRIG:SOUR EXT")
             try await session.set("TRIG:SLOP \(rising ? "POS" : "NEG")")
+        case .level(let level, let rising):
+            guard level.isFinite else { throw AcquisitionError.invalidPlan("The trigger level must be a number.") }
+            try await session.set("TRIG:SOUR INT")
+            try await session.set("TRIG:LEV \(SCPIValue.number(level))")
+            try await session.set("TRIG:SLOP \(rising ? "POS" : "NEG")")
+        }
+        if plan.pretriggerSamples > 0 {
+            guard plan.trigger != .immediate else {
+                throw AcquisitionError.invalidPlan("Pre-trigger samples need an external or level trigger.")
+            }
+            guard let expected, plan.pretriggerSamples < expected else {
+                throw AcquisitionError.invalidPlan("Pre-trigger samples must be fewer than the total number of samples.")
+            }
+            try await session.set("SAMP:COUN:PRET \(plan.pretriggerSamples)")
+        } else {
+            try await session.set("SAMP:COUN:PRET 0")
         }
         // Binary transfer: 8 bytes per reading, full double precision, no text parsing.
         try await session.set("FORM:DATA REAL,64")
@@ -210,6 +233,26 @@ extension Multimeter {
         return AcquisitionInfo(
             interval: interval, minimumInterval: minimum, expectedCount: expected,
             started: Date(), function: function, autorangeOn: autorange)
+    }
+
+    /// The settings the manual's digitizing procedure uses for the highest sample rate
+    /// on the current function: fixed range, shortest integration, auto zero off, no
+    /// trigger delay. Returns the commands that were accepted, for display. Settings the
+    /// current function does not have are skipped.
+    @discardableResult
+    public func applyFastestSamplingPreset() async throws -> [String] {
+        let function = try await function()
+        let prefix = function.scpi
+        var applied: [String] = []
+        for command in ["\(prefix):RANG:AUTO OFF", "\(prefix):ZERO:AUTO OFF", "\(prefix):NPLC MIN", "TRIG:DEL 0"] {
+            do {
+                try await session.set(command)
+                applied.append(command)
+            } catch SCPIError.instrument {
+                continue  // not applicable to this function (e.g. no NPLC on AC)
+            }
+        }
+        return applied
     }
 
     /// Collects readings until the run completes, the task is cancelled, or the meter
