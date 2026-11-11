@@ -14,6 +14,24 @@ final class MeterController {
         case closed
     }
 
+    /// State of a meter-paced logging run, for progress display.
+    struct LogState {
+        var plan: AcquisitionPlan
+        var info: AcquisitionInfo?
+        var recording: Recording
+        /// Set when the run is over.
+        var end: AcquisitionEnd?
+        /// Why the run failed, if it did.
+        var failure: String?
+
+        var isRunning: Bool { end == nil && failure == nil }
+        /// 0…1 when the number of samples is known in advance.
+        var progress: Double? {
+            guard let expected = info?.expectedCount, expected > 0 else { return nil }
+            return min(1, Double(recording.count) / Double(expected))
+        }
+    }
+
     struct LoggedError: Identifiable {
         let id = UUID()
         let date: Date
@@ -44,6 +62,17 @@ final class MeterController {
     /// Readings per second over the last few samples.
     private(set) var readingRate: Double?
 
+    // Meter-paced logging
+    /// The run in progress or just finished; nil before the first run.
+    private(set) var log: LogState?
+    /// True from Start until the run has finished and the meter's settings are restored.
+    private(set) var isLogging = false
+
+    // Recordings made in this session (meter-paced logs and app-timed captures), newest first.
+    private(set) var recordings: [Recording] = []
+    /// App-timed capture of live readings in progress.
+    private(set) var liveCapture: Recording?
+
     // Diagnostics
     private(set) var errors: [LoggedError] = []
     private(set) var traffic: [SCPITrafficEvent] = []
@@ -55,6 +84,8 @@ final class MeterController {
     @ObservationIgnored private var liveTask: Task<Void, Never>?
     @ObservationIgnored private var trafficTask: Task<Void, Never>?
     @ObservationIgnored private var nextIndex = 0
+    @ObservationIgnored private var logTask: Task<Void, Never>?
+    @ObservationIgnored private var logRun: AcquisitionRun?
 
     /// Connects, identifies the meter and adopts its current configuration.
     static func connect(transport: any SCPITransport, isSimulated: Bool = false) async throws -> MeterController {
@@ -109,7 +140,8 @@ final class MeterController {
     // MARK: Function and settings
 
     func setFunction(_ newFunction: MeasurementFunction) async {
-        guard newFunction != function else { return }
+        guard newFunction != function, !isLogging else { return }
+        if liveCapture != nil { stopLiveCapture() }  // a recording holds one function's unit
         await perform {
             try await self.meter.setFunction(newFunction)
         }
@@ -117,11 +149,13 @@ final class MeterController {
     }
 
     func apply(_ setting: MeterSetting, _ value: SettingValue) async {
+        guard !isLogging else { return }
         await perform { try await self.meter.apply(setting, value) }
         await refreshSettings()
     }
 
     func setAuto(_ setting: MeterSetting, _ mode: AutoMode) async {
+        guard !isLogging else { return }
         await perform { try await self.meter.setAuto(setting, mode) }
         await refreshSettings()
     }
@@ -165,7 +199,7 @@ final class MeterController {
     // MARK: Live readings
 
     func startLive() {
-        guard liveTask == nil, link == .connected else { return }
+        guard liveTask == nil, link == .connected, !isLogging else { return }
         isLive = true
         liveTask = Task { [weak self] in
             await self?.runLive()
@@ -223,6 +257,7 @@ final class MeterController {
             samples.removeFirst(Self.historyLimit / 10)
         }
         statistics.add(reading)
+        liveCapture?.append(reading, at: time)
     }
 
     func clearHistory() {
@@ -234,6 +269,151 @@ final class MeterController {
         nextIndex = 0
     }
 
+    // MARK: Meter-paced logging
+
+    /// Snapshot of the visible settings as text, stored with each recording.
+    var settingNotes: [Recording.SettingNote] {
+        visibleSettings.compactMap { setting in
+            guard let state = states[setting.id] else { return nil }
+            return Recording.SettingNote(label: setting.label, value: Self.text(for: state, of: setting))
+        }
+    }
+
+    static func text(for state: SettingState, of setting: MeterSetting) -> String {
+        var text: String
+        switch (state.value, setting.control) {
+        case (.number(let value), _):
+            text = EngineeringNotation.compact(value, unit: setting.unit ?? .none)
+        case (.bool(let on), _):
+            text = on ? setting.onLabel : setting.offLabel
+        case (.choice(let scpi), .choice(let choices)), (.choice(let scpi), .quotedChoice(let choices)):
+            text = choices.first { $0.scpi == scpi }?.label ?? scpi
+        case (.choice(let scpi), _):
+            text = scpi
+        }
+        if state.auto == true, let auto = setting.auto { text += " (\(auto.label))" }
+        return text
+    }
+
+    /// Starts a run paced by the meter's sample timer. Live readings pause for the
+    /// duration and resume afterwards if they were running.
+    func startLog(_ plan: AcquisitionPlan, name: String) async {
+        guard !isLogging, link == .connected else { return }
+        isLogging = true
+        let resumeLive = isLive
+        await stopLive()
+        if liveCapture != nil { stopLiveCapture() }
+
+        let recording = Recording(
+            name: name, instrument: identity, function: function, unit: unit,
+            timing: .meterPaced(interval: 0), started: Date(), settings: settingNotes)
+        log = LogState(plan: plan, recording: recording)
+        let run = meter.acquire(plan)
+        logRun = run
+        logTask = Task { [weak self] in
+            do {
+                for try await event in run.events {
+                    self?.handle(event)
+                }
+            } catch {
+                self?.log?.failure = error.localizedDescription
+                self?.handle(error)
+            }
+            self?.finishLog(resumeLive: resumeLive)
+        }
+    }
+
+    /// Ends the run early. Readings taken so far are kept.
+    func stopLog() {
+        logRun?.stop()
+    }
+
+    private func handle(_ event: AcquisitionEvent) {
+        switch event {
+        case .started(let info):
+            log?.info = info
+            log?.recording.timing = .meterPaced(interval: info.interval)
+            log?.recording.started = info.started
+        case .readings(let batch):
+            log?.recording.append(batch)
+            if let last = batch.last {
+                latest = Sample(index: nextIndex, time: Date(), reading: last)
+                nextIndex += 1
+            }
+        case .finished(let end, _):
+            log?.end = end
+        }
+    }
+
+    private func finishLog(resumeLive: Bool) {
+        if let finished = log, finished.recording.count > 0 {
+            recordings.insert(finished.recording, at: 0)
+        }
+        logRun = nil
+        logTask = nil
+        isLogging = false
+        if resumeLive, link == .connected { startLive() }
+    }
+
+    // MARK: Recordings
+
+    /// Starts keeping live readings as an app-timed recording.
+    func startLiveCapture(name: String) {
+        guard liveCapture == nil, !isLogging else { return }
+        liveCapture = Recording(
+            name: name, instrument: identity, function: function, unit: unit,
+            timing: .appTimed, started: Date(), settings: settingNotes)
+        if !isLive { startLive() }
+    }
+
+    func stopLiveCapture() {
+        guard let capture = liveCapture else { return }
+        liveCapture = nil
+        if capture.count > 0 { recordings.insert(capture, at: 0) }
+    }
+
+    func deleteRecording(_ id: Recording.ID) {
+        recordings.removeAll { $0.id == id }
+    }
+
+    func renameRecording(_ id: Recording.ID, to name: String) {
+        guard let index = recordings.firstIndex(where: { $0.id == id }) else { return }
+        recordings[index].name = name
+    }
+
+    /// Default name for the next recording, e.g. "DC Voltage log 3".
+    func suggestedName(_ kind: String) -> String {
+        "\(function.displayName) \(kind) \(recordings.count + 1)"
+    }
+
+    // MARK: Meter files and screen
+
+    func listFiles(in folder: String) async -> MeterFolderListing? {
+        await attempt { try await self.meter.listFiles(in: folder) }
+    }
+
+    func download(_ file: MeterFile) async -> Data? {
+        await attempt { try await self.meter.download(file.path) }
+    }
+
+    func deleteFile(_ file: MeterFile) async -> Bool {
+        await attempt { try await self.meter.deleteFile(file.path); return true } ?? false
+    }
+
+    func captureScreen() async -> Data? {
+        await attempt { try await self.meter.captureScreen() }
+    }
+
+    /// Runs an instrument call, logging any failure and returning nil for it.
+    private func attempt<T: Sendable>(_ operation: @escaping () async throws -> T) async -> T? {
+        do {
+            return try await operation()
+        } catch {
+            handle(error)
+            return nil
+        }
+    }
+
     // MARK: Shutdown
 
     /// Stops polling, hands the front panel back and closes the socket in an orderly
@@ -241,18 +421,22 @@ final class MeterController {
     func shutdown() async {
         guard link != .closed else { return }
         let wasConnected = link == .connected
+        stopLiveCapture()
+        logRun?.stop()
         link = .closed
         liveTask?.cancel()
         if wasConnected {
             let live = liveTask
+            let logging = logTask
             let meter = meter
             await withTaskGroup(of: Void.self) { group in
                 group.addTask {
+                    await logging?.value  // aborts the run, collects its readings, restores settings
                     await live?.value  // let an in-flight READ? finish so the stream stays clean
                     await meter.disconnect(returnToLocal: true)
                 }
                 group.addTask {
-                    try? await Task.sleep(for: .seconds(4))
+                    try? await Task.sleep(for: .seconds(6))
                 }
                 await group.next()
                 group.cancelAll()

@@ -1,44 +1,29 @@
 import DMMKit
 import SwiftUI
 
-/// Placeholder shell: shows the connection picker or a bare readout. The real views
-/// replace this file's contents.
+/// Shows the connection screen or the main window, depending on whether a meter is connected.
 struct RootView: View {
     @Environment(AppModel.self) private var model
 
     var body: some View {
-        if let controller = model.controller {
-            VStack(spacing: 12) {
-                Text(controller.function.displayName).font(.headline)
-                Text(controller.latest.map {
-                    EngineeringNotation.string($0.reading, unit: controller.unit, significantDigits: 8)
-                } ?? "—")
-                    .font(.system(size: 64, weight: .medium, design: .monospaced))
-                Button("Disconnect") { Task { await model.disconnect() } }
+        Group {
+            if let controller = model.controller {
+                MainView(controller: controller)
+            } else {
+                ConnectionView()
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-        } else {
-            VStack(spacing: 12) {
-                ForEach(model.instruments) { instrument in
-                    Button(instrument.name) { Task { await model.connect(to: .discovered(instrument)) } }
-                        .disabled(!instrument.isSupportedMultimeter)
-                }
-                Button("Demo meter") { Task { await model.connect(to: .simulator) } }
-                if let error = model.connectionError { Text(error).foregroundStyle(.red) }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-    }
-}
-
-struct AppCommands: Commands {
-    let model: AppModel
-
-    var body: some Commands {
-        CommandMenu("Meter") {
-            Button("Disconnect") { Task { await model.disconnect() } }
-                .keyboardShortcut("d", modifiers: [.command, .shift])
-                .disabled(model.controller == nil)
+        .frame(minWidth: 900, minHeight: 600)
+        .task {
+            // `--demo` connects to the simulator at launch, for testing.
+            // `--connect <address>` connects to that meter at launch.
+            let arguments = CommandLine.arguments
+            guard model.controller == nil else { return }
+            if arguments.contains("--demo") {
+                await model.connect(to: .simulator)
+            } else if let flag = arguments.firstIndex(of: "--connect"), flag + 1 < arguments.count {
+                await model.connect(to: .host(arguments[flag + 1]))
+            }
         }
     }
 }

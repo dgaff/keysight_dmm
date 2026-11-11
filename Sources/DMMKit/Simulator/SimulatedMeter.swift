@@ -85,9 +85,15 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
                 }
             }
             if !responses.isEmpty {
-                var out = Data(responses.joined(separator: Data(";".utf8)))
-                out.append(0x0A)
-                inbox.append(out)
+                let out = Data(responses.joined(separator: Data(";".utf8))) + Data([0x0A])
+                // A measurement takes its integration time, as on the real meter.
+                let upper = line.uppercased()
+                let delay = upper.contains("READ?") || upper.contains("MEAS") ? lock.withLock { measurementTime() } : 0
+                if delay > 0 {
+                    DispatchQueue.global().asyncAfter(deadline: .now() + delay) { [inbox] in inbox.append(out) }
+                } else {
+                    inbox.append(out)
+                }
             }
         }
     }
@@ -266,6 +272,21 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
             stored = MeterSetting.shortForm(of: token)
         }
         settings[key] = stored
+    }
+
+    /// Multiplies simulated measurement time; 0 makes `READ?` answer immediately (tests).
+    public var timeScale = 1.0
+
+    /// Seconds one reading takes with the current function's NPLC and auto zero (60 Hz line).
+    /// Called with the lock held.
+    private func measurementTime() -> Double {
+        let function = Self.canonical(SCPIValue.parseString(settings["FUNC"] ?? "\"VOLT\""))
+        func value(_ key: String) -> String? { settings[key] ?? Self.defaults[key]?.value }
+        guard let nplc = value("\(function):NPLC").flatMap(SCPIValue.parseDouble) else { return 0.1 * timeScale }
+        let aperture = value("\(function):APER:ENAB") == "1"
+            ? (value("\(function):APER").flatMap(SCPIValue.parseDouble) ?? 0.1) : nplc / 60
+        let autoZero = value("\(function):ZERO:AUTO") != "0"
+        return (aperture * (autoZero ? 2 : 1) + 0.002) * timeScale
     }
 
     private func simulatedReading() -> Double {
