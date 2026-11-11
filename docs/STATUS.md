@@ -6,33 +6,32 @@ Last updated: 2026-11-11
 
 | # | Phase | State |
 |---|---|---|
-| 0 | Foundation: package, tracking docs, SCPI command catalogue | done (catalogue: see below) |
-| 1 | DMMKit core: transport, session, units, discovery, simulator, CLI | done; verified read-only against the real meter |
-| 2 | App shell and live measurement (all functions, settings panels, math, charts, graceful quit) | next |
-| 3 | On-meter logging (timed sampling to reading memory, download, meter files, limits, CSV) | |
-| 4 | Digitizer (fast acquisition, level/external/pre-trigger, waveform view) | |
-| 5 | App-side recording, session library, export, screen capture, state store/recall, utilities | |
-| 6 | Experimental: undocumented SCPI hunt, SCPI console | |
-| 7 | Bench validation with waveform generator and power supply | |
+| 0 | Foundation: package, tracking docs, SCPI command catalogue | done |
+| 1 | DMMKit core: transport, session, units, discovery, simulator, CLI | done; verified on the real meter |
+| 2 | App shell and live measurement | working on the real meter (connect, live readings, settings inspector, clean quit). Not yet done: math (limits/scaling/dB), bar meter, interactive testing of every control |
+| 3 | On-meter logging | engine done and verified on the meter (`Multimeter.acquire`, `dmmprobe log`); recordings + CSV/JSON export done in DMMKit; Data Log / Recordings / Files pages in progress (sub-agent) |
+| 4 | Digitizer | not started |
+| 5 | App-side recording, export, screen capture, state store/recall, utilities | controller support done (live capture, files, screen capture); views in progress; recordings are not yet saved to disk between launches |
+| 6 | Experimental: undocumented SCPI, SCPI console | hunt started: see `docs/experimental/NOTES.md`. Console is read-only so far |
+| 7 | Bench validation with waveform generator and power supply | not started; needs Doug to wire the bench |
 
-## Done so far
+## How things are verified
 
-- Package builds; 22 unit tests pass (`swift test`), none need hardware.
-- `dmmprobe discover` finds all three bench instruments over Bonjour.
-- `dmmprobe idn|read|send` work against the 34470A at 192.168.1.109: identity,
-  DC voltage readings, setting queries, error-queue reporting, timeout recovery,
-  return to local on exit.
+- `swift test`: 48 tests, no hardware.
+- `dmmprobe` against 192.168.1.109: `idn`, `read`, `settings` (all 13 functions),
+  `log fast 12`, `files`, `screenshot`, `block`.
+- App: `./scripts/make_app.sh debug`, then
+  `open build/KeysightDMM.app --args --connect 192.168.1.109` (or `--demo`).
+  Window screenshots: `screencapture -x -l <window id>`.
 
-## Next up (phase 2)
+## Next up
 
-1. Per-function settings model in DMMKit: for each `MeasurementFunction`, the settings
-   the front panel exposes (range, NPLC/aperture, auto zero, input impedance, AC
-   filter, etc.), with allowed values read from the meter (`MIN`/`MAX`) where possible.
-2. Decide the live-reading strategy (repeated `READ?` vs `INIT` + `R?`/`DATA:LAST?`)
-   and measure the achievable update rate.
-3. App target + `.app` bundling script; connection picker using `InstrumentBrowser`,
-   with a demo mode backed by `SimulatedMeter`.
-4. Graceful quit path.
+1. Review and bench-test the Data Log / Recordings / Files / Screen Capture pages.
+2. Math settings (limits, scaling, dB/dBm, on-meter statistics) as shared setting groups.
+3. Digitizer (phase 4): fast acquisition preset, level trigger, pre-trigger.
+4. Persist recordings to disk; state store/recall UI; utilities (autocal, self-test, clock).
+5. SCPI console command entry; experimental commands behind a switch.
+6. Bench validation with stimulus (ask Doug to wire up first).
 
 ## Open questions / things to verify on the bench
 

@@ -236,6 +236,32 @@ case "screenshot":
     }
     await meter.disconnect(returnToLocal: !stayRemote)
 
+case "block":
+    // dmmprobe block <host> <query> <output-file>   save a definite-length block response
+    guard arguments.count >= 3 else { fail("usage: dmmprobe block <host> <query> <output-file>") }
+    let meter = await connect(arguments[0])
+    do {
+        let data = try await meter.session.queryBlock(arguments[1], timeout: .seconds(30))
+        try data.write(to: URL(fileURLWithPath: arguments[2]))
+        print("wrote \(data.count) bytes to \(arguments[2])")
+    } catch {
+        print("error: \(error.localizedDescription)")
+    }
+    if let errors = try? await meter.session.drainErrors() { for e in errors { print("    instrument error: \(e)") } }
+    await meter.disconnect(returnToLocal: !stayRemote)
+
+case "undocumented":
+    // dmmprobe undocumented <help-file>   list SYST:HELP? entries missing from the catalogue
+    guard let path = arguments.first, let text = try? String(contentsOfFile: path, encoding: .utf8) else {
+        fail("usage: dmmprobe undocumented <file saved from SYST:HELP?>")
+    }
+    for line in text.split(whereSeparator: \.isNewline) {
+        let entry = line.split(separator: "/", maxSplits: 1)
+        guard let header = entry.first, !header.isEmpty else { continue }
+        let concrete = header.replacingOccurrences(of: "[", with: "").replacingOccurrences(of: "]", with: "")
+        if SCPICatalogue.shared.lookup(concrete) == nil { print(line) }
+    }
+
 default:
     fail("unknown command \"\(verb)\"")
 }
