@@ -33,6 +33,18 @@ struct RootView: View {
             } else if let flag = arguments.firstIndex(of: "--connect"), flag + 1 < arguments.count {
                 await model.connect(to: .host(arguments[flag + 1]))
             }
+            // `--exercise-log` / `--exercise-digitize` start one run with the meter's current
+            // settings, for screenshots and checks where nothing can press Start.
+            if let controller = model.controller {
+                if arguments.contains("--exercise-log") {
+                    await controller.startLog(
+                        AcquisitionPlan(pacing: .interval(0.1), stop: .duration(30)), name: "Slow sine, 30 s")
+                } else if arguments.contains("--exercise-digitize") {
+                    await controller.startLog(
+                        AcquisitionPlan(pacing: .interval(0.001), stop: .samples(500), trigger: .level(0.5, rising: true), pretriggerSamples: 100),
+                        name: "10 Hz sine, level trigger", purpose: .digitize)
+                }
+            }
         }
     }
 }

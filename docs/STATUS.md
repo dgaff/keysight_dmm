@@ -8,7 +8,7 @@ Last updated: 2026-11-11
 |---|---|---|
 | 0 | Foundation: package, tracking docs, SCPI command catalogue | done |
 | 1 | DMMKit core: transport, session, units, discovery, simulator, CLI | done; verified on the real meter |
-| 2 | App shell and live measurement | working on the real meter. On-meter scaling (dB, dBm, %, gain/offset) and limits are in the settings inspector. Not built: bar meter |
+| 2 | App shell and live measurement | working on the real meter. On-meter scaling (dB, dBm, %, gain/offset) and limits are in the settings inspector. Trend, histogram and bar meter views |
 | 3 | On-meter logging | engine bench-validated. Data Log page, Recordings page, export sheet built |
 | 4 | Digitizer | engine bench-validated (25 kS/s; level trigger + pre-trigger). Digitize page built |
 | 5 | Recording, export, screen capture, files, utilities | built. Recordings are saved in `~/Library/Application Support/KeysightDMM/Recordings`. Meter page: info, clock, self-test, autocal, state slots, preset, beep, display text |
@@ -46,7 +46,14 @@ both; "Set meter clock" fixes it).
 2. `SYST:FPAN:KEYP` experiments with Doug watching the display (could drive the real
    front-panel Data Log mode).
 3. Bench tests for current, resistance, capacitance (power supply / parts wired in).
-4. Bar meter view; app icon.
+4. Nothing else is planned; see README.md for the feature summary.
+
+README screenshots (`docs/screenshots/`) were taken from the real meter with the
+waveform generator as the signal, using launch options: `--connect <host> --redact
+--page=<name> --chart=histogram|meter --exercise-log --exercise-digitize`. The two
+`--exercise` runs bypass the setup form, so the form on the left of those two
+screenshots shows defaults rather than the run's settings. The icon is drawn by
+`scripts/make_icon.swift` into `Assets/`.
 
 ## Open questions / things to verify on the bench
 

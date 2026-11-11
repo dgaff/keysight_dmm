@@ -107,6 +107,8 @@ struct ScreenCaptureView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(.background)
         .task(id: autoRefresh ? seconds : 0) {
+            // Opening the page for the first time takes a capture, so it is never empty.
+            if store.captures.isEmpty { await store.capture(from: controller) }
             guard autoRefresh else { return }
             while !Task.isCancelled {
                 await store.capture(from: controller)

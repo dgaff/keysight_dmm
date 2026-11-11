@@ -43,8 +43,14 @@ struct MeterInfoFooter: View {
                         .foregroundStyle(.tint)
                 }
             }
-            Text("Serial \(controller.identity.serialNumber)")
-            Text(controller.endpointDescription).lineLimit(1).truncationMode(.middle)
+            // `--redact` hides the serial number and address, for screenshots meant to be shared.
+            if CommandLine.arguments.contains("--redact") {
+                Text("Serial MY00000000")
+                Text("192.168.1.100:5025")
+            } else {
+                Text("Serial \(controller.identity.serialNumber)")
+                Text(controller.endpointDescription).lineLimit(1).truncationMode(.middle)
+            }
             HStack(spacing: 5) {
                 Circle().fill(statusColor).frame(width: 7, height: 7)
                 Text(statusText)

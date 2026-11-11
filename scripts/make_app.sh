@@ -14,6 +14,8 @@ mkdir -p $app/Contents/MacOS $app/Contents/Resources
 cp $bin/KeysightDMMApp $app/Contents/MacOS/KeysightDMM
 # SwiftPM resource bundles (DMMKit's command catalogue). DMMKit looks here first.
 for bundle in $bin/*.bundle(N); do cp -R $bundle $app/Contents/Resources/; done
+# Icon: drawn by scripts/make_icon.swift, kept in Assets/.
+cp Assets/AppIcon.icns $app/Contents/Resources/AppIcon.icns
 cat > $app/Contents/Info.plist <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -23,6 +25,7 @@ cat > $app/Contents/Info.plist <<'PLIST'
     <key>CFBundleDisplayName</key><string>Keysight DMM</string>
     <key>CFBundleIdentifier</key><string>local.keysight-dmm</string>
     <key>CFBundleExecutable</key><string>KeysightDMM</string>
+    <key>CFBundleIconFile</key><string>AppIcon</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>0.1</string>
     <key>CFBundleVersion</key><string>1</string>

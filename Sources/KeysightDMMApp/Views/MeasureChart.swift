@@ -262,22 +262,40 @@ struct SeriesChart: View {
 /// than on every reading.
 struct MeasureChart: View {
     let controller: MeterController
-    // `--chart=histogram` opens on the histogram, for testing.
-    @State private var mode: ChartMode = CommandLine.arguments.contains("--chart=histogram") ? .histogram : .trend
+    /// The Measure page's three views of the live readings.
+    enum Mode: String, CaseIterable, Identifiable {
+        case trend = "Trend", histogram = "Histogram", meter = "Bar Meter"
+        var id: String { rawValue }
+
+        /// `--chart=histogram` or `--chart=meter` picks the opening view, for testing.
+        static var initial: Mode {
+            let arguments = CommandLine.arguments
+            if arguments.contains("--chart=histogram") { return .histogram }
+            if arguments.contains("--chart=meter") { return .meter }
+            return .trend
+        }
+    }
+
+    @State private var mode = Mode.initial
     @State private var input = ChartInput.empty
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Picker("Chart", selection: $mode) {
-                ForEach(ChartMode.allCases) { Text($0.rawValue).tag($0) }
+                ForEach(Mode.allCases) { Text($0.rawValue).tag($0) }
             }
             .pickerStyle(.segmented)
             .labelsHidden()
-            .frame(width: 200)
+            .frame(width: 300)
 
-            SeriesChart(
-                input: input, mode: mode,
-                emptyMessage: controller.isLive ? "Waiting for readings…" : "Press Run to start reading.")
+            switch mode {
+            case .meter:
+                BarMeterView(controller: controller)
+            case .trend, .histogram:
+                SeriesChart(
+                    input: input, mode: mode == .trend ? .trend : .histogram,
+                    emptyMessage: controller.isLive ? "Waiting for readings…" : "Press Run to start reading.")
+            }
         }
         .task(id: controller.unit) { await refreshLoop() }
     }
