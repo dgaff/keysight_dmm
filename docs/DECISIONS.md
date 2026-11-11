@@ -76,3 +76,25 @@ Newest last. Each entry: what was decided and why.
   runs are not limited by the 50,000-reading memory. Level trigger and pre-trigger are
   implemented (`AcquisitionPlan.Trigger.level`, `pretriggerSamples`) but untested on
   hardware: they need a signal from the waveform generator.
+
+## Bench validation (2026-11-11, waveform generator → meter HI/LO)
+
+`dmmprobe bench 192.168.1.109 K-33511B-04567.local`: 38 checks pass (DC volts on
+autorange and on every fixed range, dBm scaling, AC volts, secondary measurements,
+frequency/period 100 Hz–100 kHz, 1 ms meter-paced sampling of a 10 Hz sine, level
+trigger with pre-trigger). It saves and restores both instruments' setups. Things it
+taught us:
+
+- **Secondary measurements are not on every reading.** With frequency as the secondary
+  of AC volts, `READ?;DATA2?` alternates between a value and 9.91E37. The app keeps the
+  last value. Peak-to-peak answers `min,max,ptp`; the last field is the one wanted.
+- **Pre-trigger captures can come back short.** If the trigger arrives before the
+  pre-trigger buffer has filled, the meter keeps only the pre-trigger samples it has:
+  500 requested with 100 pre-trigger returned 407–476. This is a completed capture;
+  `AcquisitionPlan.triggerIndex(total:expected:)` locates the trigger.
+- With pre-trigger samples the readings are left in the meter until the run ends (no
+  `R?` while it runs), so such captures are limited to reading memory (50,000).
+- Operation status during a triggered run: 48 while waiting (measuring + waiting for
+  trigger), 784 while sampling, 768 when done.
+- Not yet bench-tested: current, resistance, capacitance, temperature (need the power
+  supply or parts wired in), external trigger.

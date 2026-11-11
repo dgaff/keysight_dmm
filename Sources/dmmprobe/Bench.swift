@@ -151,10 +151,24 @@ struct Bench {
         try await sine(frequency: 1000, rms: 1)
         try await set(.acVoltage, "secondary", .choice("FREQ"))
         try await Task.sleep(for: .milliseconds(500))
-        _ = try await meter.readWithSecondary(timeout: .seconds(30))
-        let both = try await meter.readWithSecondary(timeout: .seconds(30))
+        // The frequency secondary is only refreshed on some readings; take the first that has one.
+        var both = try await meter.readWithSecondary(timeout: .seconds(30))
+        for _ in 0..<4 where both.secondary == nil {
+            both = try await meter.readWithSecondary(timeout: .seconds(30))
+        }
         check("primary (V rms)", both.primary.value, expected: 1, tolerance: 0.021, unit: .volt)
         check("secondary (Hz)", both.secondary?.value ?? .nan, expected: 1000, tolerance: 0.5, unit: .hertz)
+        try await meter.setFunction(.dcVoltage)
+        try await auto(.dcVoltage, "range", .on)
+        try await set(.dcVoltage, "secondary", .choice("PTP"))
+        try await Task.sleep(for: .milliseconds(500))
+        both = try await meter.readWithSecondary(timeout: .seconds(30))
+        for _ in 0..<4 where both.secondary == nil {
+            both = try await meter.readWithSecondary(timeout: .seconds(30))
+        }
+        check("DCV peak-to-peak secondary", both.secondary?.value ?? .nan, expected: 2 * 2.0.squareRoot(), tolerance: 0.06, unit: .volt)
+        try await set(.dcVoltage, "secondary", .choice("OFF"))
+        try await meter.setFunction(.acVoltage)
         try await set(.acVoltage, "secondary", .choice("OFF"))
 
         print("\nFrequency and period, 1 V rms sine")
@@ -185,13 +199,18 @@ struct Bench {
         let plan = AcquisitionPlan(
             pacing: .interval(0.001), stop: .samples(500), trigger: .level(0.5, rising: true), pretriggerSamples: 100)
         let triggered = try await collect(plan)
-        check("run completed", triggered.end == .completed && triggered.values.count == 500, "\(triggered.values.count) samples, ended \(String(describing: triggered.end))")
-        if triggered.values.count == 500 {
+        // The meter returns fewer pre-trigger samples if the trigger comes early: 400 to 500 in all.
+        let count = triggered.values.count
+        check("run completed", triggered.end == .completed && (400...500).contains(count), "\(count) samples, ended \(String(describing: triggered.end))")
+        if let at = plan.triggerIndex(total: count, expected: 500), at >= 10, at + 10 < count {
+            check("trigger index", true, "trigger at sample \(at) of \(count)")
             // At 10 Hz and 1.414 V peak the signal moves about 85 mV per 1 ms sample near 0.5 V,
             // so the sample at the trigger point should sit within a couple of steps of the level.
-            check("sample at the trigger point", triggered.values[100], expected: 0.5, tolerance: 0.2, unit: .volt)
-            check("rising through the level", triggered.values[90] < 0.5 && triggered.values[110] > 0.5,
-                  "10 samples before: \(EngineeringNotation.compact(triggered.values[90], unit: .volt)), 10 after: \(EngineeringNotation.compact(triggered.values[110], unit: .volt))")
+            check("sample at the trigger point", triggered.values[at], expected: 0.5, tolerance: 0.2, unit: .volt)
+            check("rising through the level", triggered.values[at - 10] < 0.5 && triggered.values[at + 10] > 0.5,
+                  "10 samples before: \(EngineeringNotation.compact(triggered.values[at - 10], unit: .volt)), 10 after: \(EngineeringNotation.compact(triggered.values[at + 10], unit: .volt))")
+        } else {
+            check("trigger index", false, "could not locate the trigger in \(count) samples")
         }
     }
 }

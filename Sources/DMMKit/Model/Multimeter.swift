@@ -68,7 +68,10 @@ public actor Multimeter {
     }
 
     /// Like `read`, and also fetches the secondary measurement (`READ?;DATA2?`).
-    /// The secondary is nil when none is configured (the meter answers 9.91E37).
+    /// The secondary is nil when none is configured or none is ready: the meter answers
+    /// 9.91E37 then. Observed on a 34470A: some secondaries (frequency alongside AC volts)
+    /// are only refreshed on alternate readings, so nil does not mean "off"; callers
+    /// should keep showing the previous value.
     public func readWithSecondary(timeout: Duration = .seconds(15)) async throws -> (primary: Reading, secondary: Reading?) {
         let response = try await session.query("READ?;DATA2?", timeout: timeout)
         let parts = response.split(separator: ";", omittingEmptySubsequences: false)
@@ -76,8 +79,8 @@ public actor Multimeter {
               let last = parts[0].split(separator: ",").last, let primary = Reading(response: String(last)) else {
             throw SCPIError.malformedResponse(command: "READ?;DATA2?", response: response)
         }
-        // DATA2? can return more than one value (e.g. peak-to-peak gives min, max, ptp); keep the first.
-        let secondary = parts[1].split(separator: ",").first.flatMap { Reading(response: String($0)) }
+        // Peak-to-peak answers "min,max,ptp": the last value is the one named by the setting.
+        let secondary = parts[1].split(separator: ",").last.flatMap { Reading(response: String($0)) }
         return (primary, secondary?.status == .invalid ? nil : secondary)
     }
 

@@ -37,7 +37,19 @@ public struct AcquisitionPlan: Sendable, Equatable {
     public var trigger: Trigger
     /// Samples to keep from before the trigger (digitizing). Counted within the
     /// total, so it must be less than the sample count. Not for immediate triggers.
+    ///
+    /// If the trigger arrives before this many samples have been taken, the meter keeps
+    /// only what it has, and the capture is correspondingly shorter (observed on a
+    /// 34470A: 500 requested with 100 pre-trigger returned 407). Use `triggerIndex` to
+    /// find where the trigger falls in what actually came back.
     public var pretriggerSamples: Int
+
+    /// Index of the first sample taken at or after the trigger in a finished capture of
+    /// `total` samples, or nil when the plan has no pre-trigger samples.
+    public func triggerIndex(total: Int, expected: Int?) -> Int? {
+        guard pretriggerSamples > 0, let expected else { return nil }
+        return max(0, total - (expected - pretriggerSamples))
+    }
 
     public init(pacing: Pacing = .fastest, stop: Stop = .manual, trigger: Trigger = .immediate, pretriggerSamples: Int = 0) {
         self.pacing = pacing
@@ -151,7 +163,15 @@ extension Multimeter {
             let info = try await configure(plan)
             try await session.set("INIT")
             continuation.yield(.started(info))
-            let (end, total) = await drain(expected: info.expectedCount, interval: info.interval, continuation)
+            // With pre-trigger samples, leave the readings in the meter until the run is
+            // over rather than removing them while it may still be holding them as
+            // pre-trigger data. Such a run is complete once all post-trigger samples are
+            // in, even if the trigger came before the pre-trigger buffer had filled.
+            let (end, total) = await drain(
+                expected: info.expectedCount, interval: info.interval,
+                collectWhileRunning: plan.pretriggerSamples == 0,
+                completeAt: info.expectedCount.map { $0 - plan.pretriggerSamples },
+                continuation)
             await restore(savedHeaders, savedValues)
             continuation.yield(.finished(try end.get(), total: total))
         } catch {
@@ -211,6 +231,11 @@ extension Multimeter {
             try await session.set("TRIG:SLOP \(rising ? "POS" : "NEG")")
         }
         if plan.pretriggerSamples > 0 {
+            // The whole capture has to fit in reading memory, because it is only read at the end.
+            let memory = (SCPIValue.parseInt(try await session.query("SAMP:COUN:PRET? MAX")) ?? 49_999) + 1
+            if let expected, expected > memory {
+                throw AcquisitionError.invalidPlan("A capture with pre-trigger samples is limited to the meter's reading memory, \(memory) samples.")
+            }
             guard plan.trigger != .immediate else {
                 throw AcquisitionError.invalidPlan("Pre-trigger samples need an external or level trigger.")
             }
@@ -258,7 +283,7 @@ extension Multimeter {
     /// Collects readings until the run completes, the task is cancelled, or the meter
     /// stops by itself. Always ends with the meter idle and its memory emptied.
     private func drain(
-        expected: Int?, interval: Double,
+        expected: Int?, interval: Double, collectWhileRunning: Bool, completeAt: Int?,
         _ continuation: AsyncThrowingStream<AcquisitionEvent, any Error>.Continuation
     ) async -> (Result<AcquisitionEnd, any Error>, Int) {
         var total = 0
@@ -269,7 +294,7 @@ extension Multimeter {
             while true {
                 if Task.isCancelled { break }
                 do { try await Task.sleep(for: pause) } catch { break }
-                let received = try await collect(continuation)
+                let received = collectWhileRunning ? try await collect(continuation) : 0
                 total += received
                 if let expected, total >= expected { return (.success(.completed), total) }
                 if received == 0 {
@@ -278,7 +303,7 @@ extension Multimeter {
                     let busy = condition & (StatusBit.measuring | StatusBit.waitingForTrigger) != 0
                     if !busy {
                         total += try await collect(continuation)
-                        if let expected, total >= expected { return (.success(.completed), total) }
+                        if let completeAt, total >= completeAt { return (.success(.completed), total) }
                         return (.success(.endedByInstrument), total)
                     }
                 }

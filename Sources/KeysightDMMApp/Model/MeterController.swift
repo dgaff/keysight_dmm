@@ -23,6 +23,10 @@ final class MeterController {
         var recording: Recording
         /// Set when the run is over.
         var end: AcquisitionEnd?
+        /// For a finished capture with pre-trigger samples: index of the first sample at
+        /// or after the trigger. The meter keeps fewer pre-trigger samples than asked
+        /// for if the trigger comes early, so this is not always `plan.pretriggerSamples`.
+        var triggerIndex: Int?
         /// Why the run failed, if it did.
         var failure: String?
 
@@ -254,7 +258,8 @@ final class MeterController {
                 if wantsSecondary {
                     let both = try await meter.readWithSecondary(timeout: .seconds(30))
                     primary = both.primary
-                    secondary = both.secondary
+                    // Not every reading carries a fresh secondary; keep the last one meanwhile.
+                    if let fresh = both.secondary { secondary = fresh }
                 } else {
                     primary = try await meter.read(timeout: .seconds(30))
                     secondary = nil
@@ -373,8 +378,9 @@ final class MeterController {
                 latest = Sample(index: nextIndex, time: Date(), reading: last)
                 nextIndex += 1
             }
-        case .finished(let end, _):
+        case .finished(let end, let total):
             log?.end = end
+            log?.triggerIndex = log?.plan.triggerIndex(total: total, expected: log?.info?.expectedCount)
         }
     }
 
