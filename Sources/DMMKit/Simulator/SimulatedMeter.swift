@@ -187,6 +187,21 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
             case "SYST:ERR": return errors.isEmpty ? "+0,\"No error\"" : errors.removeFirst()
             case "*OPC": return "1"
             case "*STB", "*ESR": return "+0"
+            case "*TST", "*CAL": return "+0"
+            case "SYST:TEMP": return Self.formatNumber(31.5)
+            case "SYST:UPT": return "+0,+1,+23,+45"
+            case "SYST:LFR": return "+60"
+            case "ROUT:TERM": return "FRON"
+            case "SYST:COMM:LAN:MAC": return "\"0030D3000001\""
+            case "CAL:DATE", "SYST:ACAL:DATE": return "+2026,+1,+15"
+            case "CAL:COUN": return "+12"
+            case "SYST:ACAL:TEMP": return Self.formatNumber(30.2)
+            case "SYST:DATE":
+                let c = Calendar(identifier: .gregorian).dateComponents([.year, .month, .day], from: Date())
+                return "+\(c.year ?? 2026),+\(c.month ?? 1),+\(c.day ?? 1)"
+            case "SYST:TIME":
+                let c = Calendar(identifier: .gregorian).dateComponents([.hour, .minute, .second], from: Date())
+                return "\(c.hour ?? 0),\(c.minute ?? 0),\(c.second ?? 0).000"
             case "STAT:OPER:COND":
                 guard let run else { return "+0" }
                 return run.taken(at: Date()) < min(run.count, run.cappedAt ?? .max) ? "+16" : "+0"
@@ -230,7 +245,7 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
             let timed = (settings["SAMP:SOUR"] ?? "IMM") == "TIM"
             run = Run(started: Date(), interval: timed ? number("SAMP:TIM", 1) : 0.01,
                       count: Int(number("SAMP:COUN", 1)) * Int(min(number("TRIG:COUN", 1), 1e6)))
-        case "SYST:LOC", "SYST:REM", "*TRG", "*WAI":
+        case "SYST:LOC", "SYST:REM", "*TRG", "*WAI", "SYST:BEEP", "SYST:DATE", "SYST:TIME", "DISP:TEXT", "DISP:TEXT:CLE", "*SAV", "*RCL":
             break
         case "MMEM:DEL":
             if files.removeValue(forKey: SCPIValue.parseString(argument ?? "")) == nil {

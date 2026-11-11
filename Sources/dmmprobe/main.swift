@@ -272,6 +272,31 @@ case "info":
     if let info = try? await meter.info() { dump(info) }
     await meter.disconnect(returnToLocal: !stayRemote)
 
+case "bench":
+    // dmmprobe bench <meter-host> <generator-host>
+    // Needs the generator's output wired to the meter's HI/LO input. Stays within ±5 V.
+    guard arguments.count >= 2 else { fail("usage: dmmprobe bench <meter-host> <waveform-generator-host>") }
+    let meter = await connect(arguments[0])
+    let transport = TCPTransport(host: arguments[1])
+    do {
+        try await transport.connect(timeout: .seconds(5))
+    } catch {
+        await meter.disconnect()
+        fail("Could not reach the waveform generator at \(arguments[1]): \(error.localizedDescription)\nCheck that the firewall (Little Snitch) allows this binary to reach it on TCP 5025.")
+    }
+    let generator = SCPISession(transport: transport)
+    if trace { await generator.setTrafficHandler(printTraffic) }
+    var bench = Bench(meter: meter, generator: generator)
+    do {
+        try await bench.run()
+    } catch {
+        print("error: \(error.localizedDescription)")
+    }
+    _ = try? await generator.write("SYST:LOC")
+    await transport.close()
+    await meter.disconnect(returnToLocal: !stayRemote)
+    if bench.failed > 0 { exit(2) }
+
 default:
     fail("unknown command \"\(verb)\"")
 }
