@@ -379,8 +379,12 @@ final class MeterController {
                 nextIndex += 1
             }
         case .finished(let end, let total):
-            log?.end = end
-            log?.triggerIndex = log?.plan.triggerIndex(total: total, expected: log?.info?.expectedCount)
+            // Work on a copy and assign once: reading `log` inside an assignment to one of
+            // its own fields is an overlapping access to the observed property, which traps.
+            guard var finished = log else { break }
+            finished.end = end
+            finished.triggerIndex = finished.plan.triggerIndex(total: total, expected: finished.info?.expectedCount)
+            log = finished
         }
     }
 

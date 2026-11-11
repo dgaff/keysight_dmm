@@ -21,6 +21,15 @@ struct RootView: View {
             guard model.controller == nil else { return }
             if arguments.contains("--demo") {
                 await model.connect(to: .simulator)
+                // `--exercise-capture` (demo only) runs a digitize capture, stops it after a
+                // second, then runs a short one to completion: a check of both ways a run ends.
+                if arguments.contains("--exercise-capture"), let controller = model.controller {
+                    await controller.startLog(AcquisitionPlan(pacing: .fastest, stop: .samples(10_000)), name: "Stopped early", purpose: .digitize)
+                    try? await Task.sleep(for: .seconds(1))
+                    controller.stopLog()
+                    while controller.isLogging { try? await Task.sleep(for: .milliseconds(50)) }
+                    await controller.startLog(AcquisitionPlan(pacing: .fastest, stop: .samples(300)), name: "Ran to the end", purpose: .digitize)
+                }
             } else if let flag = arguments.firstIndex(of: "--connect"), flag + 1 < arguments.count {
                 await model.connect(to: .host(arguments[flag + 1]))
             }
