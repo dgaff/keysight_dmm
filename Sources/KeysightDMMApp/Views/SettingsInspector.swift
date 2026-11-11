@@ -41,7 +41,7 @@ struct SettingsInspector: View {
                     }
                 }
                 .formStyle(.grouped)
-                .disabled(controller.isApplying || controller.link != .connected)
+                .disabled(controller.isApplying || controller.link != .connected || controller.isLogging)
             }
         }
     }

@@ -27,7 +27,7 @@ struct FunctionPicker: View {
             }
             .pickerStyle(.menu)
             .fixedSize()
-            .disabled(controller.isApplying || controller.link != .connected)
+            .disabled(controller.isApplying || controller.link != .connected || controller.isLogging)
             .help("On the meter: \(controller.function.frontPanelKey)")
 
             Text("On the meter: \(controller.function.frontPanelKey)")

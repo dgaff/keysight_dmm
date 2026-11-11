@@ -146,3 +146,38 @@ final class ScriptedTransport: SCPITransport, @unchecked Sendable {
         #expect(meter.errorsAtConnect == [InstrumentError(code: -113, message: "Undefined header")])
     }
 }
+
+@Suite struct MeterFilesTests {
+    @Test func parsesCatalogue() throws {
+        let listing = try #require(MeterFolderListing(
+            response: #"+1000000000,+327168572,"command.exe,,375808","MyDCVMeas.sta,STAT,8192","Data, run 2.csv,ASC,11265","Logs,FOLD,0""#,
+            folder: "INT:\\"))
+        #expect(listing.bytesUsed == 1_000_000_000)
+        #expect(listing.bytesFree == 327_168_572)
+        #expect(listing.files.map(\.name) == ["Logs", "command.exe", "Data, run 2.csv", "MyDCVMeas.sta"])
+        #expect(listing.files.map(\.kind) == [.folder, .other, .data, .state])
+        #expect(listing.files[2].path == "INT:\\Data, run 2.csv")
+        #expect(MeterFolderListing(response: "+0,+100", folder: "USB:\\")?.files.isEmpty == true)
+    }
+
+    @Test func listDownloadDeleteAndCaptureAgainstSimulator() async throws {
+        let meter = try await Multimeter.connect(transport: SimulatedMeter())
+        let listing = try await meter.listFiles()
+        #expect(listing.files.map(\.name) == ["Bench log.csv", "STATE_0.sta"])
+        let csv = try await meter.download(listing.files[0].path)
+        #expect(String(decoding: csv, as: UTF8.self).hasPrefix("index,value"))
+
+        // A missing folder or file is reported promptly as the meter's own error.
+        let clock = ContinuousClock()
+        let elapsed = await clock.measure {
+            await #expect(throws: SCPIError.self) { _ = try await meter.listFiles(in: "USB:\\") }
+            await #expect(throws: SCPIError.self) { _ = try await meter.download("INT:\\nope.csv") }
+        }
+        #expect(elapsed < .seconds(2))
+
+        try await meter.deleteFile(listing.files[0].path)
+        #expect(try await meter.listFiles().files.count == 1)
+        #expect(try await meter.captureScreen().starts(with: [0x89, 0x50, 0x4E, 0x47]))
+        #expect(try await meter.read().isValid)  // stream still aligned
+    }
+}

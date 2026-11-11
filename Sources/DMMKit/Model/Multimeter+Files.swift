@@ -81,15 +81,18 @@ extension Multimeter {
     /// Lists a folder. Throws `SCPIError.instrument` if it does not exist (for example
     /// `USB:\` with no stick inserted).
     public func listFiles(in folder: String = Multimeter.internalRoot) async throws -> MeterFolderListing {
-        let command = "MMEM:CAT? \(SCPIValue.quoted(folder))"
+        // `;*OPC?` makes a failed listing answer "1" at once instead of staying silent
+        // until the timeout (an execution error skips the query but not the rest of the line).
+        let command = "MMEM:CAT? \(SCPIValue.quoted(folder));*OPC?"
         let response = try await session.exclusive { s -> String in
-            do {
-                return try await s.rawQuery(command, timeout: .seconds(10))
-            } catch SCPIError.timeout {
-                // A bad folder queues an error and sends nothing.
+            let answer = try await s.rawQuery(command, timeout: .seconds(10))
+            guard answer.hasSuffix(";1") else {
                 let errors = try await s.rawDrainErrors()
-                throw errors.isEmpty ? SCPIError.timeout(command: command) : SCPIError.instrument(errors, command: command)
+                throw errors.isEmpty
+                    ? SCPIError.malformedResponse(command: command, response: answer)
+                    : SCPIError.instrument(errors, command: command)
             }
+            return String(answer.dropLast(2))
         }
         guard let listing = MeterFolderListing(response: response, folder: folder) else {
             throw SCPIError.malformedResponse(command: command, response: response)
@@ -99,11 +102,12 @@ extension Multimeter {
 
     /// Copies a file from the meter to the Mac.
     public func download(_ path: String) async throws -> Data {
-        let command = "MMEM:UPL? \(SCPIValue.quoted(path))"
+        let command = "MMEM:UPL? \(SCPIValue.quoted(path));*OPC?"
         return try await session.exclusive { s -> Data in
             do {
                 return try await s.rawQueryBlock(command, timeout: .seconds(60))
-            } catch SCPIError.timeout {
+            } catch SCPIError.malformedResponse {
+                // No block came back, only the "1" from *OPC?: the meter refused the file.
                 let errors = try await s.rawDrainErrors()
                 throw errors.isEmpty ? SCPIError.timeout(command: command) : SCPIError.instrument(errors, command: command)
             }

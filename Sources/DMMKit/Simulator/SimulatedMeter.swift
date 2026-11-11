@@ -78,7 +78,7 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
                 for command in line.split(separator: ";") {
                     let trimmed = command.trimmingCharacters(in: .whitespaces)
                     if let block = handleReadingMemory(trimmed) {
-                        responses.append(block)
+                        if !block.isEmpty { responses.append(block) }
                     } else if let response = handle(trimmed) {
                         responses.append(Data(response.utf8))
                     }
@@ -107,7 +107,18 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
     /// definite-length block in the current `FORM:DATA`. Called with the lock held.
     private func handleReadingMemory(_ command: String) -> Data? {
         let parts = command.split(separator: " ", maxSplits: 1).map(String.init)
-        guard let head = parts.first?.uppercased(), head == "R?" || head == ":R?" else { return nil }
+        guard var head = parts.first?.uppercased() else { return nil }
+        if head.hasPrefix(":") { head.removeFirst() }
+        if head == "HCOP:SDUM:DATA?" { return Self.block(Self.screenImage) }
+        if head == "MMEM:UPL?" {
+            let path = SCPIValue.parseString(parts.count > 1 ? parts[1] : "")
+            guard let content = files[path] else {
+                errors.append("-256,\"File or folder name not found\"")
+                return Data()
+            }
+            return Self.block(content)
+        }
+        guard head == "R?" else { return nil }
         var available = 0
         if var current = run {
             available = current.taken(at: Date()) - current.delivered
@@ -126,8 +137,37 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
         } else {
             payload = Data(values.map(Self.formatNumber).joined(separator: ",").utf8)
         }
+        return Self.block(payload)
+    }
+
+    private static func block(_ payload: Data) -> Data {
         let length = String(payload.count)
         return Data("#\(length.count)\(length)".utf8) + payload
+    }
+
+    /// Files on the simulated internal flash, by full path.
+    private var files: [String: Data] = [
+        "INT:\\STATE_0.sta": Data(repeating: 0x20, count: 1588),
+        "INT:\\Bench log.csv": Data("index,value\n0,1.2345678\n1,1.2345681\n".utf8),
+    ]
+
+    /// A 1×1 grey PNG standing in for the display image.
+    private static let screenImage = Data(base64Encoded:
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVR4nGNoAAAAggCBd81ytgAAAABJRU5ErkJggg==")!
+
+    /// `MMEM:CAT? "<folder>"`. Called with the lock held.
+    private func catalogue(_ argument: String?) -> String? {
+        let folder = SCPIValue.parseString(argument ?? "INT:\\")
+        guard folder.uppercased().hasPrefix("INT:\\"), folder.count == 5 else {
+            errors.append("-256,\"File or folder name not found\"")
+            return nil
+        }
+        let entries = files.keys.sorted().map { path -> String in
+            let name = String(path.dropFirst(5))
+            let type = name.hasSuffix(".sta") ? "STAT" : name.hasSuffix(".csv") ? "ASC" : ""
+            return "\"\(name),\(type),\(files[path]?.count ?? 0)\""
+        }
+        return (["+3948544", "+78446592"] + entries).joined(separator: ",")
     }
 
     // Called with the lock held.
@@ -153,6 +193,7 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
             case "DATA:POIN":
                 return "+\(run.map { $0.taken(at: Date()) - $0.delivered } ?? 0)"
             case "READ", "MEAS", "FETC": return formatted(simulatedReading())
+            case "MMEM:CAT": return catalogue(argument)
             default:
                 let canonical = Self.canonical(key)
                 if let argument, let entry = Self.defaults[canonical] {
@@ -190,6 +231,12 @@ public final class SimulatedMeter: SCPITransport, @unchecked Sendable {
             run = Run(started: Date(), interval: timed ? number("SAMP:TIM", 1) : 0.01,
                       count: Int(number("SAMP:COUN", 1)) * Int(min(number("TRIG:COUN", 1), 1e6)))
         case "SYST:LOC", "SYST:REM", "*TRG", "*WAI":
+            break
+        case "MMEM:DEL":
+            if files.removeValue(forKey: SCPIValue.parseString(argument ?? "")) == nil {
+                errors.append("-256,\"File or folder name not found\"")
+            }
+        case "HCOP:SDUM:DATA:FORM":
             break
         case "FUNC":
             if let argument, let function = MeasurementFunction(scpiResponse: argument) {

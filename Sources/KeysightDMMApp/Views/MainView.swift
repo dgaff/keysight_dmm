@@ -6,7 +6,10 @@ struct MainView: View {
     let controller: MeterController
     @Environment(AppModel.self) private var model
     @AppStorage("showInspector") private var showInspector = true
-    @State private var section: SidebarSection? = .measure
+    @State private var section: SidebarSection? = SidebarSection.launchSelection ?? .measure
+    @State private var logSetup = LogSetup()
+    @State private var captures = CaptureStore()
+    @State private var selectedRecording: Recording.ID?
     @State private var showErrors = false
 
     var body: some View {
@@ -27,6 +30,14 @@ struct MainView: View {
     private var page: some View {
         switch section ?? .measure {
         case .measure: MeasureView(controller: controller)
+        case .dataLog:
+            DataLogView(controller: controller, setup: logSetup) { id in
+                selectedRecording = id
+                section = .recordings
+            }
+        case .recordings: RecordingsView(controller: controller, selection: $selectedRecording)
+        case .files: FilesView(controller: controller)
+        case .screenCapture: ScreenCaptureView(controller: controller, store: captures)
         case .console: ConsoleView(controller: controller)
         case let other: PlaceholderPage(section: other)
         }
@@ -43,7 +54,7 @@ struct MainView: View {
                 Label(controller.isLive ? "Stop" : "Run", systemImage: controller.isLive ? "stop.fill" : "play.fill")
             }
             .help(controller.isLive ? "Stop live readings (⌘R)" : "Start live readings (⌘R)")
-            .disabled(controller.link != .connected)
+            .disabled(controller.link != .connected || controller.isLogging)
 
             Button { controller.clearHistory() } label: {
                 Label("Clear", systemImage: "trash")
