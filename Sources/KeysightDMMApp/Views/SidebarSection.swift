@@ -1,7 +1,7 @@
 import Foundation
 
 enum SidebarSection: String, CaseIterable, Identifiable, Hashable {
-    case measure, dataLog, recordings, digitize, files, screenCapture, console
+    case measure, dataLog, recordings, digitize, files, screenCapture, meter, console
 
     var id: String { rawValue }
 
@@ -13,6 +13,7 @@ enum SidebarSection: String, CaseIterable, Identifiable, Hashable {
         case .digitize: "Digitize"
         case .files: "Files"
         case .screenCapture: "Screen Capture"
+        case .meter: "Meter"
         case .console: "Console"
         }
     }
@@ -25,13 +26,13 @@ enum SidebarSection: String, CaseIterable, Identifiable, Hashable {
         case .digitize: "waveform.path.ecg"
         case .files: "folder"
         case .screenCapture: "camera.viewfinder"
+        case .meter: "wrench.and.screwdriver"
         case .console: "terminal"
         }
     }
 
     var comingSoon: String {
         switch self {
-        case .digitize: "Fast sampling with the digitizer is coming."
         default: ""
         }
     }
@@ -39,7 +40,7 @@ enum SidebarSection: String, CaseIterable, Identifiable, Hashable {
     static let work: [SidebarSection] = [.measure, .dataLog, .recordings, .digitize, .files, .screenCapture]
 
     /// Page named by `--page <name>` or `--page=<name>` (name: measure, datalog, recordings,
-    /// digitize, files, screen, console), for testing. With `open --args`, use the `=` form:
+    /// digitize, files, screen, meter, console), for testing. With `open --args`, use the `=` form:
     /// AppKit takes a bare second word to be a file to open and then shows no window.
     static var launchSelection: SidebarSection? {
         let arguments = CommandLine.arguments
@@ -58,6 +59,7 @@ enum SidebarSection: String, CaseIterable, Identifiable, Hashable {
         case "digitize": return .digitize
         case "files": return .files
         case "screen": return .screenCapture
+        case "meter": return .meter
         case "console": return .console
         default: return nil
         }

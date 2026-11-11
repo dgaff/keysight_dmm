@@ -25,6 +25,7 @@ struct FilesView: View {
     @State private var message: String?
     @State private var messageIsError = false
     @State private var pendingDelete: MeterFile?
+    @State private var pendingLoad: MeterFile?
     @State private var working = false
 
     private struct LoadKey: Hashable {
@@ -74,6 +75,19 @@ struct FilesView: View {
         } message: {
             Text("“\(pendingDelete?.name ?? "")” will be erased from the meter. This cannot be undone.")
         }
+        .confirmationDialog(
+            "Load this state?",
+            isPresented: Binding(get: { pendingLoad != nil }, set: { if !$0 { pendingLoad = nil } }),
+            titleVisibility: .visible
+        ) {
+            Button("Load", role: .destructive) {
+                if let file = pendingLoad { Task { await loadState(file) } }
+                pendingLoad = nil
+            }
+            Button("Cancel", role: .cancel) { pendingLoad = nil }
+        } message: {
+            Text("This replaces the meter's current setup with “\(pendingLoad?.name ?? "")”.")
+        }
     }
 
     // MARK: Pieces
@@ -97,6 +111,8 @@ struct FilesView: View {
                     .disabled(isLoading)
                 Button { Task { await download() } } label: { Label("Download…", systemImage: "arrow.down.circle") }
                     .disabled(selectedFile == nil || selectedFile?.kind == .folder || working)
+                Button { pendingLoad = selectedFile } label: { Label("Load state…", systemImage: "arrow.uturn.backward.circle") }
+                    .disabled(selectedFile?.kind != .state || working)
                 Button(role: .destructive) { pendingDelete = selectedFile } label: { Label("Delete…", systemImage: "trash") }
                     .disabled(selectedFile == nil || selectedFile?.kind == .folder || working)
             }
@@ -246,6 +262,14 @@ struct FilesView: View {
         } else {
             message = "Saved \(url.lastPathComponent) (\(ByteText.format(data.count)))."
         }
+    }
+
+    private func loadState(_ file: MeterFile) async {
+        working = true
+        defer { working = false }
+        let ok = await controller.loadState(from: file)
+        message = ok ? "Loaded \(file.name) into the meter." : "Could not load \(file.name)."
+        messageIsError = !ok
     }
 
     private func delete(_ file: MeterFile) async {

@@ -42,7 +42,7 @@ struct ReadoutView: View {
                         Text(f.unitText)
                             .font(.system(size: size * 0.42, weight: .regular))
                             .foregroundStyle(.secondary)
-                        if !controller.function.unitQualifier.isEmpty {
+                        if !controller.function.unitQualifier.isEmpty, controller.states["scaling"]?.value.bool != true {
                             Text(controller.function.unitQualifier)
                                 .font(.system(size: size * 0.26, weight: .regular))
                                 .foregroundStyle(.tertiary)

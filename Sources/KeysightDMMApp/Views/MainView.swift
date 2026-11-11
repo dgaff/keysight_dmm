@@ -8,6 +8,7 @@ struct MainView: View {
     @AppStorage("showInspector") private var showInspector = true
     @State private var section: SidebarSection? = SidebarSection.launchSelection ?? .measure
     @State private var logSetup = LogSetup()
+    @State private var digitizeSetup = DigitizeSetup()
     @State private var captures = CaptureStore()
     @State private var selectedRecording: Recording.ID?
     @State private var showErrors = false
@@ -35,9 +36,15 @@ struct MainView: View {
                 selectedRecording = id
                 section = .recordings
             }
+        case .digitize:
+            DigitizeView(controller: controller, setup: digitizeSetup) { id in
+                selectedRecording = id
+                section = .recordings
+            }
         case .recordings: RecordingsView(controller: controller, selection: $selectedRecording)
         case .files: FilesView(controller: controller)
         case .screenCapture: ScreenCaptureView(controller: controller, store: captures)
+        case .meter: MeterView(controller: controller)
         case .console: ConsoleView(controller: controller)
         case let other: PlaceholderPage(section: other)
         }

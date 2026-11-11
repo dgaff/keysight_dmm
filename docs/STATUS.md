@@ -8,28 +8,33 @@ Last updated: 2026-11-11
 |---|---|---|
 | 0 | Foundation: package, tracking docs, SCPI command catalogue | done |
 | 1 | DMMKit core: transport, session, units, discovery, simulator, CLI | done; verified on the real meter |
-| 2 | App shell and live measurement | working on the real meter (connect, live readings, settings inspector, clean quit). Not yet done: math (limits/scaling/dB on the meter), bar meter |
-| 3 | On-meter logging | engine verified on the meter (`Multimeter.acquire`, `dmmprobe log`). Data Log page, Recordings page and export sheet built; a run has only been clicked through in demo mode |
-| 4 | Digitizer | engine done (fast preset verified at 25 kS/s; level trigger and pre-trigger untested on hardware). No Digitize page yet |
-| 5 | App-side recording, export, screen capture, files | built. Files page verified listing the real meter. Recordings are not saved to disk between launches. No state store/recall UI or utilities yet |
-| 6 | Experimental: undocumented SCPI, SCPI console | hunt started: see `docs/experimental/NOTES.md`. Console is read-only so far |
-| 7 | Bench validation with waveform generator and power supply | not started; needs Doug to wire the bench |
+| 2 | App shell and live measurement | working on the real meter. On-meter scaling (dB, dBm, %, gain/offset) and limits are in the settings inspector. Not built: bar meter |
+| 3 | On-meter logging | engine bench-validated. Data Log page, Recordings page, export sheet built |
+| 4 | Digitizer | engine bench-validated (25 kS/s; level trigger + pre-trigger). Digitize page built |
+| 5 | Recording, export, screen capture, files, utilities | built. Recordings are saved in `~/Library/Application Support/KeysightDMM/Recordings`. Meter page: info, clock, self-test, autocal, state slots, preset, beep, display text |
+| 6 | Experimental: undocumented SCPI, SCPI console | console sends commands (calibration/security blocked), with catalogue autocomplete and an Experimental list. `SYST:FPAN:KEYP` not yet explored: needs Doug at the meter |
+| 7 | Bench validation | `dmmprobe bench` passes 38 checks with the waveform generator (see DECISIONS.md). Not covered: current, resistance, capacitance, temperature, external trigger |
 
 ## Not yet exercised by a person
 
-The UI was built by sub-agents and checked from window screenshots. Nobody has clicked
-through it on the real meter. Specifically untested: every control in the settings
-inspector, function switching from the app, histogram, info popovers, number-field
-validation, Record button, starting/stopping a log from the Data Log page on the real
-meter, limits overlay and notification, readings table with large runs, export save
-panel / clipboard / chart PNG-PDF, file download and delete, an actual screen capture
-in the Screen Capture page, the connection-lost banner.
+The UI was built by sub-agents and checked from window screenshots (each page has been
+opened against the real meter). Doug has used Measure, the histogram, screen capture and
+live recording. Still unclicked on the real meter: most settings-inspector controls
+including Scaling/Limits, starting a log or a digitize capture from the app, limits
+overlay and notification, readings table with large runs, export save panel / clipboard
+/ chart PNG-PDF, file download/delete/load state, the Meter page's buttons (self-test,
+autocal, set clock, state slots, preset, display text), console command entry, the
+connection-lost banner.
+
+Known oddity: the meter's clock is about 5.5 hours ahead of the Mac (Meter page shows
+both; "Set meter clock" fixes it).
 
 ## How things are verified
 
-- `swift test`: 50 tests, no hardware.
+- `swift test`: 53 tests, no hardware.
 - `dmmprobe` against 192.168.1.109: `idn`, `read`, `settings` (all 13 functions),
-  `log fast 12`, `files`, `screenshot`, `block`.
+  `log fast 12`, `files`, `screenshot`, `block`, `info`,
+  `bench <meter> K-33511B-04567.local` (generator wired to HI/LO).
 - App: `./scripts/make_app.sh debug`, then
   `open build/KeysightDMM.app --args --connect 192.168.1.109` (or `--demo`);
   add `--page=datalog|recordings|files|screen|console` to open on a page.
@@ -37,12 +42,11 @@ in the Screen Capture page, the connection-lost banner.
 
 ## Next up
 
-1. Review and bench-test the Data Log / Recordings / Files / Screen Capture pages.
-2. Math settings (limits, scaling, dB/dBm, on-meter statistics) as shared setting groups.
-3. Digitizer (phase 4): fast acquisition preset, level trigger, pre-trigger.
-4. Persist recordings to disk; state store/recall UI; utilities (autocal, self-test, clock).
-5. SCPI console command entry; experimental commands behind a switch.
-6. Bench validation with stimulus (ask Doug to wire up first).
+1. Doug's click-through feedback.
+2. `SYST:FPAN:KEYP` experiments with Doug watching the display (could drive the real
+   front-panel Data Log mode).
+3. Bench tests for current, resistance, capacitance (power supply / parts wired in).
+4. Bar meter view; app icon.
 
 ## Open questions / things to verify on the bench
 

@@ -13,6 +13,8 @@ struct RecordingView: View {
     let provider: @MainActor () -> Recording?
     var limits = Limits.none
     var emptyMessage = "No readings yet."
+    /// Elapsed time of the trigger instant, to mark on the trend chart.
+    var triggerSeconds: Double?
     /// Called after each analysis with the recording's id and how many readings are outside the limits.
     var onAnalysis: (@MainActor (Recording.ID, Int) -> Void)?
 
@@ -37,7 +39,7 @@ struct RecordingView: View {
                 .frame(width: 280)
                 switch mode {
                 case .trend:
-                    SeriesChart(input: ChartInput(recording: recording), mode: .trend, limits: limits)
+                    SeriesChart(input: ChartInput(recording: recording), mode: .trend, limits: limits, triggerSeconds: triggerSeconds)
                 case .histogram:
                     SeriesChart(input: ChartInput(recording: recording), mode: .histogram, limits: limits)
                 case .table:

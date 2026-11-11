@@ -12,7 +12,9 @@ struct SidebarView: View {
                     Label(section.title, systemImage: section.symbol).tag(section)
                 }
             }
-            Section("Diagnostics") {
+            Section("Instrument") {
+                Label(SidebarSection.meter.title, systemImage: SidebarSection.meter.symbol)
+                    .tag(SidebarSection.meter)
                 Label(SidebarSection.console.title, systemImage: SidebarSection.console.symbol)
                     .tag(SidebarSection.console)
             }

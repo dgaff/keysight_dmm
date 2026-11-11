@@ -76,6 +76,8 @@ struct ChartSnapshot: Sendable, Equatable {
     /// Limits in axis units.
     var lower: Double?
     var upper: Double?
+    /// Trigger instant on the time axis, in axis units.
+    var trigger: Double?
 
     var axisTitle: String { unitText.isEmpty ? "Value" : unitText }
 
@@ -136,6 +138,14 @@ struct TrendPlot: View {
                         .symbolSize(18)
                         .foregroundStyle(.tint)
                 }
+            }
+            if let trigger = snapshot.trigger {
+                RuleMark(x: .value("Trigger", trigger))
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                    .foregroundStyle(Color.orange.opacity(0.85))
+                    .annotation(position: .top, alignment: .leading, spacing: 2) {
+                        Text("Trigger").font(.caption2).foregroundStyle(.orange)
+                    }
             }
             if let upper = snapshot.upper {
                 limitRule(upper, title: "Upper limit")
@@ -216,11 +226,13 @@ struct SeriesChart: View {
     let mode: ChartMode
     var limits = Limits.none
     var emptyMessage = "No readings yet."
+    var triggerSeconds: Double?
     @State private var snapshot = ChartSnapshot()
 
     private struct TaskKey: Hashable {
         var input: ChartInput.Key
         var limits: Limits
+        var trigger: Double?
     }
 
     var body: some View {
@@ -234,12 +246,13 @@ struct SeriesChart: View {
             }
         }
         .frame(minHeight: 150, idealHeight: 300, maxHeight: .infinity)
-        .task(id: TaskKey(input: input.key, limits: limits)) {
+        .task(id: TaskKey(input: input.key, limits: limits, trigger: triggerSeconds)) {
             let input = input
             let limits = limits
-            let result = await Task.detached(priority: .userInitiated) {
+            var result = await Task.detached(priority: .userInitiated) {
                 ChartSnapshot.make(series: input.series, unit: input.unit, limits: limits)
             }.value
+            result.trigger = triggerSeconds.map { $0 / result.timeDivisor }
             if !Task.isCancelled { snapshot = result }
         }
     }

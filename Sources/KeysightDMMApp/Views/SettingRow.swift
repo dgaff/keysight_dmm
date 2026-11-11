@@ -195,8 +195,9 @@ private struct NumberField: View {
         )
     }
 
+    /// The allowed range as text; nil when the meter has no useful limits (about ±1e15).
     private var rangeText: String? {
-        guard let low = state.minimum, let high = state.maximum else { return nil }
+        guard let low = state.minimum, let high = state.maximum, abs(low) < 1e12, abs(high) < 1e12 else { return nil }
         return "\(EngineeringNotation.compact(low, unit: unit)) to \(EngineeringNotation.compact(high, unit: unit))"
     }
 
@@ -207,11 +208,11 @@ private struct NumberField: View {
 
     private func commit() {
         guard let value = EngineeringNotation.parse(text, unit: unit) else {
-            message = "That is not a number." + (rangeText.map { " Enter a value from \($0)." } ?? "")
+            message = "That is not a valid number." + (rangeText.map { " Enter a value from \($0)." } ?? "")
             return
         }
         if let low = state.minimum, let high = state.maximum, value < low || value > high {
-            message = "Out of range. Enter a value from \(rangeText ?? "")."
+            message = rangeText.map { "Out of range. Enter a value from \($0)." } ?? "That value is not valid."
             return
         }
         message = nil
